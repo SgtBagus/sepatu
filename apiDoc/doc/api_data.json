@@ -1,0 +1,509 @@
+[
+  {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "./doc/main.js",
+    "group": "C__xampp_htdocs_documentation_sop_doc_main_js",
+    "groupTitle": "C__xampp_htdocs_documentation_sop_doc_main_js",
+    "name": ""
+  },
+  {
+    "type": "get",
+    "url": "http://gatoko1.com/sop/api/",
+    "title": "Curl Configuration",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "auth",
+            "description": "<p>type-auth : basic</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "username",
+            "description": "<p>sm4rts0ft</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>?zwMAxBnS9jj</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "x-sm-key",
+            "description": "<p>35d3d08c3d7b7f445ceb8e726a87b26c</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetConfiguration",
+    "group": "Configuration",
+    "filename": "./Configuration.js",
+    "groupTitle": "Configuration"
+  },
+  {
+    "type": "delete",
+    "url": "{url}/customer/",
+    "title": "Delete Customer",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Customer ID</p>"
+          }
+        ]
+      }
+    },
+    "name": "DeleteCustomer",
+    "group": "Customer",
+    "description": "<p>Mebhapus data Customer , type data : application/x-www-form-urlencoded</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>TRUE or FALSE.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>response message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>information customer.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\t\t{\n\t\t    \"status\": true,\n\t\t    \"message\": \"congratulation , you success delete data\",\n\t\t    \"data\": {\n\t\t        \"id\": \"2\",\n\t\t        \"name\": \"Bayu Briyan El Roy\",\n\t\t        \"email\": \"bayubriyanelroy@gmal.com\",\n\t\t        \"phone\": \"Jl Madasah Azziadah 24 Klender Duren Sawit Jakarta Timur\",\n\t\t        \"address\": \"081230008101\",\n\t\t        \"status\": \"ENABLE\",\n\t\t        \"created_at\": \"2019-02-13 07:42:45\",\n\t\t        \"updated_at\": \"2019-02-13 08:59:14\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 404 NOT_FOUND\n\t{\n\t    \"status\": false,\n\t    \"message\": \"Whoops , something trouble with system. please try again !\",\n\t    \"data\": []\n\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Customer.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "get",
+    "url": "{url}/customer/:status",
+    "title": "All Customer information",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "defaultValue": "ENABLE",
+            "description": "<p>ENABLE OR DISABLE</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetCustomer",
+    "group": "Customer",
+    "description": "<p>Menampilkan seluruh data Customer</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>TRUE or FALSE.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>response message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>all information customer.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\t\t {\n\t\t    \"status\": true,\n\t\t    \"message\": \"customer were found\",\n\t\t    \"data\": [\n\t\t        {\n\t\t            \"id\": \"1\",\n\t\t            \"name\": \"Misbah Chairi\",\n\t\t            \"email\": \"misbahchairi@gmail.com\",\n\t\t            \"phone\": \"081210002211\",\n\t\t            \"address\": \"Jl Madasah Azziadah 24 Klender Duren Sawit Jakarta Timur\",\n\t\t            \"status\": \"ENABLE\",\n\t\t            \"created_at\": \"2019-02-13 14:13:38\",\n\t\t            \"updated_at\": null\n\t\t        }\n\t\t    ]\n\t\t}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 404 NOT_FOUND\n\t\t{\n   \t\t\"status\": false,\n   \t\t\"message\": \"No customer were found\",\n   \t\t\"data\": []\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Customer.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "get",
+    "url": "{url}/customer/detail/:id",
+    "title": "Detail Customer",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Customer-ID</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetDetailCustomer",
+    "group": "Customer",
+    "description": "<p>Menampilkan detail data Customer</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>TRUE or FALSE.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>response message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>information customer.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\t\t{\n\t\t    \"status\": true,\n\t\t    \"message\": \"customer were found\",\n\t\t    \"data\": {\n\t\t        \"id\": \"1\",\n\t\t        \"name\": \"Misbah Chairi\",\n\t\t        \"email\": \"misbahchairi@gmail.com\",\n\t\t        \"phone\": \"081210002211\",\n\t\t        \"address\": \"Jl Madasah Azziadah 24 Klender Duren Sawit Jakarta Timur\",\n\t\t        \"status\": \"ENABLE\",\n\t\t        \"created_at\": \"2019-02-13 14:13:38\",\n\t\t        \"updated_at\": null\n\t\t    }\n\t\t}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 404 NOT_FOUND\n\t\t{\n\t\t    \"status\": false,\n\t\t    \"message\": \"No customer were found\",\n\t\t    \"data\": []\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Customer.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "post",
+    "url": "{url}/customer/",
+    "title": "Insert Customer",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Customer Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Customer Email</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Customer Phone</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Customer Address</p>"
+          }
+        ]
+      }
+    },
+    "name": "PostCustomer",
+    "group": "Customer",
+    "description": "<p>Menambah data Customer , type data : form-data</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>TRUE or FALSE.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>response message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>information customer.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\t\t{\n\t\t    \"status\": true,\n\t\t    \"message\": \"congratulation , you success insert data\",\n\t\t    \"data\": {\n\t\t        \"name\": \"Bayu Briyan El Roy\",\n\t\t        \"email\": \"bayubriyanelroy@gmal.com\",\n\t\t        \"phone\": \"081230008101\",\n\t\t        \"address\": \"Jl Madasah Azziadah 24 Klender Duren Sawit Jakarta Timur\",\n\t\t        \"status\": \"ENABLE\",\n\t\t        \"created_at\": \"2019-02-13 07:42:45\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 404 NOT_FOUND\n\t\t{\n\t\t    \"status\": false,\n\t\t    \"message\": [\n\t\t        \"name is required\",\n\t\t        \"email is required\",\n\t\t        \"phone is required\",\n\t\t        \"address is required\"\n\t\t    ],\n\t\t    \"data\": {\n\t\t        \"name\": \"\",\n\t\t        \"email\": \"\",\n\t\t        \"phone\": \"\",\n\t\t        \"address\": \"\",\n\t\t        \"status\": \"ENABLE\",\n\t\t        \"created_at\": \"2019-02-13 07:43:39\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Customer.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "put",
+    "url": "{url}/customer/",
+    "title": "Update Customer",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Customer ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Customer Name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Customer Email</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Customer Phone</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Customer Address</p>"
+          }
+        ]
+      }
+    },
+    "name": "PutCustomer",
+    "group": "Customer",
+    "description": "<p>Menambah data Customer , type data : application/x-www-form-urlencoded</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>TRUE or FALSE.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>response message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>information customer.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\t\t{\n\t\t    \"status\": true,\n\t\t    \"message\": \"congratulation , you success update data\",\n\t\t    \"data\": {\n\t\t        \"id\": \"2\",\n\t\t        \"name\": \"Bayu Briyan El Roy\",\n\t\t        \"email\": \"bayubriyanelroy@gmal.com\",\n\t\t        \"phone\": \"Jl Madasah Azziadah 24 Klender Duren Sawit Jakarta Timur\",\n\t\t        \"address\": \"081230008101\",\n\t\t        \"updated_at\": \"2019-02-13 08:59:14\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 404 NOT_FOUND\n\t\t{\n\t\t    \"status\": false,\n\t\t    \"message\": [\n\t\t        \"name is required\",\n\t\t        \"email is required\",\n\t\t        \"phone is required\",\n\t\t        \"address is required\"\n\t\t    ],\n\t\t    \"data\": {\n\t\t        \"id\": \"2\",\n\t\t        \"name\": \"\",\n\t\t        \"email\": \"\",\n\t\t        \"phone\": \"\",\n\t\t        \"address\": \"\",\n\t\t        \"updated_at\": \"2019-02-13 08:59:53\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Customer.js",
+    "groupTitle": "Customer"
+  },
+  {
+    "type": "put",
+    "url": "{url}/customer/:status",
+    "title": "Update Status Customer",
+    "version": "1.1.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Int",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Customer ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>enable,disable</p>"
+          }
+        ]
+      }
+    },
+    "name": "StatusCustomer",
+    "group": "Customer",
+    "description": "<p>Mengubah status Customer , type data : application/x-www-form-urlencoded</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "status",
+            "description": "<p>TRUE or FALSE.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>response message.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>information customer.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n\t\t{\n\t\t    \"status\": true,\n\t\t    \"message\": \"congratulation , you success update data\",\n\t\t    \"data\": {\n\t\t        \"id\": \"1\",\n\t\t        \"status\": \"ENABLE\",\n\t\t        \"updated_at\": \"2019-02-13 09:05:28\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 404 NOT_FOUND\n\t\t{\n\t\t    \"status\": false,\n\t\t    \"message\": [\n\t\t        \"id is required\"\n\t\t    ],\n\t\t    \"data\": {\n\t\t        \"id\": null,\n\t\t        \"status\": \"ENABLE\",\n\t\t        \"updated_at\": \"2019-02-13 09:06:51\"\n\t\t    }\n\t\t}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./Customer.js",
+    "groupTitle": "Customer"
+  }
+]

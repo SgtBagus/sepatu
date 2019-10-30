@@ -1,0 +1,32 @@
+table>thead>tr>th{
+    cursor: initial !important;
+}
+.tDnD_whileDrag {
+    background-color: #eee;
+    cursor: grabbing !important;
+}
+
+tr.alt td {
+    background-color: #ecf6fc;
+}
+
+tr.myDragClass td {
+    color: yellow;
+    background-color: black;
+}
+
+td.dragHandle {
+    
+}
+
+td.showDragHandle {
+	background-image: url(images/updown2.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	cursor: move;
+}
+
+.versionHistory td {
+    vertical-align: top;
+    padding: 0.3em;
+}

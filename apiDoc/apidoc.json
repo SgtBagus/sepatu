@@ -1,0 +1,9 @@
+{
+  "name": "Documentation Rest Api (SOP Smartsoft)",
+  "version": "1.0.0",
+  "description": "Documentation all rest api and how to access Rest Api in SOP Smartsoft",
+  "apidoc": {
+    "title": "Rest Api Documentation Beta",
+    "url" : "http://gatoko1.com/sop/"
+  }
+}

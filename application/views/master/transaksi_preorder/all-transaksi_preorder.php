@@ -1,220 +1,96 @@
-<!-- Content Wrapper. Contains page content -->
-
 <div class="content-wrapper">
-
-  <!-- Content Header (Page header) -->
-
   <section class="content-header">
-
     <h1>
-
       Transaksi Preorder
-
       <small>master</small>
-
     </h1>
-
     <ol class="breadcrumb">
-
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-
       <li><a href="#">master</a></li>
-
       <li class="active">Transaksi Preorder</li>
-
     </ol>
-
   </section>
-
-  <!-- Main content -->
-
   <section class="content">
-
     <div class="row">
-
       <div class="col-xs-12">
-
         <div class="box">
-
-          <!-- /.box-header -->
-
           <div class="box-header">
-
             <div class="row">
-
               <div class="col-md-6">
-
                 <select onchange="loadtable(this.value)" id="select-status" style="width: 150px" class="form-control">
-
                   <option value="ENABLE">ENABLE</option>
-
                   <option value="DISABLE">DISABLE</option>
-
-
-
                 </select>
-
               </div>
-
               <div class="col-md-6">
-
                 <div class="pull-right"> <a href="<?= base_url('master/Transaksi_preorder/create') ?>">
-
                     <button type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Transaksi Preorder</button>
-
                   </a>
-
-
                   <a href="<?= base_url('fitur/ekspor/transaksi_preorder') ?>" target="_blank">
-
                     <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Transaksi Preorder</button>
-
                   </a>
-
                   <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Transaksi Preorder</button>
-
                 </div>
-
               </div>
-
             </div>
-
-
-
           </div>
-
           <div class="box-body">
-
             <div class="show_error"></div>
-
-
-
             <div class="table-responsive">
-
               <div id="load-table"></div>
-
             </div>
-
           </div>
-
-          <!-- /.box-body -->
-
         </div>
-
-        <!-- /.box -->
-
       </div>
-
-      <!-- /.col -->
-
     </div>
-
-    <!-- /.row -->
-
   </section>
-
-  <!-- /.content -->
-
 </div>
-
-<!-- /.content-wrapper -->
-
 
 <div class="modal fade bd-example-modal-sm" tabindex="-1" transaksi_preorder="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
-
   <div class="modal-dialog modal-sm">
-
     <div class="modal-content">
-
       <form id="upload-delete" action="<?= base_url('master/Transaksi_preorder/delete') ?>">
-
         <div class="modal-header">
-
           <h5 class="modal-title">Confirm delete</h5>
-
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
             <span aria-hidden="true">&times;</span>
-
           </button>
-
         </div>
-
         <div class="modal-body">
-
           <input type="hidden" name="id" id="delete-input">
-
           <p>Are you sure to delete this data?</p>
-
         </div>
-
         <div class="modal-footer">
-
           <button type="submit" class="btn btn-danger btn-send">Yes, Delete</button>
-
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
         </div>
-
       </form>
-
     </div>
-
   </div>
-
 </div>
-
-
 
 <div class="modal fade" id="modal-impor">
-
   <div class="modal-dialog">
-
     <div class="modal-content">
-
       <div class="modal-header">
-
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
         <h4 class="modal-title">Impor Transaksi Preorder</h4>
-
       </div>
-
       <form action="<?= base_url('fitur/impor/transaksi_preorder') ?>" method="POST" enctype="multipart/form-data">
-
-
-
         <div class="modal-body">
-
           <div class="form-group">
-
             <label for="">File Excel</label>
-
             <input type="file" class="form-control" id="" name="file" placeholder="Input field">
-
           </div>
-
         </div>
-
         <div class="modal-footer">
-
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-
           <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-
         </div>
-
       </form>
-
-
-
     </div>
-
   </div>
-
 </div>
-
-
 
 <script type="text/javascript">
   function loadtable(status) {
@@ -223,12 +99,16 @@
       '     <tr class="bg-success">' +
       '       <th style="width:20px">No</th>' +
       '<th>Kode</th>' +
+      '<th>Tanggal Preorder</th>' +
       '<th>Customer</th>' +
       '<th>Kurir</th>' +
       '<th>Biaya Kirim</th>' +
-      '<th>Bayar</th>' +
       '<th>Subtotal</th>' +
+      '<th>Bayar</th>' +
       '<th>Kembalian</th>' +
+      '<th>Bank</th>' +
+      '<th>Dropshipper</th>' +
+      '<th>Status Preorder</th>' +
       '       <th style="width:150px">Status</th>' +
       '       <th style="width:150px"></th>' +
       '     </tr>' +
@@ -264,6 +144,9 @@
           "data": "kode_transaksi"
         },
         {
+          "data": "created_at"
+        },
+        {
           "data": "id_customer"
         },
         {
@@ -273,13 +156,22 @@
           "data": "biaya_kirim"
         },
         {
-          "data": "jumlah_bayar"
-        },
-        {
           "data": "sub_total"
         },
         {
+          "data": "jumlah_bayar"
+        },
+        {
           "data": "kembalian"
+        },
+        {
+          "data": "id_bank"
+        },
+        {
+          "data": "id_dropshipper"
+        },
+        {
+          "data": "status_order"
         },
         {
           "data": "status"
@@ -292,8 +184,34 @@
       order: [
         [1, 'asc']
       ],
-      columnDefs: [{
-        targets: [8],
+      columnDefs: [
+      {
+        targets: [11],
+        render: function(data, type, row, meta) {
+          if (row['status_order'] == 'Pesanan Baru') {
+            var htmls = '<small class="label bg-yellow">'+
+            '<i class="fa fa-warning"> </i> Menunggu Untuk Di Proses </small>'+
+            '<hr>'+
+            '<div class="row" align="center">'+
+            '<div class="col-md-12">'+
+            '<button type="button" class="btn btn-send btn-approve btn-sm btn-sm btn-primary" onclick="approve('+row['id']+')"><i class="fa fa-check-circle"></i> Proses </button>'+
+            '<button type="button" class="btn btn-send btn-reject btn-sm btn-sm btn-danger" onclick="reject('+row['id']+')"><i class="fa fa-ban"></i>Tidak Proses</button>'+
+            '</div>'+
+            '</div>';
+          } else if (row['status_order'] == 'Diproses') {
+            var htmls = '<small class="label bg-blue">'+
+            '<i class="fa fa-warning"> </i> Sedang Di Proses </small>';
+          } else if (row['status_order'] == 'Selesai') {
+            var htmls = '<small class="label bg-green">'+
+            '<i class="fa fa-check-circle"> </i> Selesai </small>';
+          } else {
+            var htmls = '<small class="label bg-red">'+
+            '<i class="fa fa-ban"> </i> Cancel </small>';
+          }
+          return htmls;
+        }
+      },{
+        targets: [12],
         render: function(data, type, row, meta) {
           if (row['status'] == 'ENABLE') {
             var htmls = '<a href="<?= base_url('master/Transaksi_preorder/status/') ?>' + row['id'] + '/DISABLE">' +
@@ -319,8 +237,8 @@
   }
   loadtable($("#select-status").val());
 
-  function edit(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/edit/') ?>" + id;
+  function inv(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
   }
 
   function hapus(id) {

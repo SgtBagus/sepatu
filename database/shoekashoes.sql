@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 30, 2019 at 08:31 AM
--- Server version: 10.1.39-MariaDB
--- PHP Version: 7.3.5
+-- Host: localhost
+-- Waktu pembuatan: 31 Okt 2019 pada 06.38
+-- Versi server: 10.4.8-MariaDB
+-- Versi PHP: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `access`
+-- Struktur dari tabel `access`
 --
 
 CREATE TABLE `access` (
@@ -36,7 +36,7 @@ CREATE TABLE `access` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `access`
+-- Dumping data untuk tabel `access`
 --
 
 INSERT INTO `access` (`id`, `access_control_id`, `role_id`, `status`) VALUES
@@ -45,7 +45,7 @@ INSERT INTO `access` (`id`, `access_control_id`, `role_id`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `access_control`
+-- Struktur dari tabel `access_control`
 --
 
 CREATE TABLE `access_control` (
@@ -57,7 +57,7 @@ CREATE TABLE `access_control` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `access_control`
+-- Dumping data untuk tabel `access_control`
 --
 
 INSERT INTO `access_control` (`id`, `folder`, `class`, `method`, `val`) VALUES
@@ -332,20 +332,20 @@ INSERT INTO `access_control` (`id`, `folder`, `class`, `method`, `val`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `activity`
+-- Struktur dari tabel `activity`
 --
 
 CREATE TABLE `activity` (
   `ip` varchar(255) DEFAULT NULL,
   `link` varchar(255) DEFAULT NULL,
-  `get` longtext,
-  `post` longtext,
+  `get` longtext DEFAULT NULL,
+  `post` longtext DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `activity`
+-- Dumping data untuk tabel `activity`
 --
 
 INSERT INTO `activity` (`ip`, `link`, `get`, `post`, `user_id`, `created_at`) VALUES
@@ -405,7 +405,7 @@ INSERT INTO `activity` (`ip`, `link`, `get`, `post`, `user_id`, `created_at`) VA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-- Struktur dari tabel `customer`
 --
 
 CREATE TABLE `customer` (
@@ -421,7 +421,7 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `customer`
+-- Dumping data untuk tabel `customer`
 --
 
 INSERT INTO `customer` (`id`, `nama_customer`, `alamat_customer`, `hp_customer`, `email_customer`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -432,7 +432,7 @@ INSERT INTO `customer` (`id`, `nama_customer`, `alamat_customer`, `hp_customer`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `file`
+-- Struktur dari tabel `file`
 --
 
 CREATE TABLE `file` (
@@ -448,7 +448,7 @@ CREATE TABLE `file` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `file`
+-- Dumping data untuk tabel `file`
 --
 
 INSERT INTO `file` (`id`, `name`, `mime`, `dir`, `table`, `table_id`, `status`, `created_at`, `updated_at`) VALUES
@@ -501,7 +501,7 @@ INSERT INTO `file` (`id`, `name`, `mime`, `dir`, `table`, `table_id`, `status`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `grafik`
+-- Struktur dari tabel `grafik`
 --
 
 CREATE TABLE `grafik` (
@@ -511,7 +511,7 @@ CREATE TABLE `grafik` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `grafik`
+-- Dumping data untuk tabel `grafik`
 --
 
 INSERT INTO `grafik` (`id`, `name`, `value`) VALUES
@@ -531,7 +531,7 @@ INSERT INTO `grafik` (`id`, `name`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `image`
+-- Struktur dari tabel `image`
 --
 
 CREATE TABLE `image` (
@@ -540,7 +540,7 @@ CREATE TABLE `image` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `image`
+-- Dumping data untuk tabel `image`
 --
 
 INSERT INTO `image` (`id`, `path`) VALUES
@@ -575,7 +575,7 @@ INSERT INTO `image` (`id`, `path`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `keys`
+-- Struktur dari tabel `keys`
 --
 
 CREATE TABLE `keys` (
@@ -593,7 +593,7 @@ CREATE TABLE `keys` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `keys`
+-- Dumping data untuk tabel `keys`
 --
 
 INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_private_key`, `ip_addresses`, `date_created`, `status`, `created_at`, `updated_at`) VALUES
@@ -602,20 +602,20 @@ INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_privat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `konfig`
+-- Struktur dari tabel `konfig`
 --
 
 CREATE TABLE `konfig` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
-  `value` text,
+  `value` text DEFAULT NULL,
   `status` enum('ENABLE','DISABLE') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `konfig`
+-- Dumping data untuk tabel `konfig`
 --
 
 INSERT INTO `konfig` (`id`, `slug`, `value`, `status`, `created_at`, `updated_at`) VALUES
@@ -637,24 +637,24 @@ INSERT INTO `konfig` (`id`, `slug`, `value`, `status`, `created_at`, `updated_at
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logs`
+-- Struktur dari tabel `logs`
 --
 
 CREATE TABLE `logs` (
   `id` int(11) NOT NULL,
   `uri` varchar(255) NOT NULL,
   `method` varchar(6) NOT NULL,
-  `params` text,
+  `params` text DEFAULT NULL,
   `api_key` varchar(40) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
   `time` int(11) NOT NULL,
   `rtime` float DEFAULT NULL,
   `authorized` varchar(1) NOT NULL,
-  `response_code` smallint(3) DEFAULT '0'
+  `response_code` smallint(3) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `logs`
+-- Dumping data untuk tabel `logs`
 --
 
 INSERT INTO `logs` (`id`, `uri`, `method`, `params`, `api_key`, `ip_address`, `time`, `rtime`, `authorized`, `response_code`) VALUES
@@ -797,7 +797,7 @@ INSERT INTO `logs` (`id`, `uri`, `method`, `params`, `api_key`, `ip_address`, `t
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_bahanbaku`
+-- Struktur dari tabel `master_bahanbaku`
 --
 
 CREATE TABLE `master_bahanbaku` (
@@ -810,7 +810,7 @@ CREATE TABLE `master_bahanbaku` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `master_bahanbaku`
+-- Dumping data untuk tabel `master_bahanbaku`
 --
 
 INSERT INTO `master_bahanbaku` (`id`, `nama_bahanbaku`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -821,7 +821,7 @@ INSERT INTO `master_bahanbaku` (`id`, `nama_bahanbaku`, `status`, `created_at`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_bank`
+-- Struktur dari tabel `master_bank`
 --
 
 CREATE TABLE `master_bank` (
@@ -834,7 +834,7 @@ CREATE TABLE `master_bank` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `master_bank`
+-- Dumping data untuk tabel `master_bank`
 --
 
 INSERT INTO `master_bank` (`id`, `value`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -844,7 +844,7 @@ INSERT INTO `master_bank` (`id`, `value`, `status`, `created_at`, `updated_at`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_kategori_produk`
+-- Struktur dari tabel `master_kategori_produk`
 --
 
 CREATE TABLE `master_kategori_produk` (
@@ -858,7 +858,7 @@ CREATE TABLE `master_kategori_produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `master_kategori_produk`
+-- Dumping data untuk tabel `master_kategori_produk`
 --
 
 INSERT INTO `master_kategori_produk` (`id`, `nama_kategori`, `ket_kategori`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -873,7 +873,7 @@ INSERT INTO `master_kategori_produk` (`id`, `nama_kategori`, `ket_kategori`, `st
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_kategori_suplier`
+-- Struktur dari tabel `master_kategori_suplier`
 --
 
 CREATE TABLE `master_kategori_suplier` (
@@ -887,7 +887,7 @@ CREATE TABLE `master_kategori_suplier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `master_kategori_suplier`
+-- Dumping data untuk tabel `master_kategori_suplier`
 --
 
 INSERT INTO `master_kategori_suplier` (`id`, `nama_kategori`, `ket_kategori`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -896,7 +896,7 @@ INSERT INTO `master_kategori_suplier` (`id`, `nama_kategori`, `ket_kategori`, `s
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_kurir`
+-- Struktur dari tabel `master_kurir`
 --
 
 CREATE TABLE `master_kurir` (
@@ -909,7 +909,7 @@ CREATE TABLE `master_kurir` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `master_kurir`
+-- Dumping data untuk tabel `master_kurir`
 --
 
 INSERT INTO `master_kurir` (`id`, `value`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -918,7 +918,7 @@ INSERT INTO `master_kurir` (`id`, `value`, `status`, `created_at`, `updated_at`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_ukuran`
+-- Struktur dari tabel `master_ukuran`
 --
 
 CREATE TABLE `master_ukuran` (
@@ -931,7 +931,7 @@ CREATE TABLE `master_ukuran` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `master_ukuran`
+-- Dumping data untuk tabel `master_ukuran`
 --
 
 INSERT INTO `master_ukuran` (`id`, `value`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -945,7 +945,7 @@ INSERT INTO `master_ukuran` (`id`, `value`, `status`, `created_at`, `updated_at`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `menu_master`
+-- Struktur dari tabel `menu_master`
 --
 
 CREATE TABLE `menu_master` (
@@ -962,7 +962,7 @@ CREATE TABLE `menu_master` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `menu_master`
+-- Dumping data untuk tabel `menu_master`
 --
 
 INSERT INTO `menu_master` (`id`, `name`, `icon`, `link`, `urutan`, `parent`, `notif`, `status`, `created_at`, `updated_at`) VALUES
@@ -995,7 +995,7 @@ INSERT INTO `menu_master` (`id`, `name`, `icon`, `link`, `urutan`, `parent`, `no
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produk_preorder`
+-- Struktur dari tabel `produk_preorder`
 --
 
 CREATE TABLE `produk_preorder` (
@@ -1015,7 +1015,7 @@ CREATE TABLE `produk_preorder` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `produk_preorder`
+-- Dumping data untuk tabel `produk_preorder`
 --
 
 INSERT INTO `produk_preorder` (`id`, `id_suplier`, `id_kategori`, `id_bahanbaku`, `kode_barang`, `nama_produk`, `ket_produk`, `harga_produksi`, `harga_jual`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -1025,7 +1025,7 @@ INSERT INTO `produk_preorder` (`id`, `id_suplier`, `id_kategori`, `id_bahanbaku`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `produk_ready`
+-- Struktur dari tabel `produk_ready`
 --
 
 CREATE TABLE `produk_ready` (
@@ -1048,7 +1048,7 @@ CREATE TABLE `produk_ready` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `produk_ready`
+-- Dumping data untuk tabel `produk_ready`
 --
 
 INSERT INTO `produk_ready` (`id`, `id_suplier`, `id_kategori`, `id_bahanbaku`, `kode_barang`, `nama_produk`, `jumlah_stok`, `ukuran_produk`, `warna_produk`, `ket_produk`, `harga_produksi`, `harga_jual`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -1059,7 +1059,7 @@ INSERT INTO `produk_ready` (`id`, `id_suplier`, `id_kategori`, `id_bahanbaku`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `provinces`
+-- Struktur dari tabel `provinces`
 --
 
 CREATE TABLE `provinces` (
@@ -1069,7 +1069,7 @@ CREATE TABLE `provinces` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `provinces`
+-- Dumping data untuk tabel `provinces`
 --
 
 INSERT INTO `provinces` (`id`, `country_id`, `name`) VALUES
@@ -1111,7 +1111,7 @@ INSERT INTO `provinces` (`id`, `country_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `regencies`
+-- Struktur dari tabel `regencies`
 --
 
 CREATE TABLE `regencies` (
@@ -1121,7 +1121,7 @@ CREATE TABLE `regencies` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `regencies`
+-- Dumping data untuk tabel `regencies`
 --
 
 INSERT INTO `regencies` (`id`, `province_id`, `name`) VALUES
@@ -1643,21 +1643,21 @@ INSERT INTO `regencies` (`id`, `province_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `report`
+-- Struktur dari tabel `report`
 --
 
 CREATE TABLE `report` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `query` longtext,
-  `header` text,
+  `query` longtext DEFAULT NULL,
+  `header` text DEFAULT NULL,
   `status` enum('ENABLE','DISABLE') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `report`
+-- Dumping data untuk tabel `report`
 --
 
 INSERT INTO `report` (`id`, `name`, `query`, `header`, `status`, `created_at`, `updated_at`) VALUES
@@ -1681,20 +1681,20 @@ INSERT INTO `report` (`id`, `name`, `query`, `header`, `status`, `created_at`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
+-- Struktur dari tabel `role`
 --
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `role` varchar(255) DEFAULT NULL,
   `status` enum('DISABLE','ENABLE') DEFAULT NULL,
-  `menu` text,
+  `menu` text DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `role`
+-- Dumping data untuk tabel `role`
 --
 
 INSERT INTO `role` (`id`, `role`, `status`, `menu`, `created_at`, `updated_at`) VALUES
@@ -1705,7 +1705,7 @@ INSERT INTO `role` (`id`, `role`, `status`, `menu`, `created_at`, `updated_at`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `site`
+-- Struktur dari tabel `site`
 --
 
 CREATE TABLE `site` (
@@ -1719,7 +1719,7 @@ CREATE TABLE `site` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `site`
+-- Dumping data untuk tabel `site`
 --
 
 INSERT INTO `site` (`id`, `code`, `site`, `name`, `status`, `created_at`, `updated_at`) VALUES
@@ -1745,7 +1745,7 @@ INSERT INTO `site` (`id`, `code`, `site`, `name`, `status`, `created_at`, `updat
 -- --------------------------------------------------------
 
 --
--- Table structure for table `suplier`
+-- Struktur dari tabel `suplier`
 --
 
 CREATE TABLE `suplier` (
@@ -1761,7 +1761,7 @@ CREATE TABLE `suplier` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `suplier`
+-- Dumping data untuk tabel `suplier`
 --
 
 INSERT INTO `suplier` (`id`, `nama_suplier`, `alamat_suplier`, `hp_suplier`, `id_kategori`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
@@ -1772,7 +1772,7 @@ INSERT INTO `suplier` (`id`, `nama_suplier`, `alamat_suplier`, `hp_suplier`, `id
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaksi`
+-- Struktur dari tabel `transaksi`
 --
 
 CREATE TABLE `transaksi` (
@@ -1787,6 +1787,13 @@ CREATE TABLE `transaksi` (
   `id_bank` int(11) NOT NULL,
   `id_dropshipper` int(11) NOT NULL,
   `resi_pengiriman` varchar(255) NOT NULL,
+  `tipe` enum('Ready Stok','Preorder') DEFAULT NULL,
+  `status_order` enum('Pesanan Baru','Diproses','Selesai','Cancel') DEFAULT NULL,
+  `tgl_status_order` datetime DEFAULT NULL,
+  `status_pengiriman` enum('Belum Dikirim','Sudah Dikirim') DEFAULT NULL,
+  `tgl_status_pengiriman` datetime DEFAULT NULL,
+  `status_pembayaran` enum('Belum Dibayar','Belum Lunas','Lunas') DEFAULT NULL,
+  `tgl_status_pembayaran` datetime DEFAULT NULL,
   `status` enum('ENABLE','DISABLE') NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -1794,16 +1801,16 @@ CREATE TABLE `transaksi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transaksi`
+-- Dumping data untuk tabel `transaksi`
 --
 
-INSERT INTO `transaksi` (`id`, `kode_transaksi`, `id_customer`, `id_kurir`, `biaya_kirim`, `jumlah_bayar`, `sub_total`, `kembalian`, `id_bank`, `id_dropshipper`, `resi_pengiriman`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(10, 'INVL-7ISLV', 1, 1, '50000', '2000000', '1030000', '1020000', 1, 2, '', 'ENABLE', '2019-10-30 13:39:08', '0000-00-00 00:00:00', 21);
+INSERT INTO `transaksi` (`id`, `kode_transaksi`, `id_customer`, `id_kurir`, `biaya_kirim`, `jumlah_bayar`, `sub_total`, `kembalian`, `id_bank`, `id_dropshipper`, `resi_pengiriman`, `tipe`, `status_order`, `tgl_status_order`, `status_pengiriman`, `tgl_status_pengiriman`, `status_pembayaran`, `tgl_status_pembayaran`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
+(11, 'INVL-SWH0A', 1, 1, '50000', '2000000', '1037500', '1012500', 1, 1, '', 'Preorder', 'Pesanan Baru', '0000-00-00 00:00:00', 'Belum Dikirim', NULL, 'Belum Dibayar', '0000-00-00 00:00:00', 'ENABLE', '2019-10-31 10:09:59', '0000-00-00 00:00:00', 21);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaksi_produk`
+-- Struktur dari tabel `transaksi_produk`
 --
 
 CREATE TABLE `transaksi_produk` (
@@ -1818,13 +1825,6 @@ CREATE TABLE `transaksi_produk` (
   `biaya_lain` varchar(255) NOT NULL,
   `diskon` varchar(255) NOT NULL,
   `harga_total` varchar(255) NOT NULL,
-  `tipe` enum('Ready Stok','Preorder') NOT NULL,
-  `status_order` enum('Pesanan Baru','Diproduksi','Selesai') NOT NULL,
-  `tgl_status_order` datetime NOT NULL,
-  `status_pengiriman` enum('Belum Dikirim','Sudah Dikirim') NOT NULL,
-  `tgl_status_pengiriman` datetime NOT NULL,
-  `status_pembayaran` enum('Belum Dibayar','Belum Lunas','Lunas') NOT NULL,
-  `tgl_status_pembayaran` datetime NOT NULL,
   `status` enum('ENABLE','DISABLE') NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -1832,17 +1832,17 @@ CREATE TABLE `transaksi_produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transaksi_produk`
+-- Dumping data untuk tabel `transaksi_produk`
 --
 
-INSERT INTO `transaksi_produk` (`id`, `kode_transaksi`, `id_produk_preorder`, `qty`, `ukuran`, `warna`, `keterangan`, `harga_satuan`, `biaya_lain`, `diskon`, `harga_total`, `tipe`, `status_order`, `tgl_status_order`, `status_pengiriman`, `tgl_status_pengiriman`, `status_pembayaran`, `tgl_status_pembayaran`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(41, 'INVL-7ISLV', 2, '2', '4', 'Hitam', 'Sepatu ku', '475000', '5000', '50', '480000', 'Preorder', 'Pesanan Baru', '0000-00-00 00:00:00', 'Belum Dikirim', '0000-00-00 00:00:00', 'Belum Dibayar', '0000-00-00 00:00:00', 'ENABLE', '2019-10-30 13:39:08', '2019-10-30 13:39:08', 21),
-(42, 'INVL-7ISLV', 1, '1', '3', 'Biru', 'Sepatu ku', '550000', '5000', '10', '500000', 'Preorder', 'Pesanan Baru', '0000-00-00 00:00:00', 'Belum Dikirim', '0000-00-00 00:00:00', 'Belum Dibayar', '0000-00-00 00:00:00', 'ENABLE', '2019-10-30 13:39:08', '2019-10-30 13:39:08', 21);
+INSERT INTO `transaksi_produk` (`id`, `kode_transaksi`, `id_produk_preorder`, `qty`, `ukuran`, `warna`, `keterangan`, `harga_satuan`, `biaya_lain`, `diskon`, `harga_total`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
+(43, 'INVL-SWH0A', 2, '1', '', 'merah', 'ini sepatu ku', '475000', '5000', '10', '432500', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21),
+(44, 'INVL-SWH0A', 1, '2', '', 'biru', 'ini sepatu ku', '550000', '5000', '50', '555000', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -1859,7 +1859,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`id`, `nip`, `name`, `email`, `password`, `role_id`, `desc`, `status`, `created_at`, `updated_at`) VALUES
@@ -1872,319 +1872,319 @@ INSERT INTO `user` (`id`, `nip`, `name`, `email`, `password`, `role_id`, `desc`,
 --
 
 --
--- Indexes for table `access`
+-- Indeks untuk tabel `access`
 --
 ALTER TABLE `access`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `access_control`
+-- Indeks untuk tabel `access_control`
 --
 ALTER TABLE `access_control`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `customer`
+-- Indeks untuk tabel `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `file`
+-- Indeks untuk tabel `file`
 --
 ALTER TABLE `file`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `grafik`
+-- Indeks untuk tabel `grafik`
 --
 ALTER TABLE `grafik`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `image`
+-- Indeks untuk tabel `image`
 --
 ALTER TABLE `image`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `keys`
+-- Indeks untuk tabel `keys`
 --
 ALTER TABLE `keys`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `konfig`
+-- Indeks untuk tabel `konfig`
 --
 ALTER TABLE `konfig`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
--- Indexes for table `logs`
+-- Indeks untuk tabel `logs`
 --
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `master_bahanbaku`
+-- Indeks untuk tabel `master_bahanbaku`
 --
 ALTER TABLE `master_bahanbaku`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `master_bank`
+-- Indeks untuk tabel `master_bank`
 --
 ALTER TABLE `master_bank`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `master_kategori_produk`
+-- Indeks untuk tabel `master_kategori_produk`
 --
 ALTER TABLE `master_kategori_produk`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `master_kategori_suplier`
+-- Indeks untuk tabel `master_kategori_suplier`
 --
 ALTER TABLE `master_kategori_suplier`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `master_kurir`
+-- Indeks untuk tabel `master_kurir`
 --
 ALTER TABLE `master_kurir`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `master_ukuran`
+-- Indeks untuk tabel `master_ukuran`
 --
 ALTER TABLE `master_ukuran`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menu_master`
+-- Indeks untuk tabel `menu_master`
 --
 ALTER TABLE `menu_master`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `produk_preorder`
+-- Indeks untuk tabel `produk_preorder`
 --
 ALTER TABLE `produk_preorder`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `produk_ready`
+-- Indeks untuk tabel `produk_ready`
 --
 ALTER TABLE `produk_ready`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `provinces`
+-- Indeks untuk tabel `provinces`
 --
 ALTER TABLE `provinces`
   ADD PRIMARY KEY (`id`),
   ADD KEY `provinces_country_id_index` (`country_id`);
 
 --
--- Indexes for table `regencies`
+-- Indeks untuk tabel `regencies`
 --
 ALTER TABLE `regencies`
   ADD PRIMARY KEY (`id`),
   ADD KEY `regencies_province_id_index` (`province_id`);
 
 --
--- Indexes for table `report`
+-- Indeks untuk tabel `report`
 --
 ALTER TABLE `report`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `role`
+-- Indeks untuk tabel `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `site`
+-- Indeks untuk tabel `site`
 --
 ALTER TABLE `site`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `suplier`
+-- Indeks untuk tabel `suplier`
 --
 ALTER TABLE `suplier`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transaksi`
+-- Indeks untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transaksi_produk`
+-- Indeks untuk tabel `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `access`
+-- AUTO_INCREMENT untuk tabel `access`
 --
 ALTER TABLE `access`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `access_control`
+-- AUTO_INCREMENT untuk tabel `access_control`
 --
 ALTER TABLE `access_control`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=268;
 
 --
--- AUTO_INCREMENT for table `customer`
+-- AUTO_INCREMENT untuk tabel `customer`
 --
 ALTER TABLE `customer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `file`
+-- AUTO_INCREMENT untuk tabel `file`
 --
 ALTER TABLE `file`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
--- AUTO_INCREMENT for table `grafik`
+-- AUTO_INCREMENT untuk tabel `grafik`
 --
 ALTER TABLE `grafik`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `image`
+-- AUTO_INCREMENT untuk tabel `image`
 --
 ALTER TABLE `image`
   MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
--- AUTO_INCREMENT for table `keys`
+-- AUTO_INCREMENT untuk tabel `keys`
 --
 ALTER TABLE `keys`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `konfig`
+-- AUTO_INCREMENT untuk tabel `konfig`
 --
 ALTER TABLE `konfig`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT for table `logs`
+-- AUTO_INCREMENT untuk tabel `logs`
 --
 ALTER TABLE `logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
 
 --
--- AUTO_INCREMENT for table `master_bahanbaku`
+-- AUTO_INCREMENT untuk tabel `master_bahanbaku`
 --
 ALTER TABLE `master_bahanbaku`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `master_bank`
+-- AUTO_INCREMENT untuk tabel `master_bank`
 --
 ALTER TABLE `master_bank`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `master_kategori_produk`
+-- AUTO_INCREMENT untuk tabel `master_kategori_produk`
 --
 ALTER TABLE `master_kategori_produk`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `master_kategori_suplier`
+-- AUTO_INCREMENT untuk tabel `master_kategori_suplier`
 --
 ALTER TABLE `master_kategori_suplier`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `master_kurir`
+-- AUTO_INCREMENT untuk tabel `master_kurir`
 --
 ALTER TABLE `master_kurir`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `master_ukuran`
+-- AUTO_INCREMENT untuk tabel `master_ukuran`
 --
 ALTER TABLE `master_ukuran`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `menu_master`
+-- AUTO_INCREMENT untuk tabel `menu_master`
 --
 ALTER TABLE `menu_master`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
--- AUTO_INCREMENT for table `produk_preorder`
+-- AUTO_INCREMENT untuk tabel `produk_preorder`
 --
 ALTER TABLE `produk_preorder`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `produk_ready`
+-- AUTO_INCREMENT untuk tabel `produk_ready`
 --
 ALTER TABLE `produk_ready`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `report`
+-- AUTO_INCREMENT untuk tabel `report`
 --
 ALTER TABLE `report`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `role`
+-- AUTO_INCREMENT untuk tabel `role`
 --
 ALTER TABLE `role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- AUTO_INCREMENT for table `site`
+-- AUTO_INCREMENT untuk tabel `site`
 --
 ALTER TABLE `site`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `suplier`
+-- AUTO_INCREMENT untuk tabel `suplier`
 --
 ALTER TABLE `suplier`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `transaksi`
+-- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `transaksi_produk`
+-- AUTO_INCREMENT untuk tabel `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;

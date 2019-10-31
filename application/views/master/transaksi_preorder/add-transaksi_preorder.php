@@ -237,12 +237,12 @@
                         <input type="number" class="form-control" name="dt[jumlah_bayar]" id="pay">
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                       <div class="form-group">
                         <p>KEMBALIAN</p>
                         <input type="number" class="form-control" name="dt[kembalian]" id="kembalian" readonly>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

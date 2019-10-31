@@ -8,7 +8,7 @@ class Transaksi_preorder extends MY_Controller
 
 	public function index()
 	{
-		$data['page_name'] = "transaksi_preorder";
+		$data['page_name'] = "Pesanan";
 		$this->template->load('template/template', 'master/transaksi_preorder/all-transaksi_preorder', $data);
 	}
 
@@ -18,7 +18,7 @@ class Transaksi_preorder extends MY_Controller
 			LEFT JOIN master_kategori_produk on produk_preorder.id_kategori = master_kategori_produk.id
 			LEFT JOIN file on produk_preorder.id = file.table_id
 			WHERE produk_preorder.status = 'ENABLE' AND file.table = 'produk_preorder'");
-		$data['page_name'] = "transaksi_preorder";
+		$data['page_name'] = "Pesanan";
 		$this->template->load('template/template', 'master/transaksi_preorder/add-transaksi_preorder', $data);
 	}
 
@@ -37,11 +37,6 @@ class Transaksi_preorder extends MY_Controller
 		if ($this->form_validation->run() == FALSE) {
 			$this->alert->alertdanger(validation_errors());
 		} else {
-
-			if($_POST['dt']['jumlah_bayar'] < $_POST['dt']['sub_total']){
-				$this->alert->alertdanger('Pembayaran Kurang!');
-				return false;
-			}
 
 			$chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			$res = "INVL-";
@@ -88,7 +83,6 @@ class Transaksi_preorder extends MY_Controller
 			$dt['resi_pengiriman'] = '';
 			$dt['tipe'] = 'Preorder';
 			$dt['status_order'] = 'Pesanan Baru';
-			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
 			$dt['status_pengiriman'] = 'Belum Dikirim';
 			$dt['tgl_status_order'] = '';
 			$dt['status_pembayaran'] = 'Belum Dibayar';
@@ -135,14 +129,57 @@ class Transaksi_preorder extends MY_Controller
 
 	public function status($id, $status)
 	{
-		$this->mymodel->updateData('transaksi_preorder', array('status' => $status), array('id' => $id));
-		redirect('master/Transaksi_preorder');
+		$this->mymodel->updateData('transaksi', array('status' => $status), array('id' => $id));
+		redirect(base_url('master/Transaksi_preorder'));
 	}
 
 	public function inv($id)
 	{
-		$data['page_name'] = "transaksi_preorder";
+		$data['page_name'] = "Pesanan";
 		$this->template->load('template/template', 'master/transaksi_preorder/inv', $data);
+	}
+
+
+	public function approve($id)
+	{
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));
+		$data['page_name'] = "Pesanan";
+		$this->load->view('master/transaksi_preorder/approve', $data);
+	}
+
+	public function validateapprove()
+	{
+		$this->form_validation->set_error_delimiters('<li>', '</li>');
+		$this->form_validation->set_rules('dt[id_kurir]', '<strong>Pengiriman Kurir</strong>', 'required');
+		$this->form_validation->set_rules('dt[resi_pengiriman]', '<strong>No Resi</strong>', 'required');
+	}
+
+	public function approveproses()
+	{	
+		$idUser = $this->session->userdata('id');
+		$this->form_validation->set_error_delimiters('<li>', '</li>');
+		$this->validateapprove();
+		if ($this->form_validation->run() == FALSE) {
+			$this->alert->alertdanger(validation_errors());
+		} else {
+			$dt['id_kurir'] = $_POST['dt']['id_kurir'];
+			$dt['resi_pengiriman'] = $_POST['dt']['resi_pengiriman'];
+			$dt['status_order'] = 'Diproses';
+			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
+			$dt['updated_at'] = date('Y-m-d H:i:s');
+			$this->mymodel->updateData('transaksi', $dt , array('id'=>$_POST['dt']['id']));
+			$this->alert->alertsuccess('Success Send Data');
+		}
+	}
+
+	public function cancel($id)
+	{	
+		$dt['status_order'] = 'CANCEL';
+		$dt['tgl_status_order'] = date('Y-m-d H:i:s');
+		$dt['updated_at'] = date('Y-m-d H:i:s');
+		$this->mymodel->updateData('transaksi', $dt , array('id'=>$id));
+		$this->alert->alertsuccess('Success Send Data');
+		redirect(base_url('master/Transaksi_preorder'));
 	}
 }
 

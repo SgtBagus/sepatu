@@ -100,7 +100,7 @@ class Master_bank extends MY_Controller
 
 	public function edit($id)
 
-	{
+	{ 
 
 		$data['master_bank'] = $this->mymodel->selectDataone('master_bank', array('id' => $id));
 		$data['page_name'] = "master_bank";

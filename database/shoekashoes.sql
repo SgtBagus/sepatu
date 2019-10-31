@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Waktu pembuatan: 31 Okt 2019 pada 06.38
+-- Waktu pembuatan: 31 Okt 2019 pada 07.30
 -- Versi server: 10.4.8-MariaDB
 -- Versi PHP: 7.3.10
 
@@ -1805,7 +1805,8 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id`, `kode_transaksi`, `id_customer`, `id_kurir`, `biaya_kirim`, `jumlah_bayar`, `sub_total`, `kembalian`, `id_bank`, `id_dropshipper`, `resi_pengiriman`, `tipe`, `status_order`, `tgl_status_order`, `status_pengiriman`, `tgl_status_pengiriman`, `status_pembayaran`, `tgl_status_pembayaran`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(11, 'INVL-SWH0A', 1, 1, '50000', '2000000', '1037500', '1012500', 1, 1, '', 'Preorder', 'Pesanan Baru', '0000-00-00 00:00:00', 'Belum Dikirim', NULL, 'Belum Dibayar', '0000-00-00 00:00:00', 'ENABLE', '2019-10-31 10:09:59', '0000-00-00 00:00:00', 21);
+(11, 'INVL-SWH0A', 1, 1, '50000', '2000000', '1037500', '1012500', 1, 1, '', 'Preorder', 'Pesanan Baru', '0000-00-00 00:00:00', 'Belum Dikirim', NULL, 'Belum Dibayar', '0000-00-00 00:00:00', 'ENABLE', '2019-10-31 10:09:59', '0000-00-00 00:00:00', 21),
+(12, 'INVL-34CX6', 2, 1, '150000', '50000', '1845000', '-1645000', 1, 1, '', 'Preorder', 'Pesanan Baru', '0000-00-00 00:00:00', 'Belum Dikirim', NULL, 'Belum Dibayar', '0000-00-00 00:00:00', 'ENABLE', '2019-10-31 12:49:08', '0000-00-00 00:00:00', 21);
 
 -- --------------------------------------------------------
 
@@ -1837,7 +1838,9 @@ CREATE TABLE `transaksi_produk` (
 
 INSERT INTO `transaksi_produk` (`id`, `kode_transaksi`, `id_produk_preorder`, `qty`, `ukuran`, `warna`, `keterangan`, `harga_satuan`, `biaya_lain`, `diskon`, `harga_total`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
 (43, 'INVL-SWH0A', 2, '1', '', 'merah', 'ini sepatu ku', '475000', '5000', '10', '432500', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21),
-(44, 'INVL-SWH0A', 1, '2', '', 'biru', 'ini sepatu ku', '550000', '5000', '50', '555000', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21);
+(44, 'INVL-SWH0A', 1, '2', '', 'biru', 'ini sepatu ku', '550000', '5000', '50', '555000', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21),
+(45, 'INVL-34CX6', 2, '2', '', 'Merah', 'a', '475000', '5000', '10', '860000', 'ENABLE', '2019-10-31 12:49:08', '2019-10-31 12:49:08', 21),
+(46, 'INVL-34CX6', 1, '3', '', 'Biru', 'B', '550000', '10000', '50', '835000', 'ENABLE', '2019-10-31 12:49:08', '2019-10-31 12:49:08', 21);
 
 -- --------------------------------------------------------
 
@@ -2175,13 +2178,13 @@ ALTER TABLE `suplier`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`

@@ -12,6 +12,12 @@ class Transaksi_preorder extends MY_Controller
 		$this->template->load('template/template', 'master/transaksi_preorder/all-transaksi_preorder', $data);
 	}
 
+	public function Proses()
+	{
+		$data['page_name'] = "Proses}";
+		$this->template->load('template/template', 'master/transaksi_preorder/proses-transaksi_preorder', $data);
+	}
+
 	public function create()
 	{
 		$data['produk'] = $this->mymodel->selectWithQuery("SELECT produk_preorder.*, master_kategori_produk.nama_kategori, file.dir FROM produk_preorder
@@ -116,6 +122,22 @@ class Transaksi_preorder extends MY_Controller
 		} else {
 			$this->datatables->add_column('view', '<div class="btn-group"><button type="button" class="btn btn-sm btn-primary" onclick="inv($1)"><i class="fa fa-print"></i> INVOICE </button><button type="button" onclick="hapus($1)" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i> HAPUS</button></div>', 'id');
 		}
+		echo $this->datatables->generate();
+	}
+
+	public function jsonproses()
+	{
+		header('Content-Type: application/json');
+
+		$this->datatables->select('a.id as id, a.kode_transaksi as kode_transaksi, DATE_FORMAT(a.tgl_status_order, "%d %b %Y") as tgl_status_order, c.nama_customer as id_customer, d.value as id_kurir, a.resi_pengiriman as resi_pengiriman, a.jumlah_bayar as jumlah_bayar, a.sub_total as sub_total, a.kembalian as kembalian, b.value as id_bank, c.nama_customer as id_dropshipper, a.status_order as status_order');
+		$this->datatables->join('customer c',"c.id = a.id_customer", 'left');
+		$this->datatables->join('master_kurir d',"d.id = a.id_kurir", 'left');
+		$this->datatables->join('master_bank b',"b.id = a.id_bank", 'left');
+		$this->datatables->where('a.status', 'ENABLE');
+		$this->datatables->where('a.status_order', 'Diproses');
+		$this->datatables->where('a.tipe', 'Preorder');
+		$this->datatables->from('transaksi a');
+		$this->datatables->add_column('view', '<div class="btn-group"><button type="button" class="btn btn-sm btn-info" onclick="inv($1)"><i class="fa fa-print"></i> INVOICE </button></div>', 'id');
 		echo $this->datatables->generate();
 	}
 

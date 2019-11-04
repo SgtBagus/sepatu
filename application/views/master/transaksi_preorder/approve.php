@@ -1,4 +1,4 @@
-<form method="POST" action="<?= base_url('master/Transaksi_preorder/approveproses') ?>" id="upload-create" enctype="multipart/form-data">
+<form method="POST" action="<?= base_url('master/Transaksi_preorder/approvekirim') ?>" id="upload-create" enctype="multipart/form-data">
   <div class="show_error"></div>
   <div class="form-group">
     <label for="form-value">Pengiriman Kurir</label>

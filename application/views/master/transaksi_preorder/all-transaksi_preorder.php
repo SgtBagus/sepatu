@@ -24,32 +24,32 @@
               </div>
               <div class="col-md-6">
                 <div class="pull-right"> <a href="<?= base_url('master/Transaksi_preorder/create') ?>">
-                  <button type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Transaksi Preorder</button>
-                </a>
-                <a href="<?= base_url('fitur/ekspor/transaksi_preorder') ?>" target="_blank">
-                  <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Transaksi Preorder</button>
-                </a>
-                <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Transaksi Preorder</button>
+                    <button type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Transaksi Preorder</button>
+                  </a>
+                  <a href="<?= base_url('fitur/ekspor/transaksi_preorder') ?>" target="_blank">
+                    <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Transaksi Preorder</button>
+                  </a>
+                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Transaksi Preorder</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="box-body">
-          <div class="show_error"></div>
-          <div class="table-responsive">
-            <div id="load-table"></div>
+          <div class="box-body">
+            <div class="show_error"></div>
+            <div class="table-responsive">
+              <div id="load-table"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </div>
 <div class="modal fade bd-example-modal-sm" tabindex="-1" master_bank="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-form">
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="title-form" ></h5>
+        <h5 class="modal-title" id="title-form"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -59,7 +59,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 <div class="modal fade bd-example-modal-sm" tabindex="-1" transaksi_preorder="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -109,35 +109,36 @@
 <script type="text/javascript">
   function loadtable(status) {
     var table = '<table class="table table-bordered" id="mytable">' +
-    '     <thead>' +
-    '     <tr class="bg-success">' +
-    '       <th style="width:20px">No</th>' +
-    '<th>Kode</th>' +
-    '<th>Customer</th>' +
-    '<th>Kurir</th>' +
-    '<th>Biaya Kirim</th>' +
-    '<th>Subtotal</th>' +
-    '<th>Bank</th>' +
-    '<th>Dropshipper</th>' +
-    '<th>Status Pesanan</th>' +
-    '<th>Tanggal Diproses</th>' +
-    '       <th style="width:150px">Status</th>' +
-    '       <th style="width:150px"></th>' +
-    '     </tr>' +
-    '     </thead>' +
-    '     <tbody>' +
-    '     </tbody>' +
-    ' </table>';
+      '     <thead>' +
+      '     <tr class="bg-success">' +
+      '       <th style="width:20px">No</th>' +
+      '<th>Kode</th>' +
+      '<th>Status Transaksi</th>' +
+      '<th>Customer</th>' +
+      '<th>Kurir</th>' +
+      '<th>Biaya Kirim</th>' +
+      '<th>Subtotal</th>' +
+      '<th>Bank</th>' +
+      '<th>Dropshipper</th>' +
+      '<th>Status Pembayaran</th>' +
+      '<th>Tanggal Diproses</th>' +
+      '       <th style="width:150px">Status</th>' +
+      '       <th style="width:150px"></th>' +
+      '     </tr>' +
+      '     </thead>' +
+      '     <tbody>' +
+      '     </tbody>' +
+      ' </table>';
     $("#load-table").html(table)
     var t = $("#mytable").dataTable({
       initComplete: function() {
         var api = this.api();
         $('#mytable_filter input')
-        .off('.DT').on('keyup.DT', function(e) {
-          if (e.keyCode == 13) {
-            api.search(this.value).draw();
-          }
-        });
+          .off('.DT').on('keyup.DT', function(e) {
+            if (e.keyCode == 13) {
+              api.search(this.value).draw();
+            }
+          });
       },
       oLanguage: {
         sProcessing: "loading..."
@@ -149,103 +150,137 @@
         "type": "POST"
       },
       columns: [{
-        "data": "id",
-        "orderable": false
-      },
-      {
-        "data": "kode_transaksi"
-      },
-      {
-        "data": "id_customer"
-      },
-      {
-        "data": "id_kurir"
-      },
-      {
-        "data": "biaya_kirim"
-      },
-      {
-        "data": "sub_total"
-      },
-      {
-        "data": "id_bank"
-      },
-      {
-        "data": "id_dropshipper"
-      },
-      {
-        "data": "status_order"
-      },
-      {
-        "data": "tgl_status_order"
-      },
-      {
-        "data": "status"
-      },
-      {
-        "data": "view",
-        "orderable": false
-      }
+          "data": "id",
+          "orderable": false
+        },
+        {
+          "data": "kode_transaksi"
+        },
+        {
+          "data": "status_order"
+        },
+        {
+          "data": "id_customer"
+        },
+        {
+          "data": "id_kurir"
+        },
+        {
+          "data": "biaya_kirim"
+        },
+        {
+          "data": "sub_total"
+        },
+        {
+          "data": "id_bank"
+        },
+        {
+          "data": "id_dropshipper"
+        },
+        {
+          "data": "status_pembayaran"
+        },
+        {
+          "data": "tgl_status_pembayaran"
+        },
+        {
+          "data": "status"
+        },
+        {
+          "data": "view",
+          "orderable": false
+        }
       ],
-      order: [[1, 'asc']],
+      order: [
+        [1, 'asc']
+      ],
       columnDefs: [{
-        targets: [4],
+        targets: [2],
         render: function(data, type, row, meta) {
-          var htmls = '<div align="center"><b> Rp '+maskRupiah(row['biaya_kirim'])+'</b></div>';
-          return htmls;
-        }
-      },{
-        targets: [5],
-        render: function(data, type, row, meta) {
-          var htmls = '<div align="center"><b> Rp '+maskRupiah(row['sub_total'])+'</b></div>';
-          return htmls;
-        }
-      }, {
-        targets: [8],
-        render: function(data, type, row, meta) {
-          if (row['status_order'] == 'Pesanan Baru') {
-            var htmls = '<div align="center"><small class="label bg-yellow">'+
-            '<i class="fa fa-warning"> </i> Konfirmasi Preorder</small>'+
-            '<hr>'+
-            '<div class="row" align="center">'+
-            '<div class="col-md-12">'+
-            '<div class="btn-group">'+
-            '<button type="button" class="btn btn-primary" onclick="approve('+row['id']+')"><i class="fa fa-check-circle"></i> </button>'+
-            '<button type="button" class="btn btn-danger" onclick="cancel('+row['id']+')"><i class="fa fa-ban"></i> </button>'+
-            '</div>'+
-            '</div>'+
-            '</div>'+
-            '</div>';
+          if ((row['status_order'] == 'Pesanan Baru')) {
+            var htmls = '<div align="center"><small class="label bg-yellow">' +
+              '<i class="fa fa-warning"> </i> Belum Di Proses </small><br>' +
+              '<hr>' +
+              '<div class="row" align="center">' +
+              '<div class="col-md-12">' +
+              '<div class="btn-group">' +
+              '<button type="button" class="btn btn-primary" onclick="proses(' + row['id'] + ')"><i class="fa fa-check"></i></button>' +
+              '<button type="button" class="btn btn-danger" onclick="cancel(' + row['id'] + ')"><i class="fa fa-ban"></i></button>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
           } else if (row['status_order'] == 'Diproses') {
-            var htmls = '<div align="center"><small class="label bg-blue"><i class="fa fa-check"> </i> Diproses </small></div>';
+            var htmls = '<div align="center"><small class="label bg-blue"><i class="fa fa-check"> </i> Di Proses </small></div>';
           } else if (row['status_order'] == 'Selesai') {
-            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check-circle"> </i> Selesai </small></div>';
-          } else {
+            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check"> </i> Selesai </small></div>';
+          } else if (row['status_order'] == 'Cancel') {
             var htmls = '<div align="center"><small class="label bg-red"><i class="fa fa-ban"> </i> Cancel </small></div>';
           }
           return htmls;
         }
-      },{
+      }, {
+        targets: [5],
+        render: function(data, type, row, meta) {
+          var htmls = '<div align="center"><b> Rp ' + maskRupiah(row['biaya_kirim']) + '</b></div>';
+          return htmls;
+        }
+      }, {
+        targets: [6],
+        render: function(data, type, row, meta) {
+          var htmls = '<div align="center"><b> Rp ' + maskRupiah(row['sub_total']) + '</b></div>';
+          return htmls;
+        }
+      }, {
         targets: [9],
         render: function(data, type, row, meta) {
-          if (!row['tgl_status_order']) {
-            var htmls = '<p class="help-block">Belum Tersedia</p>';
-          } else {
-            var htmls = row['tgl_status_order'];
+          if ((row['status_pembayaran'] == 'Belum Dibayar') || (row['status_pembayaran'] == 'Belum Lunas')) {
+            var kurang = "";
+            if (row['kembalian'] < 0) {
+              kurang = "Kurang : Rp " + maskRupiah(row['kembalian'] * -1);
+            } else {
+              kurang = "Kembalian : Rp " + maskRupiah(row['kembalian'] * -1);
+            }
+
+            var htmls = '<div align="center"><small class="label bg-yellow">' +
+              '<i class="fa fa-warning"> </i> Pembayaran Belum Lunas </small><br>' +
+              kurang +
+              '<hr>' +
+              '<div class="row" align="center">' +
+              '<div class="col-md-12">' +
+              '<div class="btn-group">' +
+              '<button type="button" class="btn btn-primary" onclick="lunas(' + row['id'] + ')"><i class="fa fa-check-circle"></i> Lunas</button>' +
+              '<button type="button" class="btn btn-warning" onclick="cicil(' + row['id'] + ')"><i class="fa fa-money"></i> Cicil</button>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+          } else if (row['status_pembayaran'] == 'Lunas') {
+            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check"> </i> Pembayaran Lunas </small></div>';
           }
           return htmls;
         }
-      },{
+      }, {
         targets: [10],
+        render: function(data, type, row, meta) {
+          if (!row['tgl_status_pembayaran']) {
+            var htmls = '<p class="help-block">Belum Tersedia</p>';
+          } else {
+            var htmls = row['tgl_status_pembayaran'];
+          }
+          return htmls;
+        }
+      }, {
+        targets: [11],
         render: function(data, type, row, meta) {
           if (row['status'] == 'ENABLE') {
             var htmls = '<a href="<?= base_url('master/Transaksi_preorder/status/') ?>' + row['id'] + '/DISABLE">' +
-            '    <button type="button" class="btn btn-sm btn-sm btn-success"><i class="fa fa-home"></i> ENABLE</button>' +
-            '</a>';
+              '    <button type="button" class="btn btn-sm btn-sm btn-success"><i class="fa fa-home"></i> ENABLE</button>' +
+              '</a>';
           } else {
             var htmls = '<a href="<?= base_url('master/Transaksi_preorder/status/') ?>' + row['id'] + '/ENABLE">' +
-            '   <button type="button" class="btn btn-sm btn-sm btn-danger"><i class="fa fa-home"></i> DISABLE</button>' +
-            '</a>';
+              '   <button type="button" class="btn btn-sm btn-sm btn-danger"><i class="fa fa-home"></i> DISABLE</button>' +
+              '</a>';
           }
           return htmls;
         }
@@ -259,61 +294,69 @@
         $('td:eq(0)', row).html(index);
       }
     });
-}
-loadtable($("#select-status").val());
+  }
+  loadtable($("#select-status").val());
 
-function cancel(id) {
-  location.href = "<?= base_url('master/Transaksi_preorder/cancel/') ?>" + id;
-}
+  function inv(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
+  }
 
-function inv(id) {
-  location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
-}
+  function hapus(id) {
+    $("#modal-delete").modal('show');
+    $("#delete-input").val(id);
+  }
 
-function hapus(id) {
-  $("#modal-delete").modal('show');
-  $("#delete-input").val(id);
-}
+  function cicil(id) {
+    $("#load-form").html('loading...');
+    $("#modal-form").modal();
+    $("#title-form").html('Lunasi Pembayaran');
+    $("#load-form").load("<?= base_url('master/transaksi_preorder/cicil/') ?>" + id);
+  }
 
-function approve(id) {
-  $("#load-form").html('loading...');
-  $("#modal-form").modal();
-  $("#title-form").html('Status Pemesanan');
-  $("#load-form").load("<?= base_url('master/transaksi_preorder/approve/') ?>"+id);
-}
+  function lunas(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/lunas/') ?>" + id;
+  }
+  
+  function proses(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/actionproses/') ?>" + id;
+  }
+  
+  function cancel(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/actioncancel/') ?>" + id;
+  }
 
-$("#upload-delete").submit(function() {
-  event.preventDefault();
-  var form = $(this);
-  var mydata = new FormData(this);
-  $.ajax({
-    type: "POST",
-    url: form.attr("action"),
-    data: mydata,
-    cache: false,
-    contentType: false,
-    processData: false,
-    beforeSend: function() {
-      $(".btn-send").addClass("disabled").html("<i class='la la-spinner la-spin'></i>  Processing...").attr('disabled', true);
-      $(".show_error").slideUp().html("");
-    },
+  $("#upload-delete").submit(function() {
+    event.preventDefault();
+    var form = $(this);
+    var mydata = new FormData(this);
+    $.ajax({
+      type: "POST",
+      url: form.attr("action"),
+      data: mydata,
+      cache: false,
+      contentType: false,
+      processData: false,
+      beforeSend: function() {
+        $(".btn-send").addClass("disabled").html("<i class='la la-spinner la-spin'></i>  Processing...").attr('disabled', true);
+        $(".show_error").slideUp().html("");
+      },
 
-    success: function(response, textStatus, xhr) {
-      var str = response;
-      if (str.indexOf("success") != -1) {
-        $(".show_error").hide().html(response).slideDown("fast");
-        $(".btn-send").removeClass("disabled").html('Yes, Delete it').attr('disabled', false);
-      } else {
-        setTimeout(function() {
-          $("#modal-delete").modal('hide');
-        }, 1000);
-        $(".show_error").hide().html(response).slideDown("fast");
-        $(".btn-send").removeClass("disabled").html('Yes , Delete it').attr('disabled', false);
-        loadtable($("#select-status").val());
-      }
-    },
-    error: function(xhr, textStatus, errorThrown) {}
+      success: function(response, textStatus, xhr) {
+        var str = response;
+        if (str.indexOf("success") != -1) {
+          $(".show_error").hide().html(response).slideDown("fast");
+          $(".btn-send").removeClass("disabled").html('Yes, Delete it').attr('disabled', false);
+        } else {
+          setTimeout(function() {
+            $("#modal-delete").modal('hide');
+          }, 1000);
+          $(".show_error").hide().html(response).slideDown("fast");
+          $(".btn-send").removeClass("disabled").html('Yes , Delete it').attr('disabled', false);
+          loadtable($("#select-status").val());
+        }
+      },
+      error: function(xhr, textStatus, errorThrown) {}
+    });
+    return false;
   });
-  return false;
-});
 </script>

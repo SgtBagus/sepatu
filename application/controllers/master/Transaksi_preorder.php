@@ -85,14 +85,12 @@ class Transaksi_preorder extends MY_Controller
 			$dt = $_POST['dt'];
 			$dt['kode_transaksi'] = $res;
 			$dt['sub_total'] = strval($harga_subtotal + $_POST['dt']['biaya_kirim']);
-			$dt['kembalian'] = strval($_POST['dt']['jumlah_bayar'] - $harga_subtotal);
+			$dt['kembalian'] = strval($_POST['dt']['jumlah_bayar'] - ($harga_subtotal + $_POST['dt']['biaya_kirim']));
 			$dt['resi_pengiriman'] = '';
 			$dt['tipe'] = 'Preorder';
 			$dt['status_order'] = 'Pesanan Baru';
 			$dt['status_pengiriman'] = 'Belum Dikirim';
-			$dt['tgl_status_order'] = '';
 			$dt['status_pembayaran'] = 'Belum Dibayar';
-			$dt['tgl_status_pembayaran'] = '';
 			$dt['created_by'] = $idUser;
 			$dt['status'] = "ENABLE";
 			$dt['created_at'] = date('Y-m-d H:i:s');
@@ -110,7 +108,7 @@ class Transaksi_preorder extends MY_Controller
 		}
 		header('Content-Type: application/json');
 
-		$this->datatables->select('a.id as id, a.kode_transaksi as kode_transaksi, c.nama_customer as id_customer, d.value as id_kurir, a.biaya_kirim as biaya_kirim, a.jumlah_bayar as jumlah_bayar, a.sub_total as sub_total, a.kembalian as kembalian, b.value as id_bank, c.nama_customer as id_dropshipper, a.status_order as status_order, DATE_FORMAT(a.created_at, "%d %b %Y") as created_at, a.status as status');
+		$this->datatables->select('a.id as id, a.kode_transaksi as kode_transaksi, c.nama_customer as id_customer, d.value as id_kurir, a.biaya_kirim as biaya_kirim, a.jumlah_bayar as jumlah_bayar, a.sub_total as sub_total, a.kembalian as kembalian, b.value as id_bank, c.nama_customer as id_dropshipper, a.status_order as status_order, DATE_FORMAT(a.created_at, "%d %b %Y") as created_at, a.status as status, DATE_FORMAT(a.tgl_status_order, "%d %b %Y") as tgl_status_order');
 		$this->datatables->join('customer c',"c.id = a.id_customer", 'left');
 		$this->datatables->join('master_kurir d',"d.id = a.id_kurir", 'left');
 		$this->datatables->join('master_bank b',"b.id = a.id_bank", 'left');
@@ -129,7 +127,7 @@ class Transaksi_preorder extends MY_Controller
 	{
 		header('Content-Type: application/json');
 
-		$this->datatables->select('a.id as id, a.kode_transaksi as kode_transaksi, DATE_FORMAT(a.tgl_status_order, "%d %b %Y") as tgl_status_order, c.nama_customer as id_customer, d.value as id_kurir, a.resi_pengiriman as resi_pengiriman, a.jumlah_bayar as jumlah_bayar, a.sub_total as sub_total, a.kembalian as kembalian, b.value as id_bank, c.nama_customer as id_dropshipper, a.status_order as status_order');
+		$this->datatables->select('a.id as id, a.kode_transaksi as kode_transaksi, DATE_FORMAT(a.tgl_status_order, "%d %b %Y") as tgl_status_order, c.nama_customer as id_customer, a.biaya_kirim as biaya_kirim, d.value as id_kurir, a.resi_pengiriman as resi_pengiriman, a.jumlah_bayar as jumlah_bayar, a.sub_total as sub_total, a.kembalian as kembalian, b.value as id_bank, c.nama_customer as id_dropshipper, a.status_order as status_order, a.status_pengiriman as status_pengiriman, DATE_FORMAT(a.tgl_status_pengiriman, "%d %b %Y") as tgl_status_pengiriman, a.status_pembayaran as status_pembayaran, DATE_FORMAT(a.tgl_status_pembayaran, "%d %b %Y") as tgl_status_pembayaran');
 		$this->datatables->join('customer c',"c.id = a.id_customer", 'left');
 		$this->datatables->join('master_kurir d',"d.id = a.id_kurir", 'left');
 		$this->datatables->join('master_bank b',"b.id = a.id_bank", 'left');
@@ -160,13 +158,19 @@ class Transaksi_preorder extends MY_Controller
 		$data['page_name'] = "Pesanan";
 		$this->template->load('template/template', 'master/transaksi_preorder/inv', $data);
 	}
-
-
+	
 	public function approve($id)
 	{
 		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));
 		$data['page_name'] = "Pesanan";
 		$this->load->view('master/transaksi_preorder/approve', $data);
+	}
+
+	public function cicil($id)
+	{
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));
+		$data['page_name'] = "Pesanan";
+		$this->load->view('master/transaksi_preorder/cicil', $data);
 	}
 
 	public function validateapprove()
@@ -194,6 +198,31 @@ class Transaksi_preorder extends MY_Controller
 		}
 	}
 
+	public function validatelunasproses()
+	{
+		$this->form_validation->set_error_delimiters('<li>', '</li>');
+		$this->form_validation->set_rules('dt[jumlah_bayar]', '<strong>Pengiriman Kurir</strong>', 'required');
+		$this->form_validation->set_rules('dt[resi_pengiriman]', '<strong>No Resi</strong>', 'required');
+	}
+
+	public function lunasproses()
+	{	
+		$idUser = $this->session->userdata('id');
+		$this->form_validation->set_error_delimiters('<li>', '</li>');
+		$this->validatelunasproses();
+		if ($this->form_validation->run() == FALSE) {
+			$this->alert->alertdanger(validation_errors());
+		} else {
+			$dt['id_kurir'] = $_POST['dt']['id_kurir'];
+			$dt['resi_pengiriman'] = $_POST['dt']['resi_pengiriman'];
+			$dt['status_order'] = 'Diproses';
+			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
+			$dt['updated_at'] = date('Y-m-d H:i:s');
+			$this->mymodel->updateData('transaksi', $dt , array('id'=>$_POST['dt']['id']));
+			$this->alert->alertsuccess('Success Send Data');
+		}
+	}
+
 	public function cancel($id)
 	{	
 		$dt['status_order'] = 'CANCEL';
@@ -204,5 +233,3 @@ class Transaksi_preorder extends MY_Controller
 		redirect(base_url('master/Transaksi_preorder'));
 	}
 }
-
-?>

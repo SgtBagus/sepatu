@@ -113,7 +113,6 @@
     '     <tr class="bg-success">' +
     '       <th style="width:20px">No</th>' +
     '<th>Kode</th>' +
-    '<th>Tanggal Preorder</th>' +
     '<th>Customer</th>' +
     '<th>Kurir</th>' +
     '<th>Biaya Kirim</th>' +
@@ -121,6 +120,7 @@
     '<th>Bank</th>' +
     '<th>Dropshipper</th>' +
     '<th>Status Pesanan</th>' +
+    '<th>Tanggal Diproses</th>' +
     '       <th style="width:150px">Status</th>' +
     '       <th style="width:150px"></th>' +
     '     </tr>' +
@@ -156,9 +156,6 @@
         "data": "kode_transaksi"
       },
       {
-        "data": "created_at"
-      },
-      {
         "data": "id_customer"
       },
       {
@@ -180,6 +177,9 @@
         "data": "status_order"
       },
       {
+        "data": "tgl_status_order"
+      },
+      {
         "data": "status"
       },
       {
@@ -189,28 +189,30 @@
       ],
       order: [[1, 'asc']],
       columnDefs: [{
-        targets: [5],
+        targets: [4],
         render: function(data, type, row, meta) {
           var htmls = '<div align="center"><b> Rp '+maskRupiah(row['biaya_kirim'])+'</b></div>';
           return htmls;
         }
       },{
-        targets: [6],
+        targets: [5],
         render: function(data, type, row, meta) {
           var htmls = '<div align="center"><b> Rp '+maskRupiah(row['sub_total'])+'</b></div>';
           return htmls;
         }
       }, {
-        targets: [9],
+        targets: [8],
         render: function(data, type, row, meta) {
           if (row['status_order'] == 'Pesanan Baru') {
             var htmls = '<div align="center"><small class="label bg-yellow">'+
-            '<i class="fa fa-warning"> </i> Pembayaran Belum Lunas </small>'+
+            '<i class="fa fa-warning"> </i> Konfirmasi Preorder</small>'+
             '<hr>'+
             '<div class="row" align="center">'+
             '<div class="col-md-12">'+
-            '<button type="button" class="btn btn-send btn-approve btn-sm btn-sm btn-primary" onclick="approve('+row['id']+')"><i class="fa fa-check-circle"></i> Proses </button>'+
-            '<button type="button" class="btn btn-send btn-reject btn-sm btn-sm btn-danger" onclick="cancel('+row['id']+')"><i class="fa fa-ban"></i>Tidak Proses</button>'+
+            '<div class="btn-group">'+
+            '<button type="button" class="btn btn-primary" onclick="approve('+row['id']+')"><i class="fa fa-check-circle"></i> </button>'+
+            '<button type="button" class="btn btn-danger" onclick="cancel('+row['id']+')"><i class="fa fa-ban"></i> </button>'+
+            '</div>'+
             '</div>'+
             '</div>'+
             '</div>';
@@ -220,6 +222,16 @@
             var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check-circle"> </i> Selesai </small></div>';
           } else {
             var htmls = '<div align="center"><small class="label bg-red"><i class="fa fa-ban"> </i> Cancel </small></div>';
+          }
+          return htmls;
+        }
+      },{
+        targets: [9],
+        render: function(data, type, row, meta) {
+          if (!row['tgl_status_order']) {
+            var htmls = '<p class="help-block">Belum Tersedia</p>';
+          } else {
+            var htmls = row['tgl_status_order'];
           }
           return htmls;
         }

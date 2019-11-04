@@ -39,53 +39,7 @@
       </div>
     </div>
   </div>
-</div> 
-<div class="modal fade bd-example-modal-sm" tabindex="-1" transaksi_preorder="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <form id="upload-delete" action="<?= base_url('master/Transaksi_preorder/delete') ?>">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirm delete</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="id" id="delete-input">
-          <p>Are you sure to delete this data?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger btn-send">Yes, Delete</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
 </div>
-
-<div class="modal fade" id="modal-impor">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Impor Transaksi Preorder</h4>
-      </div>
-      <form action="<?= base_url('fitur/impor/transaksi_preorder') ?>" method="POST" enctype="multipart/form-data">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="">File Excel</label>
-            <input type="file" class="form-control" id="" name="file" placeholder="Input field">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
 <script type="text/javascript">
   function loadtable(status) {
     var table = '<table class="table table-bordered" id="mytable">' +
@@ -97,8 +51,13 @@
     '<th>Customer</th>' +
     '<th>Kurir</th>' +
     '<th>Nomor Resi</th>' +
+    '<th>Biaya Kirim</th>' +
     '<th>Subtotal</th>' +
-    '<th>Status Pesanan</th>' +
+    '<th>Total Bayar</th>' +
+    '<th>Status Pembayaran</th>' +
+    '<th>Tanggal Pembayaran</th>' +
+    '<th>Status Pengiriman</th>' +
+    '<th>Tanggal Pengiriman</th>' +
     '       <th style="width:150px"></th>' +
     '     </tr>' +
     '     </thead>' +
@@ -145,10 +104,25 @@
         "data": "resi_pengiriman"
       },
       {
+        "data": "biaya_kirim"
+      },
+      {
         "data": "sub_total"
       },
       {
-        "data": "status_order"
+        "data": "jumlah_bayar"
+      },
+      {
+        "data": "status_pembayaran"
+      },
+      {
+        "data": "tgl_status_pembayaran"
+      },
+      {
+        "data": "status_pengiriman"
+      },
+      {
+        "data": "tgl_status_pengiriman"
       },
       {
         "data": "view",
@@ -162,32 +136,91 @@
           var htmls = '<div align="center"><b>'+row['resi_pengiriman']+'</div>';
           return htmls;
         }
-      },{
+      }, {
         targets: [6],
         render: function(data, type, row, meta) {
-          var htmls = '<div align="center"><b> Rp '+maskRupiah(row['sub_total'])+'</b></div>';
+          var htmls = '<div align="center"><b> Rp '+maskRupiah(row['biaya_kirim'])+'</b></div>';
           return htmls;
         }
       }, {
         targets: [7],
         render: function(data, type, row, meta) {
-          if (row['status_order'] == 'Pesanan Baru') {
+          var htmls = '<div align="center"><b> Rp '+maskRupiah(row['sub_total'])+'</b></div>';
+          return htmls;
+        }
+      }, {
+        targets: [8],
+        render: function(data, type, row, meta) {
+          var htmls = '<div align="center"><b> Rp '+maskRupiah(row['jumlah_bayar'])+'</b></div>';
+          return htmls;
+        }
+      }, {
+        targets: [9],
+        render: function(data, type, row, meta) {
+          if (row['status_pembayaran'] == 'Belum Dibayar') {
+            
+            var kurang = ""
+            if(row['kembalian'] < 0){
+              kurang = "Kurang : Rp " + maskRupiah(row['kembalian']*-1);
+            }else{
+              kurang = "Kurang : Rp 0";
+            }
+
             var htmls = '<div align="center"><small class="label bg-yellow">'+
-            '<i class="fa fa-warning"> </i> Pembayaran Belum Lunas </small>'+
+            '<i class="fa fa-warning"> </i> Pembayaran Belum Lunas </small><br>'+
+            kurang +
             '<hr>'+
             '<div class="row" align="center">'+
             '<div class="col-md-12">'+
-            '<button type="button" class="btn btn-send btn-approve btn-sm btn-sm btn-primary" onclick="approve('+row['id']+')"><i class="fa fa-check-circle"></i> Proses </button>'+
-            '<button type="button" class="btn btn-send btn-reject btn-sm btn-sm btn-danger" onclick="cancel('+row['id']+')"><i class="fa fa-ban"></i>Tidak Proses</button>'+
+            '<div class="btn-group">'+
+            '<button type="button" class="btn btn-primary" onclick="lunas('+row['id']+')"><i class="fa fa-check-circle"></i> Lunas</button>'+
+            '<button type="button" class="btn btn-warning" onclick="cicil('+row['id']+')"><i class="fa fa-money"></i> Cicil</button>'+
+            '</div>'+
             '</div>'+
             '</div>'+
             '</div>';
-          } else if (row['status_order'] == 'Diproses') {
-            var htmls = '<div align="center"><small class="label bg-blue"><i class="fa fa-check"> </i> Diproses </small></div>';
-          } else if (row['status_order'] == 'Selesai') {
-            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check-circle"> </i> Selesai </small></div>';
+          } else if (row['status_order'] == 'Lunas') {
+            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check"> </i> Pembayaran Lunas </small></div>';
+          } 
+          return htmls;
+        }
+      }, {
+        targets: [10],
+        render: function(data, type, row, meta) {
+          if (!row['tgl_status_pembayaran']) {
+            var htmls = '<p class="help-block">Belum Tersedia</p>';
           } else {
-            var htmls = '<div align="center"><small class="label bg-red"><i class="fa fa-ban"> </i> Cancel </small></div>';
+            var htmls = row['tgl_status_pembayaran'];
+          }
+          return htmls;
+        }
+      }, {
+        targets: [11],
+        render: function(data, type, row, meta) {
+          if (row['status_pengiriman'] == 'Belum Dikirim') {
+            var htmls = '<div align="center"><small class="label bg-yellow">'+
+            '<i class="fa fa-warning"> </i> Belum Di Kirim </small>'+
+            '<hr>'+
+            '<div class="row" align="center">'+
+            '<div class="col-md-12">'+
+            '<div class="btn-group">'+
+            '<button type="button" class="btn btn-primary" onclick="kirim('+row['id']+')"><i class="fa fa-check-circle"></i> Kirim</button>'+
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+          } else if (row['status_order'] == 'Sudah Di Kirim') {
+            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check"> </i> Sudah Di Kirim </small></div>';
+          } 
+          return htmls;
+        }
+      },{
+        targets: [12],
+        render: function(data, type, row, meta) {
+          if (!row['tgl_status_pengiriman']) {
+            var htmls = '<p class="help-block">Belum Tersedia</p>';
+          } else {
+            var htmls = row['tgl_status_pengiriman'];
           }
           return htmls;
         }
@@ -204,58 +237,22 @@
   }
   loadtable($("#select-status").val());
 
-  function cancel(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/cancel/') ?>" + id;
+  function cicil(id) {
+    $("#load-form").html('loading...');
+    $("#modal-form").modal();
+    $("#title-form").html('Lunasi Pembayaran');
+    $("#load-form").load("<?= base_url('master/transaksi_preorder/cicil/') ?>"+id);
+  }
+  
+  function lunas(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/lunas/') ?>" + id;
+  }
+
+  function kirim(id) {
+    location.href = "<?= base_url('master/Transaksi_preorder/kirim/') ?>" + id;
   }
 
   function inv(id) {
     location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
   }
-
-  function hapus(id) {
-    $("#modal-delete").modal('show');
-    $("#delete-input").val(id);
-  }
-
-  function approve(id) {
-    $("#load-form").html('loading...');
-    $("#modal-form").modal();
-    $("#title-form").html('Status Pemesanan');
-    $("#load-form").load("<?= base_url('master/transaksi_preorder/approve/') ?>"+id);
-  }
-
-  $("#upload-delete").submit(function() {
-    event.preventDefault();
-    var form = $(this);
-    var mydata = new FormData(this);
-    $.ajax({
-      type: "POST",
-      url: form.attr("action"),
-      data: mydata,
-      cache: false,
-      contentType: false,
-      processData: false,
-      beforeSend: function() {
-        $(".btn-send").addClass("disabled").html("<i class='la la-spinner la-spin'></i>  Processing...").attr('disabled', true);
-        $(".show_error").slideUp().html("");
-      },
-
-      success: function(response, textStatus, xhr) {
-        var str = response;
-        if (str.indexOf("success") != -1) {
-          $(".show_error").hide().html(response).slideDown("fast");
-          $(".btn-send").removeClass("disabled").html('Yes, Delete it').attr('disabled', false);
-        } else {
-          setTimeout(function() {
-            $("#modal-delete").modal('hide');
-          }, 1000);
-          $(".show_error").hide().html(response).slideDown("fast");
-          $(".btn-send").removeClass("disabled").html('Yes , Delete it').attr('disabled', false);
-          loadtable($("#select-status").val());
-        }
-      },
-      error: function(xhr, textStatus, errorThrown) {}
-    });
-    return false;
-  });
 </script>

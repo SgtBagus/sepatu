@@ -23,7 +23,7 @@
             </div>
             <div class="box-body chart-responsive">
               <div class="col col-md-11">
-                <select class="form-control select2" name="dt[id_customer]">
+                <select class="form-control select2" name="dt[id_customer]" style="width: 100%">
                   <option value="">--Pilih Customer--</option>
                   <?php
                   $customer = $this->mymodel->selectData("customer");
@@ -34,7 +34,11 @@
                 </select>
               </div>
               <div class="col col-md-1">
-                <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></button>
+                <a href="<?= base_url('master/Customer/create')?>" target="_blank">
+                  <button type="button" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </a>
               </div>
             </div>
           </div>
@@ -112,12 +116,12 @@
                       <div class="row">
                         <div class="col-md-12  padding-0" style="margin-bottom: 5px;">
                           <div class="btn btn-success btn-xs">{{item.price *
-                                                item.qty |
-                                                currency:"RP ":0}}</div>
+                            item.qty |
+                          currency:"RP ":0}}</div>
                         </div>
                         <div class="col-md-12  padding-0">
                           <div class="btn btn-info btn-xs">{{item.price |
-                                                currency:"RP ":0}}</div>
+                          currency:"RP ":0}}</div>
                         </div>
                       </div>
                     </div>
@@ -173,7 +177,7 @@
                 <div class="col col-md-6">
                   <div class="form-group">
                     <p>Metode Pembayaran</p>
-                    <select class="form-control select2" name="dt[id_bank]">
+                    <select class="form-control select2" name="dt[id_bank]" style="width: 100%">
                       <option value="">--Pilih Bank--</option>
                       <?php
                       $master_bank = $this->mymodel->selectData("master_bank");
@@ -187,7 +191,7 @@
                 <div class="col col-md-6">
                   <div class="form-group">
                     <p>Kurir Pengiriman</p>
-                    <select class="form-control select2" name="dt[id_kurir]">
+                    <select class="form-control select2" name="dt[id_kurir]" style="width: 100%">
                       <option value="">--Pilih Kurir--</option>
                       <?php
                       $master_kurir = $this->mymodel->selectData("master_kurir");
@@ -207,7 +211,7 @@
                 <div class="col col-md-6">
                   <div class="form-group">
                     <p>Dropshipper</p>
-                    <select class="form-control select2" name="dt[id_dropshipper]">
+                    <select class="form-control select2" name="dt[id_dropshipper]" style="width: 100%">
                       <option value="">--Pilih Dropshipper--</option>
                       <?php
                       $customer = $this->mymodel->selectData("customer");
@@ -278,84 +282,84 @@
   var app = angular.module('myApp', []);
   app.controller('PosController', function($scope) {
     $scope.drinks = [
-      <?php foreach ($produk as $d) { ?> {
-          id: "<?= trim($d['id']) ?>",
-          name: "<?= trim($d['nama_produk']) ?>",
-          kategori: "<?= trim($d['nama_kategori']) ?>",
-          price: "<?= trim($d['harga_jual']) ?>",
-          priceb: "<?= trim($d['harga_produksi']) ?>",
-          image: "<?= trim($d['dir']) ?>",
-        },
-      <?php } ?>
-    ];
-    $scope.order = [];
-    $scope.new = {};
-    $scope.totOrders = 0;
-    var url = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
-    $scope.getDate = function() {
-      var today = new Date();
-      var mm = today.getMonth() + 1;
-      var dd = today.getDate();
-      var yyyy = today.getFullYear();
-      var date = dd + "/" + mm + "/" + yyyy
-      return date
-    };
-    $scope.addToOrder = function(item, qty) {
-      var flag = 0;
-      if ($scope.order.length > 0) {
-        for (var i = 0; i < $scope.order.length; i++) {
-          if (item.id === $scope.order[i].id) {
-            item.qty += qty;
-            flag = 1;
-            break;
-          }
+    <?php foreach ($produk as $d) { ?> {
+      id: "<?= trim($d['id']) ?>",
+      name: "<?= trim($d['nama_produk']) ?>",
+      kategori: "<?= trim($d['nama_kategori']) ?>",
+      price: "<?= trim($d['harga_jual']) ?>",
+      priceb: "<?= trim($d['harga_produksi']) ?>",
+      image: "<?= trim($d['dir']) ?>",
+    },
+  <?php } ?>
+  ];
+  $scope.order = [];
+  $scope.new = {};
+  $scope.totOrders = 0;
+  var url = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
+  $scope.getDate = function() {
+    var today = new Date();
+    var mm = today.getMonth() + 1;
+    var dd = today.getDate();
+    var yyyy = today.getFullYear();
+    var date = dd + "/" + mm + "/" + yyyy
+    return date
+  };
+  $scope.addToOrder = function(item, qty) {
+    var flag = 0;
+    if ($scope.order.length > 0) {
+      for (var i = 0; i < $scope.order.length; i++) {
+        if (item.id === $scope.order[i].id) {
+          item.qty += qty;
+          flag = 1;
+          break;
         }
-        if (flag === 0) {
-          item.qty = 1;
-        }
-        if (item.qty < 2) {
-          $scope.order.push(item);
-        }
-      } else {
-        item.qty = qty;
+      }
+      if (flag === 0) {
+        item.qty = 1;
+      }
+      if (item.qty < 2) {
         $scope.order.push(item);
       }
-    };
-    $scope.removeOneEntity = function(item) {
-      for (var i = 0; i < $scope.order.length; i++) {
-        if (item.id === $scope.order[i].id) {
-          item.qty -= 1;
-          if (item.qty === 0) {
-            $scope.order.splice(i, 1);
-          }
-        }
-      }
-    };
-    $scope.removeItem = function(item) {
-      for (var i = 0; i < $scope.order.length; i++) {
-        if (item.id === $scope.order[i].id) {
+    } else {
+      item.qty = qty;
+      $scope.order.push(item);
+    }
+  };
+  $scope.removeOneEntity = function(item) {
+    for (var i = 0; i < $scope.order.length; i++) {
+      if (item.id === $scope.order[i].id) {
+        item.qty -= 1;
+        if (item.qty === 0) {
           $scope.order.splice(i, 1);
         }
       }
-    };
-    $scope.getTotal = function() {
-      returnCalculte();
-      var tot = 0;
-      for (var i = 0; i < $scope.order.length; i++) {
-        tot += ($scope.order[i].price * $scope.order[i].qty)
+    }
+  };
+  $scope.removeItem = function(item) {
+    for (var i = 0; i < $scope.order.length; i++) {
+      if (item.id === $scope.order[i].id) {
+        $scope.order.splice(i, 1);
       }
-      return tot;
-    };
-    $scope.clearOrder = function() {
-      $scope.order = [];
-    };
-    $scope.checkout = function(index) {
-      alert($scope.getDate() + " - Order Number: " + ($scope.totOrders + 1) + "\n\nOrder amount: $" +
-        $scope.getTotal().toFixed(2) + "\n\nPayment received. Thanks.");
-      $scope.order = [];
-      $scope.totOrders += 1;
-    };
-  });
+    }
+  };
+  $scope.getTotal = function() {
+    returnCalculte();
+    var tot = 0;
+    for (var i = 0; i < $scope.order.length; i++) {
+      tot += ($scope.order[i].price * $scope.order[i].qty)
+    }
+    return tot;
+  };
+  $scope.clearOrder = function() {
+    $scope.order = [];
+  };
+  $scope.checkout = function(index) {
+    alert($scope.getDate() + " - Order Number: " + ($scope.totOrders + 1) + "\n\nOrder amount: $" +
+      $scope.getTotal().toFixed(2) + "\n\nPayment received. Thanks.");
+    $scope.order = [];
+    $scope.totOrders += 1;
+  };
+});
   $(document).ready(function() {
     $('#tableData').DataTable();
   });
@@ -382,7 +386,7 @@
   });
   $("#filter").keyup(function() {
     var filter = $(this).val(),
-      count = 0;
+    count = 0;
     $('#results div').each(function() {
       if ($(this).text().search(new RegExp(filter, "i")) < 0) {
         $(this).hide();

@@ -69,14 +69,14 @@
       </a>
 
 
-                  <a href="<?= base_url('fitur/ekspor/master_bahanbaku') ?>" target="_blank">
+                  <!-- <a href="<?= base_url('fitur/ekspor/master_bahanbaku') ?>" target="_blank">
 
                     <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Master Bahanbaku</button> 
 
                   </a>
 
                   <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Master Bahanbaku</button>
-
+ -->
                   </div>
 
                 </div>  

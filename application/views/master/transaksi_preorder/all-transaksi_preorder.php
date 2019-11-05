@@ -26,10 +26,10 @@
                 <div class="pull-right"> <a href="<?= base_url('master/Transaksi_preorder/create') ?>">
                     <button type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Transaksi Preorder</button>
                   </a>
-                  <a href="<?= base_url('fitur/ekspor/transaksi_preorder') ?>" target="_blank">
+                  <!-- <a href="<?= base_url('fitur/ekspor/transaksi_preorder') ?>" target="_blank">
                     <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Transaksi Preorder</button>
                   </a>
-                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Transaksi Preorder</button>
+                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Transaksi Preorder</button> -->
                 </div>
               </div>
             </div>

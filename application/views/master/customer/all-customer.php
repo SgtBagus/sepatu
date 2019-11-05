@@ -69,13 +69,13 @@
                   </a>
 
 
-                  <a href="<?= base_url('fitur/ekspor/customer') ?>" target="_blank">
+                 <!--  <a href="<?= base_url('fitur/ekspor/customer') ?>" target="_blank">
 
                     <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Customer</button> 
 
                   </a>
 
-                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Customer</button>
+                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Customer</button> -->
 
                   </div>
 

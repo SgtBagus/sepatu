@@ -64,7 +64,7 @@
 
                       <label for="form-id_suplier">Id Suplier</label>
 
-                      <select name="dt[id_suplier]" class="form-control select2">
+                      <select name="dt[id_suplier]" class="form-control select2" style="width: 100%">
 
                         <?php 
 
@@ -94,7 +94,7 @@
 
                       <label for="form-id_kategori">Id Kategori</label>
 
-                      <select name="dt[id_kategori]" class="form-control select2">
+                      <select name="dt[id_kategori]" class="form-control select2" style="width: 100%">
 
                         <?php 
 
@@ -124,7 +124,7 @@
 
                       <label for="form-id_bahanbaku">Id Bahanbaku</label>
 
-                      <select name="dt[id_bahanbaku]" class="form-control select2">
+                      <select name="dt[id_bahanbaku]" class="form-control select2" style="width: 100%">
 
                         <?php 
 
@@ -172,7 +172,7 @@
 
                       <label for="form-ukuran_produk">Ukuran Produk</label>
 
-                      <select name="dt[ukuran_produk]" class="form-control select2">
+                      <select name="dt[ukuran_produk]" class="form-control select2" style="width: 100%">
 
                         <?php 
 

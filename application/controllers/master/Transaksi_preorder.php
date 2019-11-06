@@ -181,6 +181,14 @@ class Transaksi_preorder extends MY_Controller
 	public function inv($id)
 	{
 		$data['page_name'] = "Pesanan";
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('id' => $id));
+		$data['customer'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_customer']));
+		$data['kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['customer']['id_kelurahan']));
+		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
+		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
+		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
+		$data['transaksi_produk'] = $this->mymodel->selectWhere('transaksi_produk',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
+		
 		$this->template->load('template/template', 'master/transaksi_preorder/inv', $data);
 	}
 

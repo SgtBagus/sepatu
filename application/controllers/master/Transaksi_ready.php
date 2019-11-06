@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-class Transaksi_preorder extends MY_Controller
+class Transaksi_ready extends MY_Controller
 {
 	public function __construct()
 	{
@@ -9,29 +9,30 @@ class Transaksi_preorder extends MY_Controller
 	public function index()
 	{
 		$data['page_name'] = "Pesanan";
-		$this->template->load('template/template', 'master/transaksi_preorder/all-transaksi_preorder', $data);
+		$this->template->load('template/template', 'master/transaksi_ready/all-transaksi_ready', $data);
 	}
 
 	public function Proses()
 	{
 		$data['page_name'] = "Proses";
-		$this->template->load('template/template', 'master/transaksi_preorder/proses-transaksi_preorder', $data);
+		$this->template->load('template/template', 'master/transaksi_ready/proses-transaksi_ready', $data);
 	}
 	
 	public function Selesai()
 	{
 		$data['page_name'] = "Proses";
-		$this->template->load('template/template', 'master/transaksi_preorder/selesai-transaksi_preorder', $data);
+		$this->template->load('template/template', 'master/transaksi_ready/selesai-transaksi_ready', $data);
 	}
 
 	public function create()
 	{
-		$data['produk'] = $this->mymodel->selectWithQuery("SELECT produk_preorder.*, master_kategori_produk.nama_kategori, file.dir FROM produk_preorder
-			LEFT JOIN master_kategori_produk on produk_preorder.id_kategori = master_kategori_produk.id
-			LEFT JOIN file on produk_preorder.id = file.table_id
-			WHERE produk_preorder.status = 'ENABLE' AND file.table = 'produk_preorder'");
+		$data['produk'] = $this->mymodel->selectWithQuery("SELECT produk_ready.*, master_kategori_produk.nama_kategori, file.dir, master_ukuran.id as ukuran_id, master_ukuran.value as ukuran FROM produk_ready
+			LEFT JOIN master_kategori_produk on produk_ready.id_kategori = master_kategori_produk.id
+			LEFT JOIN file on produk_ready.id = file.table_id
+			LEFT JOIN master_ukuran on produk_ready.ukuran_produk = master_ukuran.id
+			WHERE produk_ready.status = 'ENABLE' AND file.table = 'produk_ready'");
 		$data['page_name'] = "Pesanan";
-		$this->template->load('template/template', 'master/transaksi_preorder/add-transaksi_preorder', $data);
+		$this->template->load('template/template', 'master/transaksi_ready/add-transaksi_ready', $data);
 	}
 
 	public function validate()
@@ -41,67 +42,92 @@ class Transaksi_preorder extends MY_Controller
 		$this->form_validation->set_rules('dt[jumlah_bayar]', '<strong>Bayar</strong>', 'required');
 	}
 
-	public function store()
+	public function checkstock()
 	{
-		$idUser = $this->session->userdata('id');
-		$this->form_validation->set_error_delimiters('<li>', '</li>');
-		$this->validate();
-		if ($this->form_validation->run() == FALSE) {
-			$this->alert->alertdanger(validation_errors());
-		} else {
+		$error = '';
+		for ($i = 0; $i < count($_POST['idd']); $i++) {
+			$stok = $this->mymodel->selectDataone('produk_ready', array('id' => $_POST['idd'][$i]));
+			if($stok['jumlah_stok'] < $_POST['qtt'][$i]){
+				$error .= '<li> Produk <b>'.$stok['nama_produk'].'</b> kode: <b>'.$stok['kode_barang'].'</b> Warna <b>'.$stok['warna_produk'].'</b> Tidak Memiliki Cukup Stok </li>';
+			}
+		}
 
-			$chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			$res = "INVL-";
-			for (;;) {
-				for ($i = 0; $i < 5; $i++) {
-					$res .= $chars[mt_rand(0, strlen($chars) - 1)];
+		if($error == ''){
+			return true;
+		}else{
+			$this->alert->alertdanger($error);
+			return false;	
+		}
+	}
+
+	public function store()
+	{	
+		if (!$this->checkstock()) {
+			return false;
+		} else {
+			$idUser = $this->session->userdata('id');
+			$this->validate();
+			if ($this->form_validation->run() == FALSE) {
+				$this->alert->alertdanger(validation_errors());
+			} else {
+				$chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				$res = "INVL-";
+				for (;;) {
+					for ($i = 0; $i < 5; $i++) {
+						$res .= $chars[mt_rand(0, strlen($chars) - 1)];
+					}
+
+					$query = $this->db->query("SELECT * FROM transaksi WHERE kode_transaksi='$res'")->result();
+					if (count($query) == 0) {
+						break;
+					} else { }
 				}
 
-				$query = $this->db->query("SELECT * FROM transaksi WHERE kode_transaksi='$res'")->result();
-				if (count($query) == 0) {
-					break;
-				} else { }
+				$harga_subtotal = 0;
+				for ($i = 0; $i < count($_POST['idd']); $i++) {
+					$total_harga = $_POST['prc'][$i] * $_POST['qtt'][$i];
+					$diskon = $total_harga * ($_POST['diskon'][$i] / 100);
+					$harga_total = $total_harga - $diskon;
+
+					$dtd['kode_transaksi'] = $res;
+					$dtd['id_produk_ready'] = $_POST['idd'][$i];
+					$dtd['qty'] = $_POST['qtt'][$i];
+					$dtd['ukuran'] = $_POST['ukuran'][$i];
+					$dtd['warna'] = $_POST['warna'][$i];
+					$dtd['keterangan'] = $_POST['keterangan'][$i];
+					$dtd['harga_satuan'] = $_POST['prc'][$i];
+					$dtd['biaya_lain'] = $_POST['biayalain'][$i];
+					$dtd['diskon'] = $_POST['diskon'][$i];
+					$dtd['harga_total'] = strval($harga_total + $_POST['biayalain'][$i]);
+					$dtd['status'] = "ENABLE";
+					$dtd['created_at'] = date('Y-m-d H:i:s');
+					$dtd['updated_at'] = date('Y-m-d H:i:s');
+					$dtd['created_by'] = $idUser;
+
+					$stok = $this->mymodel->selectDataone('produk_ready', array('id' => $_POST['idd'][$i]));
+					$kurangstok['jumlah_stok'] = $stok['jumlah_stok'] - $_POST['qtt'][$i];
+					$this->mymodel->updateData('produk_ready', $kurangstok, array('id' => $_POST['idd'][$i]));
+
+					$this->db->insert('transaksi_produk_ready', $dtd);
+					$harga_subtotal += $harga_total + $_POST['biayalain'][$i];
+				}
+
+				$dt = $_POST['dt'];
+				$dt['kode_transaksi'] = $res;
+				$dt['sub_total'] = strval($harga_subtotal + $_POST['dt']['biaya_kirim']);
+				$dt['kembalian'] = strval($_POST['dt']['jumlah_bayar'] - ($harga_subtotal + $_POST['dt']['biaya_kirim']));
+				$dt['resi_pengiriman'] = '';
+				$dt['tipe'] = 'Ready Stok';
+				$dt['status_order'] = 'Pesanan Baru';
+				$dt['status_pengiriman'] = 'Belum Dikirim';
+				$dt['status_pembayaran'] = 'Belum Dibayar';
+				$dt['created_by'] = $idUser;
+				$dt['status'] = "ENABLE";
+				$dt['created_at'] = date('Y-m-d H:i:s');
+				$this->db->insert('transaksi', $dt);
+
+				$this->alert->alertsuccess('Success Send Data');
 			}
-
-			$harga_subtotal = 0;
-			for ($i = 0; $i < count($_POST['idd']); $i++) {
-				$total_harga = $_POST['prc'][$i] * $_POST['qtt'][$i];
-				$diskon = $total_harga * ($_POST['diskon'][$i] / 100);
-				$harga_total = $total_harga - $diskon;
-
-				$dtd['kode_transaksi'] = $res;
-				$dtd['id_produk_preorder'] = $_POST['idd'][$i];
-				$dtd['qty'] = $_POST['qtt'][$i];
-				$dtd['ukuran'] = $_POST['ukuran'][$i];
-				$dtd['warna'] = $_POST['warna'][$i];
-				$dtd['keterangan'] = $_POST['keterangan'][$i];
-				$dtd['harga_satuan'] = $_POST['prc'][$i];
-				$dtd['biaya_lain'] = $_POST['biayalain'][$i];
-				$dtd['diskon'] = $_POST['diskon'][$i];
-				$dtd['harga_total'] = strval($harga_total + $_POST['biayalain'][$i]);
-				$dtd['status'] = "ENABLE";
-				$dtd['created_at'] = date('Y-m-d H:i:s');
-				$dtd['updated_at'] = date('Y-m-d H:i:s');
-				$dtd['created_by'] = $idUser;
-				$this->db->insert('transaksi_produk', $dtd);
-				$harga_subtotal += $harga_total + $_POST['biayalain'][$i];
-			}
-
-			$dt = $_POST['dt'];
-			$dt['kode_transaksi'] = $res;
-			$dt['sub_total'] = strval($harga_subtotal + $_POST['dt']['biaya_kirim']);
-			$dt['kembalian'] = strval($_POST['dt']['jumlah_bayar'] - ($harga_subtotal + $_POST['dt']['biaya_kirim']));
-			$dt['resi_pengiriman'] = '';
-			$dt['tipe'] = 'Preorder';
-			$dt['status_order'] = 'Pesanan Baru';
-			$dt['status_pengiriman'] = 'Belum Dikirim';
-			$dt['status_pembayaran'] = 'Belum Dibayar';
-			$dt['created_by'] = $idUser;
-			$dt['status'] = "ENABLE";
-			$dt['created_at'] = date('Y-m-d H:i:s');
-			$this->db->insert('transaksi', $dt);
-
-			$this->alert->alertsuccess('Success Send Data');
 		}
 	}
 
@@ -117,7 +143,7 @@ class Transaksi_preorder extends MY_Controller
 		$this->datatables->join('customer c', "c.id = a.id_customer", 'left');
 		$this->datatables->join('master_kurir d', "d.id = a.id_kurir", 'left');
 		$this->datatables->join('master_bank b', "b.id = a.id_bank", 'left');
-		$this->datatables->where('a.tipe', 'Preorder');
+		$this->datatables->where('a.tipe', 'Ready Stok');
 		$this->datatables->where('a.status_order', 'Pesanan Baru');
 		$this->datatables->where('a.status', $status);
 		$this->datatables->from('transaksi a');
@@ -137,9 +163,9 @@ class Transaksi_preorder extends MY_Controller
 		$this->datatables->join('customer c', "c.id = a.id_customer", 'left');
 		$this->datatables->join('master_kurir d', "d.id = a.id_kurir", 'left');
 		$this->datatables->join('master_bank b', "b.id = a.id_bank", 'left');
-		$this->datatables->where('a.status', 'ENABLE');
-		$this->datatables->where('a.status_order', 'Diproses');
-		$this->datatables->where('a.tipe', 'Preorder');
+		$this->datatables->where('a.tipe', 'Ready Stok');
+		$this->datatables->where_in('a.status_order', 'Diproses');
+		$this->datatables->where_in('a.status', 'ENABLE');
 		$this->datatables->from('transaksi a');
 		$this->datatables->add_column('view', '<div class="btn-group"><button type="button" class="btn btn-sm btn-info" onclick="inv($1)"><i class="fa fa-print"></i> INVOICE </button></div>', 'id');
 		echo $this->datatables->generate();
@@ -154,7 +180,7 @@ class Transaksi_preorder extends MY_Controller
 		$this->datatables->join('customer c', "c.id = a.id_customer", 'left');
 		$this->datatables->join('master_kurir d', "d.id = a.id_kurir", 'left');
 		$this->datatables->join('master_bank b', "b.id = a.id_bank", 'left');
-		$this->datatables->where('a.tipe', 'Preorder');
+		$this->datatables->where('a.tipe', 'Ready Stok');
 		$this->datatables->where('a.status_order NOT LIKE "Pesanan Baru"');
 		$this->datatables->where('a.status_order NOT LIKE "Diproses"');
 		$this->datatables->where('a.status', 'ENABLE');
@@ -164,38 +190,30 @@ class Transaksi_preorder extends MY_Controller
 		echo $this->datatables->generate();
 	}
 
-	public function edit($id)
-	{
-		$data['transaksi_preorder'] = $this->mymodel->selectDataone('transaksi_preorder', array('id' => $id));
-		$data['file'] = $this->mymodel->selectDataone('file', array('table_id' => $id, 'table' => 'transaksi_preorder'));
-		$data['page_name'] = "transaksi_preorder";
-		$this->template->load('template/template', 'master/transaksi_preorder/edit-transaksi_preorder', $data);
-	}
-
 	public function status($id, $status)
 	{
 		$this->mymodel->updateData('transaksi', array('status' => $status), array('id' => $id));
-		redirect(base_url('master/Transaksi_preorder'));
+		redirect(base_url('master/transaksi_ready'));
 	}
 
 	public function inv($id)
 	{
 		$data['page_name'] = "Pesanan";
-		$this->template->load('template/template', 'master/transaksi_preorder/inv', $data);
+		$this->template->load('template/template', 'master/transaksi_ready/inv', $data);
 	}
 
 	public function kirim($id)
 	{
 		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));
 		$data['page_name'] = "Pesanan";
-		$this->load->view('master/transaksi_preorder/approve', $data);
+		$this->load->view('master/transaksi_ready/approve', $data);
 	}
 
 	public function cicil($id)
 	{
 		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));
 		$data['page_name'] = "Pesanan";
-		$this->load->view('master/transaksi_preorder/cicil', $data);
+		$this->load->view('master/transaksi_ready/cicil', $data);
 	}
 
 	public function validateKirim()
@@ -261,11 +279,12 @@ class Transaksi_preorder extends MY_Controller
 		$dt['tgl_status_pembayaran'] = date('Y-m-d H:i:s');
 		$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 		$this->alert->alertsuccess('Success Send Data');
-		redirect(base_url('master/transaksi_preorder'));
+		redirect(base_url('master/transaksi_ready'));
 	}
 
 	public function actionproses($id)
 	{	
+
 		$status_pembayaran = $this->mymodel->selectDataone('transaksi', array('id' => $id));
 		if($status_pembayaran['status_pembayaran'] != 'Lunas'){
 			$this->alert->alertdanger('Mohon Untuk Melakukan Pelunasan Pembayaran Transaksi Terlebih Dahulu!');
@@ -276,6 +295,7 @@ class Transaksi_preorder extends MY_Controller
 			$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 			$this->alert->alertsuccess('Success Send Data');
 		}
+
 	}
 
 	public function actionselesai($id)
@@ -298,6 +318,6 @@ class Transaksi_preorder extends MY_Controller
 		$dt['tgl_status_order'] = date('Y-m-d H:i:s');
 		$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 		$this->alert->alertsuccess('Success Send Data');
-		redirect(base_url('master/transaksi_preorder/selesai'));
+		redirect(base_url('master/transaksi_ready/selesai'));
 	}
 }

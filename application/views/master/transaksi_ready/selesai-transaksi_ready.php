@@ -1,13 +1,13 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Transaksi Preorder Selesai
+            Transaksi Ready Selesai
             <small>master</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="#">master</a></li>
-            <li class="active">Transaksi Preorder Selesai</li>
+            <li class="active">Transaksi Ready Selesai</li>
         </ol>
     </section>
     <section class="content">
@@ -65,7 +65,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "<?= base_url('master/Transaksi_preorder/jsonselesai') ?>",
+                "url": "<?= base_url('master/transaksi_ready/jsonselesai') ?>",
                 "type": "POST"
             },
             columns: [{
@@ -169,6 +169,6 @@
 loadtable($("#select-status").val());
 
 function inv(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
+    location.href = "<?= base_url('master/transaksi_ready/inv/') ?>" + id;
 }
 </script>

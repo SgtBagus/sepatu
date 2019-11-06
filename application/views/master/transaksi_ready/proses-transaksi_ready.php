@@ -1,13 +1,13 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Proses Transaksi Preorder
+      Proses Transaksi Ready
       <small>master</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
       <li><a href="#">master</a></li>
-      <li class="active">ProsesTransaksi Preorder</li>
+      <li class="active">ProsesTransaksi Ready</li>
     </ol>
   </section>
   <section class="content">
@@ -77,7 +77,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        "url": "<?= base_url('master/Transaksi_preorder/jsonproses') ?>",
+        "url": "<?= base_url('master/transaksi_ready/jsonproses') ?>",
         "type": "POST"
       },
       columns: [{
@@ -209,17 +209,17 @@
     $("#load-form").html('loading...');
     $("#modal-form").modal();
     $("#title-form").html('Status Pemesanan');
-    $("#load-form").load("<?= base_url('master/transaksi_preorder/kirim/') ?>" + id);
+    $("#load-form").load("<?= base_url('master/transaksi_ready/kirim/') ?>" + id);
   }
 
   function inv(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
+    location.href = "<?= base_url('master/transaksi_ready/inv/') ?>" + id;
   }
 
   function selesai(id) {
     $.ajax({
       type: "POST",
-      url: "<?= base_url('master/Transaksi_preorder/actionselesai/') ?>" + id,
+      url: "<?= base_url('master/transaksi_ready/actionselesai/') ?>" + id,
       cache: false,
       contentType: false,
       processData: false,
@@ -228,7 +228,7 @@
         var str = response;
         if (str.indexOf("success") != -1) {
           $(".show_error").hide().html(response).slideDown("fast");
-          window.location.href = "<?=base_url('master/transaksi_preorder/selesai')?>";
+          window.location.href = "<?=base_url('master/transaksi_ready/selesai')?>";
         } else {
           $(".show_error").hide().html(response).slideDown("fast");
           loadtable($("#select-status").val());
@@ -240,6 +240,6 @@
   }
 
   function cancel(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/actioncancel/') ?>" + id;
+    location.href = "<?= base_url('master/transaksi_ready/actioncancel/') ?>" + id;
   }
 </script>

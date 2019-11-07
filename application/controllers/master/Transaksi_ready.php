@@ -260,7 +260,7 @@ class Transaksi_ready extends MY_Controller
 	}
 
 
-	public function print($id)
+	public function cetak($id)
 	{
 		$data['page_name'] = "Pesanan";
 		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('id' => $id));

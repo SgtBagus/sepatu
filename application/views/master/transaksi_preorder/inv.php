@@ -239,7 +239,7 @@
     <br>
     <div class="row no-print">
       <div class="col-xs-12" align="right">
-        <a href="<?= base_url('master/Transaksi_preorder/print/' . $transaksi['id']) ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+        <a href="<?= base_url('master/Transaksi_preorder/cetak/' . $transaksi['id']) ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
       </div>
     </div>
   </section>

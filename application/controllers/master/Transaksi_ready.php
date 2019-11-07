@@ -196,12 +196,72 @@ class Transaksi_ready extends MY_Controller
 		redirect(base_url('master/transaksi_ready'));
 	}
 
+	
 	public function inv($id)
 	{
 		$data['page_name'] = "Pesanan";
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('id' => $id));
+		$data['customer'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_customer']));
+		$data['kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['customer']['id_kelurahan']));
+		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
+		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
+		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
+		
+		$data['dropshipper'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_dropshipper']));
+		$data['dropshipper_kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['dropshipper']['id_kelurahan']));
+		$data['dropshipper_kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['dropshipper']['id_kecamatan']));
+		$data['dropshipper_kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['dropshipper']['id_kabkot']));
+		$data['dropshipper_provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['dropshipper']['id_provinsi']));
+
+		$data['kurir'] = $this->mymodel->selectDataone('master_kurir',  array('id' => $data['transaksi']['id_kurir']));
+		$data['transaksi_produk_ready'] = $this->mymodel->selectWhere('transaksi_produk_ready',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
+		
 		$this->template->load('template/template', 'master/transaksi_ready/inv', $data);
 	}
 
+	
+	public function print($id)
+	{
+		$data['page_name'] = "Pesanan";
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('id' => $id));
+		$data['customer'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_customer']));
+		$data['kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['customer']['id_kelurahan']));
+		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
+		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
+		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
+		
+		$data['dropshipper'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_dropshipper']));
+		$data['dropshipper_kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['dropshipper']['id_kelurahan']));
+		$data['dropshipper_kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['dropshipper']['id_kecamatan']));
+		$data['dropshipper_kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['dropshipper']['id_kabkot']));
+		$data['dropshipper_provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['dropshipper']['id_provinsi']));
+
+		$data['kurir'] = $this->mymodel->selectDataone('master_kurir',  array('id' => $data['transaksi']['id_kurir']));
+		$data['transaksi_produk_ready'] = $this->mymodel->selectWhere('transaksi_produk_ready',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
+		
+		$this->load->view('master/transaksi_ready/print', $data);
+	}
+
+	public function form_kirim($id)
+	{
+		$data['page_name'] = "Pesanan";
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('id' => $id));
+		$data['customer'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_customer']));
+		$data['kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['customer']['id_kelurahan']));
+		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
+		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
+		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
+		$data['kurir'] = $this->mymodel->selectDataone('master_kurir',  array('id' => $data['transaksi']['id_kurir']));
+		
+		$data['dropshipper'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_dropshipper']));
+		$data['dropshipper_kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['dropshipper']['id_kelurahan']));
+		$data['dropshipper_kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['dropshipper']['id_kecamatan']));
+		$data['dropshipper_kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['dropshipper']['id_kabkot']));
+		$data['dropshipper_provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['dropshipper']['id_provinsi']));
+
+		$this->load->view('master/transaksi_preorder/form_kirim', $data);
+	}
+	
 	public function kirim($id)
 	{
 		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));

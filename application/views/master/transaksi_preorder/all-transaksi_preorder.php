@@ -298,7 +298,7 @@
 loadtable($("#select-status").val());
 
 function inv(id) {
-  location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
+  window.open("<?= base_url('master/Transaksi_preorder/inv/') ?>" + id,'_blank');
 }
 
 function hapus(id) {

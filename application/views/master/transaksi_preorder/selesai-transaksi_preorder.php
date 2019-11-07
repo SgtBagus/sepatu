@@ -28,36 +28,36 @@
 <script type="text/javascript">
     function loadtable() {
         var table = '<table class="table table-bordered" id="mytable">' +
-        '     <thead>' +
-        '     <tr class="bg-success">' +
-        '       <th style="width:20px">No</th>' +
-        '<th>Kode</th>' +
-        '<th>Status Transaksi</th>' +
-        '<th>Customer</th>' +
-        '<th>Kurir</th>' +
-        '<th>Nomor Resi</th>' +
-        '<th>Subtotal</th>' +
-        '<th>Total Bayar</th>' +
-        '<th>Bank</th>' +
-        '<th>Dropshipper</th>' +
-        '<th>Status Pembayaran</th>' +
-        '<th>Tanggal Selesai</th>' +
-        '       <th style="width:150px"></th>' +
-        '     </tr>' +
-        '     </thead>' +
-        '     <tbody>' +
-        '     </tbody>' +
-        ' </table>';
+            '     <thead>' +
+            '     <tr class="bg-success">' +
+            '       <th style="width:20px">No</th>' +
+            '<th>Kode</th>' +
+            '<th>Status Transaksi</th>' +
+            '<th>Customer</th>' +
+            '<th>Kurir</th>' +
+            '<th>Nomor Resi</th>' +
+            '<th>Subtotal</th>' +
+            '<th>Total Bayar</th>' +
+            '<th>Bank</th>' +
+            '<th>Dropshipper</th>' +
+            '<th>Status Pembayaran</th>' +
+            '<th>Tanggal Selesai</th>' +
+            '       <th style="width:150px"></th>' +
+            '     </tr>' +
+            '     </thead>' +
+            '     <tbody>' +
+            '     </tbody>' +
+            ' </table>';
         $("#load-table").html(table)
         var t = $("#mytable").dataTable({
             initComplete: function() {
                 var api = this.api();
                 $('#mytable_filter input')
-                .off('.DT').on('keyup.DT', function(e) {
-                    if (e.keyCode == 13) {
-                        api.search(this.value).draw();
-                    }
-                });
+                    .off('.DT').on('keyup.DT', function(e) {
+                        if (e.keyCode == 13) {
+                            api.search(this.value).draw();
+                        }
+                    });
             },
             oLanguage: {
                 sProcessing: "loading..."
@@ -69,49 +69,49 @@
                 "type": "POST"
             },
             columns: [{
-                "data": "id",
-                "orderable": false
-            },
-            {
-                "data": "kode_transaksi"
-            },
-            {
-                "data": "status_order"
-            },
-            {
-                "data": "id_customer"
-            },
-            {
-                "data": "id_kurir"
-            },
-            {
-                "data": "resi_pengiriman"
-            },
-            {
-                "data": "sub_total"
-            },
-            {
-                "data": "jumlah_bayar"
-            },
-            {
-                "data": "id_bank"
-            },
-            {
-                "data": "id_dropshipper"
-            },
-            {
-                "data": "status_pembayaran"
-            },
-            {
-                "data": "tgl_status_order"
-            },
-            {
-                "data": "view",
-                "orderable": false
-            }
+                    "data": "id",
+                    "orderable": false
+                },
+                {
+                    "data": "kode_transaksi"
+                },
+                {
+                    "data": "status_order"
+                },
+                {
+                    "data": "id_customer"
+                },
+                {
+                    "data": "id_kurir"
+                },
+                {
+                    "data": "resi_pengiriman"
+                },
+                {
+                    "data": "sub_total"
+                },
+                {
+                    "data": "jumlah_bayar"
+                },
+                {
+                    "data": "id_bank"
+                },
+                {
+                    "data": "id_dropshipper"
+                },
+                {
+                    "data": "status_pembayaran"
+                },
+                {
+                    "data": "tgl_status_order"
+                },
+                {
+                    "data": "view",
+                    "orderable": false
+                }
             ],
             order: [
-            [1, 'desc']
+                [1, 'desc']
             ],
             columnDefs: [{
                 targets: [2],
@@ -165,10 +165,10 @@
                 $('td:eq(0)', row).html(index);
             }
         });
-}
-loadtable($("#select-status").val());
+    }
+    loadtable($("#select-status").val());
 
-function inv(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
-}
+    function inv(id) {
+        window.open("<?= base_url('master/Transaksi_preorder/inv/') ?>" + id, '_blank');
+    }
 </script>

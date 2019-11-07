@@ -178,7 +178,16 @@
               '</div>' +
               '</div>';
           } else if (row['status_pengiriman'] == 'Sudah Dikirim') {
-            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check-circle"> </i> Selesai </small></div>';
+            var htmls = '<div align="center"><small class="label bg-green"><i class="fa fa-check-circle"> </i> Selesai </small></div>' +
+              '<hr>' +
+              '<div class="row" align="center">' +
+              '<div class="col-md-12">' +
+              '<div class="btn-group">' +
+              '<button type="button" class="btn btn-info" onclick="formKirim(' + row['id'] + ')"><i class="fa fa-file"></i> Form Kirim </button>' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
           }
           return htmls;
         }
@@ -213,7 +222,11 @@
   }
 
   function inv(id) {
-    location.href = "<?= base_url('master/Transaksi_preorder/inv/') ?>" + id;
+    window.open("<?= base_url('master/transaksi_preorder/inv/') ?>" + id, '_blank');
+  }
+
+  function formKirim(id) {
+    window.open("<?= base_url('master/transaksi_preorder/form_kirim/') ?>" + id, '_blank');
   }
 
   function selesai(id) {
@@ -228,7 +241,7 @@
         var str = response;
         if (str.indexOf("success") != -1) {
           $(".show_error").hide().html(response).slideDown("fast");
-          window.location.href = "<?=base_url('master/transaksi_preorder/selesai')?>";
+          window.location.href = "<?= base_url('master/transaksi_preorder/selesai') ?>";
         } else {
           $(".show_error").hide().html(response).slideDown("fast");
           loadtable($("#select-status").val());

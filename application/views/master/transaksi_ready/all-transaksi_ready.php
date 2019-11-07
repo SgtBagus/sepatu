@@ -270,7 +270,7 @@
   loadtable($("#select-status").val());
 
   function inv(id) {
-    location.href = "<?= base_url('master/transaksi_ready/inv/') ?>" + id;
+    window.open("<?= base_url('master/transaksi_ready/inv/') ?>" + id, '_blank');
   }
 
   function hapus(id) {
@@ -288,7 +288,7 @@
   function lunas(id) {
     location.href = "<?= base_url('master/transaksi_ready/lunas/') ?>" + id;
   }
-  
+
 
   function proses(id) {
     $.ajax({
@@ -302,7 +302,7 @@
         var str = response;
         if (str.indexOf("success") != -1) {
           $(".show_error").hide().html(response).slideDown("fast");
-          window.location.href = "<?=base_url('master/transaksi_ready/proses')?>";
+          window.location.href = "<?= base_url('master/transaksi_ready/proses') ?>";
         } else {
           $(".show_error").hide().html(response).slideDown("fast");
           loadtable($("#select-status").val());
@@ -312,7 +312,7 @@
     });
     return false;
   }
-  
+
   function cancel(id) {
     location.href = "<?= base_url('master/transaksi_ready/actioncancel/') ?>" + id;
   }

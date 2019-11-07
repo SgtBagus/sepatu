@@ -20,8 +20,35 @@
         </h2>
       </div>
     </div>
-    <!-- info row -->
     <div class="row invoice-info">
+      <div class="col-md-12">
+        <?php if ($transaksi['status_order'] == 'Selesai') { ?>
+          <div class="callout callout-success">
+            <h4>Invoice Siap Di Print</h4>
+          </div>
+        <?php } else if ($transaksi['status_order'] == 'Cancel') { ?>
+          <div class="callout callout-danger">
+            <h4>Invoice Dibatalkan</h4>
+          </div>
+        <?php } else if ($transaksi['status_order'] == 'Pesanan Baru') { ?>
+          <div class="callout callout-warning">
+            <h4>Invoice Belum Di Proses</h4>
+          </div>
+        <?php } else { ?>
+          <div class="callout callout-warning">
+            <h4>Perhatian!</h4>
+            <p>Invoice Transaksi ini Masih Dalam Proses, List Penyelesaian</p>
+            <ol>
+              <?php if ($transaksi['status_pembayaran'] == 'Lunas') { ?>
+                <li>Invoice ini Belum Lunas Terbayar. </li>
+              <?php } ?>
+              <?php if ($transaksi['status_pengiriman'] == 'Sudah Dikirim') { ?>
+                <li>Invoice ini Belum DiKirim. </li>
+              <?php } ?>
+            </ol>
+          </div>
+        <?php } ?>
+      </div>
       <div class="col-md-12" align="center">
         <img src="<?= base_url('assets/invoice.png') ?>" witdh="100%">
       </div>
@@ -29,8 +56,8 @@
         <address>
           Nomor Nota : <strong><?= $transaksi['kode_transaksi'] ?></strong><br>
           Nama Customer : <strong><?= $customer['nama_customer'] ?> - <?= $customer['hp_customer'] ?></strong><br>
-          <?= $customer['alamat_customer'] ?>, Kelulahan : <?=  $kelurahan['kelurahan'] ?>
-          , Kecamatan : <?=  $kecamatan['kecamatan'] ?>, Kabupatan : <?=  $kabupaten['kabupaten_kota'] ?>, Kota : <?=  $provinsi['provinsi'] ?> <br>
+          <?= $customer['alamat_customer'] ?>, Kelulahan : <?= $kelurahan['kelurahan'] ?>
+          , Kecamatan : <?= $kecamatan['kecamatan'] ?>, Kabupatan : <?= $kabupaten['kabupaten_kota'] ?>, Kota : <?= $provinsi['provinsi'] ?> <br>
           Kode POST : <?= $customer['kode_post'] ?>
           <br>
           Email: <?= $customer['email_customer'] ?>
@@ -43,105 +70,168 @@
           <thead>
             <tr>
               <th>Produk + Keterangan</th>
-              <th>Product</th>
-              <th>Serial #</th>
-              <th>Description</th>
-              <th>Subtotal</th>
+              <th>Ukuran</th>
+              <th>Warna</th>
+              <th>Qty</th>
+              <th>Satuan</th>
+              <th>Diskon</th>
+              <th>Biaya Lain</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($transaksi_produk as $row){ ?>
+            <?php foreach ($transaksi_produk as $row) {
+              $produk_ready = $this->mymodel->selectDataone('produk_ready', array('id' => $row['id_produk_preorder']));
+              $ukuran = $this->mymodel->selectDataone('master_ukuran', array('id' => $row['ukuran']));
+              ?>
               <tr>
-                <td>1</td>
-                <td>Call of Duty</td>
-                <td>455-981-221</td>
-                <td>El snort testosterone trophy driving gloves handsome</td>
-                <td>$64.50</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Need for Speed IV</td>
-                <td>247-925-726</td>
-                <td>Wes Anderson umami biodiesel</td>
-                <td>$50.00</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Monsters DVD</td>
-                <td>735-845-642</td>
-                <td>Terry Richardson helvetica tousled street art master</td>
-                <td>$10.70</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Grown Ups Blue Ray</td>
-                <td>422-568-642</td>
-                <td>Tousled lomo letterpress</td>
-                <td>$25.99</td>
+                <td><?= $produk_ready['nama_produk'] ?><br><small><?= $row['keterangan'] ?></small></td>
+                <td><?= $ukuran['value'] ?></td>
+                <td><?= $row['warna'] ?></td>
+                <td><?= $row['qty'] ?></td>
+                <td>
+                  <b>Rp. <?= number_format($row['harga_satuan'], 0, ',', '.') ?>,- </b>
+                </td>
+                <td>
+                  <?php if ($row['diskon']) { ?>
+                    <b> <?= $row['diskon'] ?> % </b>
+                  <?php } else { ?>
+                    -
+                  <?php } ?>
+                </td>
+                <td>
+                  <?php if ($row['biaya_lain']) { ?>
+                    <b>Rp. <?= number_format($row['biaya_lain'], 0, ',', '.') ?>,- </b>
+                  <?php } else { ?>
+                    -
+                  <?php } ?>
+                </td>
+                <td>
+                  <?php if ($row['harga_total']) { ?>
+                    <b>Rp. <?= number_format($row['harga_total'], 0, ',', '.') ?>,- </b>
+                  <?php } else { ?>
+                    -
+                  <?php } ?>
+                </td>
               </tr>
             <?php } ?>
           </tbody>
         </table>
       </div>
-      <!-- /.col -->
     </div>
-    <!-- /.row -->
-
     <div class="row">
-      <!-- accepted payments column -->
       <div class="col-xs-6">
-        <p class="lead">Payment Methods:</p>
-        <img src="../../dist/img/credit/visa.png" alt="Visa">
-        <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-        <img src="../../dist/img/credit/american-express.png" alt="American Express">
-        <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
-        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-          Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
-          dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-        </p>
+        <p class="lead">Dropshipper</p>
+        <address>
+          Nama Dropshipper : <strong><?= $dropshipper['nama_customer'] ?> - <?= $customer['hp_customer'] ?></strong><br>
+          <?= $customer['alamat_customer'] ?>, Kelulahan : <?= $dropshipper_kelurahan['kelurahan'] ?>
+          , Kecamatan : <?= $dropshipper_kecamatan['kecamatan'] ?>, Kabupatan : <?= $dropshipper_kabupaten['kabupaten_kota'] ?>, Kota : <?= $dropshipper_provinsi['provinsi'] ?> <br>
+          Kode POST : <?= $dropshipper['kode_post'] ?>
+          <br>
+          Email: <?= $dropshipper['email_customer'] ?>
+        </address>
+        <ol>
+          <li>Invoice ini merupakan bukti pembelian yang sah dari Shoeka Shoes. </li>
+          <li>Sepatu yang telah dibeli atau dipesan tidak dapat ditukar, sepatu hanya dapat ditukar apabila terdapat cacat produksi.</li>
+          <li>Tanggung jawab Shoeka Shoes hanya terbatas pada produksi dan hingga mengirimkan pesanan kepada jasa pengiriman/ekspedisi dan memberikan
+            bukti pengiriman berupa resi kepada konsumen. Apabila terjadi keterlambatan, kehilangan dan kerusakan yang diakibatkan oleh kesalahan jasa
+            pengiriman/ekspedisi menjadi tanggung jawab ekspedisi yang bersangkutan. Shoeka Shoes akan membantu memonitor pengiriman kepada konsumen.
+          </li>
+        </ol>
       </div>
-      <!-- /.col -->
       <div class="col-xs-6">
-        <p class="lead">Amount Due 2/22/2014</p>
-
+        <p class="lead">Kemasan</p>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Ukuran</th>
+                <th>Keterangan</th>
+                <th>Harga Paket</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Sedang</td>
+                <td>Kota Sedang</td>
+                <td>
+                  <b>Rp. <?= number_format(250000, 0, ',', '.') ?>,- </b>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lead">Sub Total</p>
         <div class="table-responsive">
           <table class="table">
-            <tbody><tr>
-              <th style="width:50%">Subtotal:</th>
-              <td>$250.30</td>
-            </tr>
-            <tr>
-              <th>Tax (9.3%)</th>
-              <td>$10.34</td>
-            </tr>
-            <tr>
-              <th>Shipping:</th>
-              <td>$5.80</td>
-            </tr>
-            <tr>
-              <th>Total:</th>
-              <td>$265.24</td>
-            </tr>
-          </tbody></table>
+            <tbody>
+              <tr>
+                <td style="width:50%">Kurir</td>
+                <td>
+                  <?= $kurir['value'] ?>
+                </td>
+              </tr>
+              <tr>
+                <td style="width:50%">No Resi</td>
+                <td>
+                  <?php if (!$transaksi['resi_pengiriman']) { ?>
+                    -
+                  <?php } else { ?>
+
+                    <?= $transaksi['resi_pengiriman'] ?>
+                  <?php } ?>
+                </td>
+              </tr>
+              <tr>
+                <td>BIAYA KIRIM SICEPAT REG</td>
+                <td>
+                  Rp. <?= number_format($transaksi['biaya_kirim'], 0, ',', '.') ?>,-
+                </td>
+              </tr>
+              <tr>
+                <th>TOTAL</th>
+                <th>
+                  Rp. <?= number_format($transaksi['sub_total'], 0, ',', '.') ?>,-
+                </th>
+              </tr>
+              <tr>
+                <td>JUMLAH BAYAR</td>
+                <td>
+                  Rp. <?= number_format($transaksi['jumlah_bayar'], 0, ',', '.') ?>,-
+                </td>
+              </tr>
+              <?php if ($transaksi['kembalian'] < 0) { ?>
+                <tr>
+                  <td>KEKURANGAN</td>
+                  <td>
+                    Rp. <?= number_format($transaksi['kembalian'] * -1, 0, ',', '.') ?>,-
+                  </td>
+                </tr>
+              <?php } else { ?>
+                <tr>
+                  <td>Kembalian</td>
+                  <td>
+                    Rp. <?= number_format($transaksi['kembalian'], 0, ',', '.') ?>,-
+                  </td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
         </div>
       </div>
-      <!-- /.col -->
+      <div class="col-xs-12" align="right">
+        Shoeka Shoes - 08113777014 <br>
+        Jl. Danau Maninjau Barat B3/A34, Sawojajar, Kedungkandang, Kota Malang, Jawa Timur 65139 <br>
+        Dicetak pada tanggal : <?= date("d M Y"); ?>
+      </div>
     </div>
-    <!-- /.row -->
-
-    <!-- this row will not appear when printing -->
+    <br>
     <div class="row no-print">
-      <div class="col-xs-12">
-        <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-        <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
-        </button>
-        <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-          <i class="fa fa-download"></i> Generate PDF
-        </button>
+      <div class="col-xs-12" align="right">
+        <a href="<?= base_url('master/Transaksi_preorder/print/' . $transaksi['id']) ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
       </div>
     </div>
   </section>
-  <!-- /.content -->
-  <div class="clearfix"></div>
 </div>

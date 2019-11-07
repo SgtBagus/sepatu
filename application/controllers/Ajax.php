@@ -23,4 +23,9 @@ class Ajax extends MY_Controller {
 		$kodepost = $this->db->get_where('tbl_kelurahan',array('id' => $id))->result_array();
 		echo json_encode($kodepost);
 	}
+
+	public function get_kemasan($id){
+		$kemasan = $this->db->get_where('master_kemasan',array('id' => $id))->result_array();
+		echo json_encode($kemasan);
+	}
 }

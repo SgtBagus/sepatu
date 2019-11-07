@@ -146,20 +146,31 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>Ukuran</th>
+                <th>Nama</th>
                 <th>Keterangan</th>
-                <th>Harga Paket</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Subtotal</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Sedang</td>
-                <td>Kota Sedang</td>
-                <td>
-                  <b>Rp. <?= number_format(250000, 0, ',', '.') ?>,- </b>
-                </td>
-              </tr>
+              <?php $i = 1;
+              foreach ($transaksi_kemasan as $row) {
+                $master_kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $row['id_kemasan'])) ?>
+                <tr>
+                  <td><?= $i ?></td>
+                  <td><?= $master_kemasan['value'] ?></td>
+                  <td><?= $master_kemasan['keterangan'] ?></td>
+                  <td><?= $row['qty'] ?></td>
+                  <td>
+                    <b>Rp. <?= number_format($master_kemasan['hpp'], 0, ',', '.') ?>,- </b>
+                  </td>
+                  <td>
+                    <b>Rp. <?= number_format($row['harga_total'], 0, ',', '.') ?>,- </b>
+                  </td>
+                </tr>
+              <?php $i++;
+              } ?>
             </tbody>
           </table>
         </div>

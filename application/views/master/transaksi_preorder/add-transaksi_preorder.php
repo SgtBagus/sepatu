@@ -34,7 +34,7 @@
                 </select>
               </div>
               <div class="col col-md-1">
-                <a href="<?= base_url('master/Customer/create')?>" target="_blank">
+                <a href="<?= base_url('master/Customer/create') ?>" target="_blank">
                   <button type="button" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus"></i>
                   </button>
@@ -82,6 +82,54 @@
                     </div>
                   </div>
                 </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="box">
+            <div class="box-header">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="box-title">
+                    Tambah Kemasan
+                  </h3>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <select class="form-control select2" name="kemasan" id="kemasan">
+                        <?php
+                        $master_kemasan = $this->mymodel->selectData("master_kemasan");
+                        foreach ($master_kemasan as $key => $value) {
+                          ?>
+                          <option value="<?= $value['id'] ?>"><?= $value['value'] ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <button type="button" class="btn btn-primary" onclick="setKemasan()">Tambah Kemasan</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="box-body">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Value</th>
+                      <th>Keterangan</th>
+                      <th>Qty</th>
+                      <th>Harga</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="valueKemasan">
+                    <tr>
+                      <td colspan="5" align="center">
+                        Belum Ada Data
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -282,84 +330,84 @@
   var app = angular.module('myApp', []);
   app.controller('PosController', function($scope) {
     $scope.drinks = [
-    <?php foreach ($produk as $d) { ?> {
-      id: "<?= trim($d['id']) ?>",
-      name: "<?= trim($d['nama_produk']) ?>",
-      kategori: "<?= trim($d['nama_kategori']) ?>",
-      price: "<?= trim($d['harga_jual']) ?>",
-      priceb: "<?= trim($d['harga_produksi']) ?>",
-      image: "<?= trim($d['dir']) ?>",
-    },
-  <?php } ?>
-  ];
-  $scope.order = [];
-  $scope.new = {};
-  $scope.totOrders = 0;
-  var url = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
-  $scope.getDate = function() {
-    var today = new Date();
-    var mm = today.getMonth() + 1;
-    var dd = today.getDate();
-    var yyyy = today.getFullYear();
-    var date = dd + "/" + mm + "/" + yyyy
-    return date
-  };
-  $scope.addToOrder = function(item, qty) {
-    var flag = 0;
-    if ($scope.order.length > 0) {
-      for (var i = 0; i < $scope.order.length; i++) {
-        if (item.id === $scope.order[i].id) {
-          item.qty += qty;
-          flag = 1;
-          break;
+      <?php foreach ($produk as $d) { ?> {
+          id: "<?= trim($d['id']) ?>",
+          name: "<?= trim($d['nama_produk']) ?>",
+          kategori: "<?= trim($d['nama_kategori']) ?>",
+          price: "<?= trim($d['harga_jual']) ?>",
+          priceb: "<?= trim($d['harga_produksi']) ?>",
+          image: "<?= trim($d['dir']) ?>",
+        },
+      <?php } ?>
+    ];
+    $scope.order = [];
+    $scope.new = {};
+    $scope.totOrders = 0;
+    var url = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
+    $scope.getDate = function() {
+      var today = new Date();
+      var mm = today.getMonth() + 1;
+      var dd = today.getDate();
+      var yyyy = today.getFullYear();
+      var date = dd + "/" + mm + "/" + yyyy
+      return date
+    };
+    $scope.addToOrder = function(item, qty) {
+      var flag = 0;
+      if ($scope.order.length > 0) {
+        for (var i = 0; i < $scope.order.length; i++) {
+          if (item.id === $scope.order[i].id) {
+            item.qty += qty;
+            flag = 1;
+            break;
+          }
         }
-      }
-      if (flag === 0) {
-        item.qty = 1;
-      }
-      if (item.qty < 2) {
+        if (flag === 0) {
+          item.qty = 1;
+        }
+        if (item.qty < 2) {
+          $scope.order.push(item);
+        }
+      } else {
+        item.qty = qty;
         $scope.order.push(item);
       }
-    } else {
-      item.qty = qty;
-      $scope.order.push(item);
-    }
-  };
-  $scope.removeOneEntity = function(item) {
-    for (var i = 0; i < $scope.order.length; i++) {
-      if (item.id === $scope.order[i].id) {
-        item.qty -= 1;
-        if (item.qty === 0) {
+    };
+    $scope.removeOneEntity = function(item) {
+      for (var i = 0; i < $scope.order.length; i++) {
+        if (item.id === $scope.order[i].id) {
+          item.qty -= 1;
+          if (item.qty === 0) {
+            $scope.order.splice(i, 1);
+          }
+        }
+      }
+    };
+    $scope.removeItem = function(item) {
+      for (var i = 0; i < $scope.order.length; i++) {
+        if (item.id === $scope.order[i].id) {
           $scope.order.splice(i, 1);
         }
       }
-    }
-  };
-  $scope.removeItem = function(item) {
-    for (var i = 0; i < $scope.order.length; i++) {
-      if (item.id === $scope.order[i].id) {
-        $scope.order.splice(i, 1);
+    };
+    $scope.getTotal = function() {
+      returnCalculte();
+      var tot = 0;
+      for (var i = 0; i < $scope.order.length; i++) {
+        tot += ($scope.order[i].price * $scope.order[i].qty)
       }
-    }
-  };
-  $scope.getTotal = function() {
-    returnCalculte();
-    var tot = 0;
-    for (var i = 0; i < $scope.order.length; i++) {
-      tot += ($scope.order[i].price * $scope.order[i].qty)
-    }
-    return tot;
-  };
-  $scope.clearOrder = function() {
-    $scope.order = [];
-  };
-  $scope.checkout = function(index) {
-    alert($scope.getDate() + " - Order Number: " + ($scope.totOrders + 1) + "\n\nOrder amount: $" +
-      $scope.getTotal().toFixed(2) + "\n\nPayment received. Thanks.");
-    $scope.order = [];
-    $scope.totOrders += 1;
-  };
-});
+      return tot;
+    };
+    $scope.clearOrder = function() {
+      $scope.order = [];
+    };
+    $scope.checkout = function(index) {
+      alert($scope.getDate() + " - Order Number: " + ($scope.totOrders + 1) + "\n\nOrder amount: $" +
+        $scope.getTotal().toFixed(2) + "\n\nPayment received. Thanks.");
+      $scope.order = [];
+      $scope.totOrders += 1;
+    };
+  });
   $(document).ready(function() {
     $('#tableData').DataTable();
   });
@@ -386,7 +434,7 @@
   });
   $("#filter").keyup(function() {
     var filter = $(this).val(),
-    count = 0;
+      count = 0;
     $('#results div').each(function() {
       if ($(this).text().search(new RegExp(filter, "i")) < 0) {
         $(this).hide();
@@ -433,4 +481,38 @@
     });
     return false;
   });
+
+  var number = 0;
+
+  function setKemasan() {
+    var kemasan_id = $('#kemasan').val();
+    number = number + 1;
+    $.ajax({
+      url: "<?= base_url() ?>ajax/get_kemasan/" + kemasan_id,
+      type: "GET",
+      dataType: "json",
+      success: function(data) {
+        $("#valueKemasan").remove();
+        $.each(data, function(key, value) {
+          $("#valueKemasan").append('<tr>' +
+            '<td>' + value.value + '<input type="hidden" name="kemasanId[]" value="' + value.id + '"></td>' +
+            '<td>' + value.keterangan + '</td>' +
+            '<td><input class="form-control" type="number" value="1" name="kemasanQty[]" id="kemasanQty_' + number + '" onchange="qtyChange(' + number + ')"></td>' +
+            '<td> Rp ' + maskRupiah(value.hpp) + '<input id="kemasanHPP_' + number + '" type="hidden" value="' + value.hpp + '"></td>' +
+            '<td>' +
+            '<input class="form-control" type="text" value="Rp ' + maskRupiah(value.hpp) + '" readonly id="kemasanTotalview_' + number + '">' +
+            '<input type="hidden" value="' + value.hpp + '" name="kemasanHargaTotal[]" id="kemasanTotal_' + number + '"></td>' +
+            '</tr>');
+        });
+      }
+    });
+  }
+
+  function qtyChange(id) {
+    var hargaSatuan = $("#kemasanHPP_" + id).val();
+    var qty = $("#kemasanQty_" + id).val();
+    var total = parseInt(hargaSatuan) * parseInt(qty);
+    $("#kemasanTotalview_" + id).val("Rp " + maskRupiah(total));
+    $("#kemasanTotal_" + id).val(total);
+  }
 </script>

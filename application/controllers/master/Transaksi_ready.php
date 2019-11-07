@@ -17,7 +17,7 @@ class Transaksi_ready extends MY_Controller
 		$data['page_name'] = "Proses";
 		$this->template->load('template/template', 'master/transaksi_ready/proses-transaksi_ready', $data);
 	}
-	
+
 	public function Selesai()
 	{
 		$data['page_name'] = "Proses";
@@ -47,86 +47,125 @@ class Transaksi_ready extends MY_Controller
 		$error = '';
 		for ($i = 0; $i < count($_POST['idd']); $i++) {
 			$stok = $this->mymodel->selectDataone('produk_ready', array('id' => $_POST['idd'][$i]));
-			if($stok['jumlah_stok'] < $_POST['qtt'][$i]){
-				$error .= '<li> Produk <b>'.$stok['nama_produk'].'</b> kode: <b>'.$stok['kode_barang'].'</b> Warna <b>'.$stok['warna_produk'].'</b> Tidak Memiliki Cukup Stok </li>';
+			if ($stok['jumlah_stok'] < $_POST['qtt'][$i]) {
+				$error .= '<li> Produk <b>' . $stok['nama_produk'] . '</b> kode: <b>' . $stok['kode_barang'] . '</b> Warna <b>' . $stok['warna_produk'] . '</b> Tidak Memiliki Cukup Stok </li>';
 			}
 		}
 
-		if($error == ''){
+		if ($error == '') {
 			return true;
-		}else{
+		} else {
 			$this->alert->alertdanger($error);
-			return false;	
+			return false;
+		}
+	}
+
+	public function checkstockkemasan()
+	{
+		$error = '';
+		for ($i = 0; $i < count($_POST['kemasanId']); $i++) {
+			$kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $_POST['kemasanId'][$i]));
+			if ($kemasan['stok'] < $_POST['kemasanQty'][$i]) {
+				$error .= '<li> Kemasan <b>' . $kemasan['value'] . '</b> Tidak Memiliki Cukup Stok </li>';
+			}
+		}
+
+		if ($error == '') {
+			return true;
+		} else {
+			$this->alert->alertdanger($error);
+			return false;
 		}
 	}
 
 	public function store()
-	{	
+	{
 		if (!$this->checkstock()) {
 			return false;
 		} else {
-			$idUser = $this->session->userdata('id');
-			$this->validate();
-			if ($this->form_validation->run() == FALSE) {
-				$this->alert->alertdanger(validation_errors());
+			if (!$this->checkstockkemasan()) {
+				return false;
 			} else {
-				$chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-				$res = "INVL-";
-				for (;;) {
-					for ($i = 0; $i < 5; $i++) {
-						$res .= $chars[mt_rand(0, strlen($chars) - 1)];
+				$idUser = $this->session->userdata('id');
+				$this->validate();
+				if ($this->form_validation->run() == FALSE) {
+					$this->alert->alertdanger(validation_errors());
+				} else {
+					$chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+					$res = "INVL-";
+					for (;;) {
+						for ($i = 0; $i < 5; $i++) {
+							$res .= $chars[mt_rand(0, strlen($chars) - 1)];
+						}
+
+						$query = $this->db->query("SELECT * FROM transaksi WHERE kode_transaksi='$res'")->result();
+						if (count($query) == 0) {
+							break;
+						} else { }
 					}
 
-					$query = $this->db->query("SELECT * FROM transaksi WHERE kode_transaksi='$res'")->result();
-					if (count($query) == 0) {
-						break;
-					} else { }
+					$harga_subtotal = 0;
+					for ($i = 0; $i < count($_POST['idd']); $i++) {
+						$total_harga = $_POST['prc'][$i] * $_POST['qtt'][$i];
+						$diskon = $total_harga * ($_POST['diskon'][$i] / 100);
+						$harga_total = $total_harga - $diskon;
+
+						$dtd['kode_transaksi'] = $res;
+						$dtd['id_produk_ready'] = $_POST['idd'][$i];
+						$dtd['qty'] = $_POST['qtt'][$i];
+						$dtd['ukuran'] = $_POST['ukuran'][$i];
+						$dtd['warna'] = $_POST['warna'][$i];
+						$dtd['keterangan'] = $_POST['keterangan'][$i];
+						$dtd['harga_satuan'] = $_POST['prc'][$i];
+						$dtd['biaya_lain'] = $_POST['biayalain'][$i];
+						$dtd['diskon'] = $_POST['diskon'][$i];
+						$dtd['harga_total'] = strval($harga_total + $_POST['biayalain'][$i]);
+						$dtd['status'] = "ENABLE";
+						$dtd['created_at'] = date('Y-m-d H:i:s');
+						$dtd['updated_at'] = date('Y-m-d H:i:s');
+						$dtd['created_by'] = $idUser;
+
+						$stok = $this->mymodel->selectDataone('produk_ready', array('id' => $_POST['idd'][$i]));
+						$kurangstok['jumlah_stok'] = $stok['jumlah_stok'] - $_POST['qtt'][$i];
+						$this->mymodel->updateData('produk_ready', $kurangstok, array('id' => $_POST['idd'][$i]));
+
+						$this->db->insert('transaksi_produk_ready', $dtd);
+						$harga_subtotal += $harga_total + $_POST['biayalain'][$i];
+					}
+
+					for ($j = 0; $j < count($_POST['kemasanId']); $j++) {
+						$dtkemasan['kode_transaksi'] = $res;
+						$dtkemasan['id_kemasan'] = $_POST['kemasanId'][$j];
+						$dtkemasan['qty'] = $_POST['kemasanQty'][$j];
+						$dtkemasan['harga_total'] = $_POST['kemasanHargaTotal'][$j];
+						$dtkemasan['status'] = "ENABLE";
+						$dtkemasan['created_at'] = date('Y-m-d H:i:s');
+						$dtkemasan['updated_at'] = date('Y-m-d H:i:s');
+						$this->db->insert('transaksi_kemasan', $dtkemasan);
+
+						$kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $_POST['kemasanId'][$j]));
+						$kurangkemasan['stok'] = $kemasan['stok'] - $_POST['kemasanQty'][$j];
+						$this->mymodel->updateData('master_kemasan', $kurangkemasan, array('id' => $_POST['idd'][$i]));
+	
+						$harga_subtotal += $_POST['kemasanHargaTotal'][$j];
+					}
+
+					$dt = $_POST['dt'];
+					$dt['kode_transaksi'] = $res;
+					$dt['sub_total'] = strval($harga_subtotal + $_POST['dt']['biaya_kirim']);
+					$dt['kembalian'] = strval($_POST['dt']['jumlah_bayar'] - ($harga_subtotal + $_POST['dt']['biaya_kirim']));
+					$dt['resi_pengiriman'] = '';
+					$dt['tipe'] = 'Ready Stok';
+					$dt['status_order'] = 'Pesanan Baru';
+					$dt['status_pengiriman'] = 'Belum Dikirim';
+					$dt['status_pembayaran'] = 'Belum Dibayar';
+					$dt['created_by'] = $idUser;
+					$dt['status'] = "ENABLE";
+					$dt['created_at'] = date('Y-m-d H:i:s');
+					$this->db->insert('transaksi', $dt);
+
+					$this->alert->alertsuccess('Success Send Data');
 				}
-
-				$harga_subtotal = 0;
-				for ($i = 0; $i < count($_POST['idd']); $i++) {
-					$total_harga = $_POST['prc'][$i] * $_POST['qtt'][$i];
-					$diskon = $total_harga * ($_POST['diskon'][$i] / 100);
-					$harga_total = $total_harga - $diskon;
-
-					$dtd['kode_transaksi'] = $res;
-					$dtd['id_produk_ready'] = $_POST['idd'][$i];
-					$dtd['qty'] = $_POST['qtt'][$i];
-					$dtd['ukuran'] = $_POST['ukuran'][$i];
-					$dtd['warna'] = $_POST['warna'][$i];
-					$dtd['keterangan'] = $_POST['keterangan'][$i];
-					$dtd['harga_satuan'] = $_POST['prc'][$i];
-					$dtd['biaya_lain'] = $_POST['biayalain'][$i];
-					$dtd['diskon'] = $_POST['diskon'][$i];
-					$dtd['harga_total'] = strval($harga_total + $_POST['biayalain'][$i]);
-					$dtd['status'] = "ENABLE";
-					$dtd['created_at'] = date('Y-m-d H:i:s');
-					$dtd['updated_at'] = date('Y-m-d H:i:s');
-					$dtd['created_by'] = $idUser;
-
-					$stok = $this->mymodel->selectDataone('produk_ready', array('id' => $_POST['idd'][$i]));
-					$kurangstok['jumlah_stok'] = $stok['jumlah_stok'] - $_POST['qtt'][$i];
-					$this->mymodel->updateData('produk_ready', $kurangstok, array('id' => $_POST['idd'][$i]));
-
-					$this->db->insert('transaksi_produk_ready', $dtd);
-					$harga_subtotal += $harga_total + $_POST['biayalain'][$i];
-				}
-
-				$dt = $_POST['dt'];
-				$dt['kode_transaksi'] = $res;
-				$dt['sub_total'] = strval($harga_subtotal + $_POST['dt']['biaya_kirim']);
-				$dt['kembalian'] = strval($_POST['dt']['jumlah_bayar'] - ($harga_subtotal + $_POST['dt']['biaya_kirim']));
-				$dt['resi_pengiriman'] = '';
-				$dt['tipe'] = 'Ready Stok';
-				$dt['status_order'] = 'Pesanan Baru';
-				$dt['status_pengiriman'] = 'Belum Dikirim';
-				$dt['status_pembayaran'] = 'Belum Dibayar';
-				$dt['created_by'] = $idUser;
-				$dt['status'] = "ENABLE";
-				$dt['created_at'] = date('Y-m-d H:i:s');
-				$this->db->insert('transaksi', $dt);
-
-				$this->alert->alertsuccess('Success Send Data');
 			}
 		}
 	}
@@ -171,7 +210,7 @@ class Transaksi_ready extends MY_Controller
 		echo $this->datatables->generate();
 	}
 
-	
+
 	public function jsonselesai()
 	{
 		header('Content-Type: application/json');
@@ -196,7 +235,7 @@ class Transaksi_ready extends MY_Controller
 		redirect(base_url('master/transaksi_ready'));
 	}
 
-	
+
 	public function inv($id)
 	{
 		$data['page_name'] = "Pesanan";
@@ -206,7 +245,7 @@ class Transaksi_ready extends MY_Controller
 		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
 		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
 		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
-		
+
 		$data['dropshipper'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_dropshipper']));
 		$data['dropshipper_kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['dropshipper']['id_kelurahan']));
 		$data['dropshipper_kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['dropshipper']['id_kecamatan']));
@@ -215,11 +254,12 @@ class Transaksi_ready extends MY_Controller
 
 		$data['kurir'] = $this->mymodel->selectDataone('master_kurir',  array('id' => $data['transaksi']['id_kurir']));
 		$data['transaksi_produk_ready'] = $this->mymodel->selectWhere('transaksi_produk_ready',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
-		
+		$data['transaksi_kemasan'] = $this->mymodel->selectWhere('transaksi_kemasan',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
+
 		$this->template->load('template/template', 'master/transaksi_ready/inv', $data);
 	}
 
-	
+
 	public function print($id)
 	{
 		$data['page_name'] = "Pesanan";
@@ -229,7 +269,7 @@ class Transaksi_ready extends MY_Controller
 		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
 		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
 		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
-		
+
 		$data['dropshipper'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_dropshipper']));
 		$data['dropshipper_kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['dropshipper']['id_kelurahan']));
 		$data['dropshipper_kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['dropshipper']['id_kecamatan']));
@@ -238,7 +278,8 @@ class Transaksi_ready extends MY_Controller
 
 		$data['kurir'] = $this->mymodel->selectDataone('master_kurir',  array('id' => $data['transaksi']['id_kurir']));
 		$data['transaksi_produk_ready'] = $this->mymodel->selectWhere('transaksi_produk_ready',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
-		
+		$data['transaksi_kemasan'] = $this->mymodel->selectWhere('transaksi_kemasan',  array('kode_transaksi' => $data['transaksi']['kode_transaksi']));
+
 		$this->load->view('master/transaksi_ready/print', $data);
 	}
 
@@ -252,7 +293,7 @@ class Transaksi_ready extends MY_Controller
 		$data['kabupaten'] = $this->mymodel->selectDataone('tbl_kabkot',  array('id' => $data['customer']['id_kabkot']));
 		$data['provinsi'] = $this->mymodel->selectDataone('tbl_provinsi',  array('id' => $data['customer']['id_provinsi']));
 		$data['kurir'] = $this->mymodel->selectDataone('master_kurir',  array('id' => $data['transaksi']['id_kurir']));
-		
+
 		$data['dropshipper'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_dropshipper']));
 		$data['dropshipper_kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['dropshipper']['id_kelurahan']));
 		$data['dropshipper_kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['dropshipper']['id_kecamatan']));
@@ -261,7 +302,7 @@ class Transaksi_ready extends MY_Controller
 
 		$this->load->view('master/transaksi_preorder/form_kirim', $data);
 	}
-	
+
 	public function kirim($id)
 	{
 		$data['transaksi'] = $this->mymodel->selectDataone('transaksi', array('id' => $id));
@@ -324,7 +365,7 @@ class Transaksi_ready extends MY_Controller
 				$dt['status_pembayaran'] = 'Belum Lunas';
 			}
 
-			$dt['jumlah_bayar'] = $bayar ;
+			$dt['jumlah_bayar'] = $bayar;
 			$dt['tgl_status_pembayaran'] = date('Y-m-d H:i:s');
 			$dt['kembalian'] = $bayar - $harga['sub_total'];
 			$dt['updated_at'] = date('Y-m-d H:i:s');
@@ -343,28 +384,27 @@ class Transaksi_ready extends MY_Controller
 	}
 
 	public function actionproses($id)
-	{	
+	{
 
 		$status_pembayaran = $this->mymodel->selectDataone('transaksi', array('id' => $id));
-		if($status_pembayaran['status_pembayaran'] != 'Lunas'){
+		if ($status_pembayaran['status_pembayaran'] != 'Lunas') {
 			$this->alert->alertdanger('Mohon Untuk Melakukan Pelunasan Pembayaran Transaksi Terlebih Dahulu!');
 			return false;
-		}else {
+		} else {
 			$dt['status_order'] = 'Diproses';
 			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
 			$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 			$this->alert->alertsuccess('Success Send Data');
 		}
-
 	}
 
 	public function actionselesai($id)
 	{
 		$no_resi = $this->mymodel->selectDataone('transaksi', array('id' => $id));
-		if(!$no_resi['resi_pengiriman']){
+		if (!$no_resi['resi_pengiriman']) {
 			$this->alert->alertdanger('Mohon Untuk Melakukan Pengiriman Barang Terlebih Dahulu!');
 			return false;
-		}else {
+		} else {
 			$dt['status_order'] = 'Selesai';
 			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
 			$this->mymodel->updateData('transaksi', $dt, array('id' => $id));

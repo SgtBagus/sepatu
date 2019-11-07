@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Waktu pembuatan: 06 Nov 2019 pada 05.49
--- Versi server: 10.4.8-MariaDB
--- Versi PHP: 7.3.10
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 07 Nov 2019 pada 10.09
+-- Versi server: 10.1.39-MariaDB
+-- Versi PHP: 7.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -338,8 +338,8 @@ INSERT INTO `access_control` (`id`, `folder`, `class`, `method`, `val`) VALUES
 CREATE TABLE `activity` (
   `ip` varchar(255) DEFAULT NULL,
   `link` varchar(255) DEFAULT NULL,
-  `get` longtext DEFAULT NULL,
-  `post` longtext DEFAULT NULL,
+  `get` longtext,
+  `post` longtext,
   `user_id` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -616,7 +616,7 @@ INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_privat
 CREATE TABLE `konfig` (
   `id` int(11) NOT NULL,
   `slug` varchar(255) DEFAULT NULL,
-  `value` text DEFAULT NULL,
+  `value` text,
   `status` enum('ENABLE','DISABLE') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -652,13 +652,13 @@ CREATE TABLE `logs` (
   `id` int(11) NOT NULL,
   `uri` varchar(255) NOT NULL,
   `method` varchar(6) NOT NULL,
-  `params` text DEFAULT NULL,
+  `params` text,
   `api_key` varchar(40) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
   `time` int(11) NOT NULL,
   `rtime` float DEFAULT NULL,
   `authorized` varchar(1) NOT NULL,
-  `response_code` smallint(3) DEFAULT 0
+  `response_code` smallint(3) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -904,6 +904,31 @@ INSERT INTO `master_kategori_suplier` (`id`, `nama_kategori`, `ket_kategori`, `s
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `master_kemasan`
+--
+
+CREATE TABLE `master_kemasan` (
+  `id` int(11) NOT NULL,
+  `value` varchar(225) DEFAULT NULL,
+  `keterangan` text,
+  `stok` int(11) DEFAULT NULL,
+  `hpp` varchar(225) DEFAULT NULL,
+  `status` enum('ENABLE','DISABLE') DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `master_kemasan`
+--
+
+INSERT INTO `master_kemasan` (`id`, `value`, `keterangan`, `stok`, `hpp`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Sedang', 'Sedang', 500, '50000', 'ENABLE', '2019-11-07 13:32:31', NULL),
+(2, 'Besar', 'Besar', 300, '100000', 'ENABLE', '2019-11-07 13:36:48', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `master_kurir`
 --
 
@@ -1008,7 +1033,7 @@ INSERT INTO `menu_master` (`id`, `name`, `icon`, `link`, `urutan`, `parent`, `no
 (41, 'Master Kategori', 'fa fa-circle', 'master/master_kategori_produk', '2', '27', '', 'ENABLE', '2019-10-11 08:23:14', '2019-10-11 08:24:16'),
 (39, 'Produk Ready', 'fa fa-circle', 'master/produk_ready', '0', '27', '', 'ENABLE', '2019-10-11 08:20:08', NULL),
 (40, 'Produk Preorder', 'fa fa-circle', 'master/produk_preorder', '1', '27', '', 'ENABLE', '2019-10-11 08:21:25', NULL),
-(64, 'Master', 'fa fa-database', '#', '8', '0', '', 'ENABLE', '2019-10-30 10:27:56', '2019-10-30 10:30:57'),
+(64, 'Master', 'fa fa-database', '#', '9', '0', '', 'ENABLE', '2019-10-30 10:27:56', '2019-11-07 13:13:58'),
 (61, 'Pesanan', 'fa fa-circle', 'master/transaksi_ready', '5', '45', '', 'ENABLE', '2019-10-30 09:59:50', '2019-11-06 09:18:05'),
 (45, 'Ready Stok', 'fa fa-shopping-cart', '#', '3', '0', '', 'ENABLE', NULL, '2019-10-30 10:29:30'),
 (62, 'Proses', 'fa fa-circle', 'master/transaksi_ready/proses	', '2', '45', '', 'ENABLE', '2019-10-30 10:00:25', '2019-11-06 10:58:28'),
@@ -1030,8 +1055,9 @@ INSERT INTO `menu_master` (`id`, `name`, `icon`, `link`, `urutan`, `parent`, `no
 (69, 'Kabupaten Kota', 'fa fa-circle', 'master/tbl_kabkot', '2', '72', '', 'ENABLE', '2019-11-05 12:39:35', '2019-11-05 13:45:56'),
 (70, 'Kecamatan', 'fa fa-circle', 'master/tbl_kecamatan', '3', '72', '', 'ENABLE', '2019-11-05 12:46:43', '2019-11-05 13:46:07'),
 (71, 'Desa Kelurahan', 'fa fa-circle', 'master/tbl_kelurahan', '4', '72', '', 'ENABLE', '2019-11-05 12:52:44', '2019-11-05 13:46:19'),
-(72, 'Kota', 'fa fa-building-o', '#', '8', '0', '', 'ENABLE', '2019-11-05 13:45:22', NULL),
-(73, 'Sumber Trafik', 'fa fa-circle', 'master/master_sumtrafik', '4', '64', '', 'ENABLE', '2019-11-05 13:47:11', NULL);
+(72, 'Kota', 'fa fa-building-o', '#', '9', '0', '', 'ENABLE', '2019-11-05 13:45:22', '2019-11-07 13:14:07'),
+(73, 'Sumber Trafik', 'fa fa-circle', 'master/master_sumtrafik', '4', '64', '', 'ENABLE', '2019-11-05 13:47:11', NULL),
+(74, 'Kemasan', 'fa fa-cube', 'master/Master_kemasan', '8', '0', '', 'ENABLE', '2019-11-07 13:13:43', '2019-11-07 13:15:15');
 
 -- --------------------------------------------------------
 
@@ -1690,8 +1716,8 @@ INSERT INTO `regencies` (`id`, `province_id`, `name`) VALUES
 CREATE TABLE `report` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `query` longtext DEFAULT NULL,
-  `header` text DEFAULT NULL,
+  `query` longtext,
+  `header` text,
   `status` enum('ENABLE','DISABLE') DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -1729,7 +1755,7 @@ CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `role` varchar(255) DEFAULT NULL,
   `status` enum('DISABLE','ENABLE') DEFAULT NULL,
-  `menu` text DEFAULT NULL,
+  `menu` text,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1739,7 +1765,7 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `role`, `status`, `menu`, `created_at`, `updated_at`) VALUES
-(17, 'Super Admin', 'ENABLE', '[\"17\",\"27\",\"41\",\"39\",\"40\",\"57\",\"45\",\"61\",\"62\",\"63\",\"48\",\"49\",\"50\",\"51\",\"52\",\"53\",\"54\",\"55\",\"16\",\"64\",\"65\",\"66\",\"67\",\"73\",\"72\",\"68\",\"69\",\"70\",\"71\"]', '2018-10-12 17:03:59', '2019-11-05 13:47:23'),
+(17, 'Super Admin', 'ENABLE', '[\"17\",\"27\",\"41\",\"39\",\"40\",\"57\",\"45\",\"61\",\"62\",\"63\",\"48\",\"49\",\"50\",\"51\",\"52\",\"53\",\"54\",\"55\",\"16\",\"74\",\"64\",\"65\",\"66\",\"67\",\"73\",\"72\",\"68\",\"69\",\"70\",\"71\"]', '2018-10-12 17:03:59', '2019-11-07 13:14:17'),
 (18, 'Operator', 'ENABLE', '[\"17\",\"27\",\"41\",\"39\",\"40\",\"57\",\"45\",\"46\",\"47\",\"48\",\"49\",\"50\",\"51\",\"52\",\"53\",\"54\",\"55\",\"56\"]', '2018-10-24 10:29:54', '2019-10-28 14:24:07'),
 (19, 'Pelanggan', 'DISABLE', NULL, '2019-08-18 01:31:39', NULL);
 
@@ -89913,7 +89939,34 @@ INSERT INTO `transaksi` (`id`, `kode_transaksi`, `id_customer`, `id_kurir`, `bia
 (17, 'INVL-RCHIL', 7, 1, '50000', '50000', '525000', '-475000', 1, 2, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-06 09:08:43', '0000-00-00 00:00:00', 21),
 (18, 'INVL-WWQ35', 3, 1, '5000', '2000000', '818500', '1181500', 2, 3, '3412312423', 'Ready Stok', 'Selesai', '2019-11-06 10:59:24', 'Sudah Dikirim', '2019-11-06 10:59:21', 'Lunas', '2019-11-06 10:54:50', 'ENABLE', '2019-11-06 10:42:26', '2019-11-06 10:59:21', 21),
 (19, 'INVL-HLQNQ', 7, 0, '120', '12323', '475120', '-462797', 0, 0, '', 'Ready Stok', 'Cancel', '2019-11-06 11:32:34', 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-06 11:32:18', '0000-00-00 00:00:00', 21),
-(20, 'INVL-A8DNE', 3, 0, '1231', '123123213', '476231', '122646982', 0, 0, '', 'Ready Stok', 'Diproses', '2019-11-06 11:43:49', 'Belum Dikirim', NULL, 'Lunas', '2019-11-06 11:43:46', 'ENABLE', '2019-11-06 11:43:15', '0000-00-00 00:00:00', 21);
+(20, 'INVL-A8DNE', 3, 1, '1231', '123123213', '476231', '122646982', 0, 3, '2131233421', 'Ready Stok', 'Diproses', '2019-11-06 11:43:49', 'Sudah Dikirim', '2019-11-07 11:39:21', 'Lunas', '2019-11-06 11:43:46', 'ENABLE', '2019-11-06 11:43:15', '2019-11-07 11:39:21', 21),
+(21, 'INVL-FQJXL', 2, 1, '50000', '2000000', '575000', '1425000', 1, 1, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-07 14:50:52', '0000-00-00 00:00:00', 21),
+(22, 'INVL-5UFPF', 7, 1, '50000', '50000', '575000', '-525000', 1, 1, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-07 14:52:26', '0000-00-00 00:00:00', 21);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `transaksi_kemasan`
+--
+
+CREATE TABLE `transaksi_kemasan` (
+  `id` int(11) NOT NULL,
+  `kode_transaksi` varchar(225) DEFAULT NULL,
+  `id_kemasan` int(11) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `harga_total` int(11) DEFAULT NULL,
+  `status` enum('ENABLE','DISABLE') DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `transaksi_kemasan`
+--
+
+INSERT INTO `transaksi_kemasan` (`id`, `kode_transaksi`, `id_kemasan`, `qty`, `harga_total`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'INVL-FQJXL', 1, 1, 50000, 'ENABLE', '2019-11-07 00:00:00', NULL),
+(2, 'INVL-5UFPF', 1, 1, 50000, 'ENABLE', '2019-11-07 14:52:26', '2019-11-07 14:52:26');
 
 -- --------------------------------------------------------
 
@@ -89954,7 +90007,11 @@ INSERT INTO `transaksi_produk` (`id`, `kode_transaksi`, `id_produk_preorder`, `q
 (50, 'INVL-K03KU', 1, '1', '3', '', '', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 10:10:48', '2019-11-04 10:10:48', 21),
 (51, 'INVL-5BCC4', 1, '1', '', '', '', '550000', '', '', '550000', 'ENABLE', '2019-11-04 10:11:53', '2019-11-04 10:11:53', 21),
 (52, 'INVL-5BCC4', 2, '2', '2', '', '', '475000', '5000', '50', '480000', 'ENABLE', '2019-11-04 10:11:53', '2019-11-04 10:11:53', 21),
-(53, 'INVL-RCHIL', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-06 09:08:43', '2019-11-06 09:08:43', 21);
+(53, 'INVL-RCHIL', 2, '1', '2', 'Navy', 'Ini Selpatu ku dengan keterangan banyak', '475000', '', '', '475000', 'ENABLE', '2019-11-06 09:08:43', '2019-11-06 09:08:43', 21),
+(54, 'INVL-NHWDS', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:49:50', '2019-11-07 14:49:50', 21),
+(55, 'INVL-326FA', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:49:57', '2019-11-07 14:49:57', 21),
+(56, 'INVL-FQJXL', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:50:52', '2019-11-07 14:50:52', 21),
+(57, 'INVL-5UFPF', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:52:26', '2019-11-07 14:52:26', 21);
 
 -- --------------------------------------------------------
 
@@ -90101,6 +90158,12 @@ ALTER TABLE `master_kategori_suplier`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `master_kemasan`
+--
+ALTER TABLE `master_kemasan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `master_kurir`
 --
 ALTER TABLE `master_kurir`
@@ -90207,6 +90270,12 @@ ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `transaksi_kemasan`
+--
+ALTER TABLE `transaksi_kemasan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
@@ -90307,6 +90376,12 @@ ALTER TABLE `master_kategori_suplier`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT untuk tabel `master_kemasan`
+--
+ALTER TABLE `master_kemasan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT untuk tabel `master_kurir`
 --
 ALTER TABLE `master_kurir`
@@ -90328,7 +90403,7 @@ ALTER TABLE `master_ukuran`
 -- AUTO_INCREMENT untuk tabel `menu_master`
 --
 ALTER TABLE `menu_master`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT untuk tabel `produk_preorder`
@@ -90394,13 +90469,19 @@ ALTER TABLE `tbl_provinsi`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT untuk tabel `transaksi_kemasan`
+--
+ALTER TABLE `transaksi_kemasan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi_produk_ready`

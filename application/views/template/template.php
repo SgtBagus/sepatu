@@ -260,7 +260,7 @@ if($this->session->userdata('session_sop')=="") {
                   </li>
                 <?php } ?>
 
-              </ul>
+              </ul> 
             </li>
           <?php } ?>
         <?php } ?>

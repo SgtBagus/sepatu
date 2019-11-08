@@ -55,7 +55,18 @@
         <div class="box">
           <div class="box-body">
             <h4>Produk Terlaris</h4>
-            <div id="load-table"></div>
+            <table class="table table-hover" id="idTableProduk" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama produk</th>
+                  <th>Qty</th>
+                  <th>Jumlah stok</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -63,118 +74,65 @@
         <div class="box">
           <div class="box-body">
             <h4>Kota Terlaris</h4>
-            <div id="load-table-kota"></div>
+            <table class="table table-hover" id="idTableKota" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Provinsi</th>
+                  <th>COUNT</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </section>
 </div>
-<script>
-  function loadtableproduk() {
-    var tableProduk = '<table class="table table-bordered" id="mytableProduk">' +
-      '     <thead>' +
-      '     <tr class="bg-success">' +
-      '       <th style="width:20px">No</th>' +
-      '<th>Nama Produk</th>' +
-      '<th>Jumlah Terjual</th>' +
-      '<th>Sisa Stok</th>' +
-      '     </tr>' +
-      '     </thead>' +
-      '     <tbody>' +
-      '     </tbody>' +
-      ' </table>';
-    $("#load-table").html(tableProduk)
-    var t = $("#mytableProduk").dataTable({
-      oLanguage: {
-        sProcessing: "loading..."
-      },
-      processing: true,
-      serverSide: true,
-      searching: false,
-      ajax: {
-        "url": "<?= base_url('home/jsonproduk') ?>",
+
+<script type="text/javascript">
+  var table;
+  $(document).ready(function() {
+    //datatables
+    table = $('#idTableProduk').DataTable({
+      "processing": true, //Feature control the processing indicator.
+      "serverSide": true, //Feature control DataTables' server-side processing mode.
+      "order": [], //Initial no order.
+      "scrollX": true,
+      // Load data for the table's content from an Ajax source
+      "ajax": {
+        "url": "<?php echo base_url('report/Produk_terlaris/ajaxall/') ?>",
         "type": "POST"
       },
-      columns: [{
-          "data": "id",
-          "orderable": false
-        },
-        {
-          "data": "nama_produk"
-        },
-        {
-          "data": "qty"
-        },
-        {
-          "data": "jumlah_stok"
-        }
-      ],
-      order: [
-        [3, 'desc']
-      ],
-
-      rowCallback: function(row, data, iDisplayIndex) {
-        var info = this.fnPagingInfo();
-        var page = info.iPage;
-        var length = info.iLength;
-        var index = page * length + (iDisplayIndex + 1);
-        $('td:eq(0)', row).html(index);
-      }
+      //Set column definition initialisation properties.
+      "columnDefs": [{
+        "targets": [0], //first column / numbering colum
+        "orderable": true, //set not orderable
+      }, ],
     });
-  }
-
-  loadtableproduk();
+  });
 
   
-  function loadtablekota() {
-    var tableProduk = '<table class="table table-bordered" id="mytableKota">' +
-      '     <thead>' +
-      '     <tr class="bg-success">' +
-      '       <th style="width:20px">No</th>' +
-      '<th>Provinsi</th>' +
-      '<th>Jumlah Pembeli</th>' +
-      '     </tr>' +
-      '     </thead>' +
-      '     <tbody>' +
-      '     </tbody>' +
-      ' </table>';
-    $("#load-table-kota").html(tableProduk)
-    var t = $("#mytableKota").dataTable({
-      oLanguage: {
-        sProcessing: "loading..."
-      },
-      processing: true,
-      serverSide: true,
-      searching: false,
-      ajax: {
-        "url": "<?= base_url('home/jsonkota') ?>",
-        "type": "POST"
-      },
-      columns: [{
-          "data": "id",
-          "orderable": false
+  $(document).ready(function() {
+    $('#idTableKota').DataTable({ 
+        "processing": true, //Feature control the processing indicator.
+        "serverSide": true, //Feature control DataTables' server-side processing mode.
+        "order": [], //Initial no order.
+        "scrollX": true,
+        // Load data for the table's content from an Ajax source
+        "ajax": {
+          "url": "<?php echo base_url('report/Kota_terlaris/ajaxall/')?>",
+          "type": "POST"
         },
-        {
-          "data": "provinsi"
-        },
-        {
-          "data": "COUNT"
-        },
-      ],
-      order: [
-        [2, 'desc']
-      ],
-
-      rowCallback: function(row, data, iDisplayIndex) {
-        var info = this.fnPagingInfo();
-        var page = info.iPage;
-        var length = info.iLength;
-        var index = page * length + (iDisplayIndex + 1);
-        $('td:eq(0)', row).html(index);
-      }
-    });
-  }
-
-  loadtablekota();
+        //Set column definition initialisation properties.
+        "columnDefs": [
+        { 
+            "targets": [ 0 ], //first column / numbering colum
+            "orderable": true, //set not orderable
+          },
+          ],
+        });
+  });
 </script>

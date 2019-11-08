@@ -36,7 +36,7 @@
           </div>
           <div class="box-body">
             <div class="show_error"></div>
-            <div class="table-responsive">
+            <div class="table-responsive"> 
               <div id="load-table"></div>
             </div>
           </div>

@@ -146,7 +146,7 @@ class Transaksi_ready extends MY_Controller
 						$kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $_POST['kemasanId'][$j]));
 						$kurangkemasan['stok'] = $kemasan['stok'] - $_POST['kemasanQty'][$j];
 						$this->mymodel->updateData('master_kemasan', $kurangkemasan, array('id' => $_POST['idd'][$i]));
-	
+						
 						$harga_subtotal += $_POST['kemasanHargaTotal'][$j];
 					}
 
@@ -162,6 +162,7 @@ class Transaksi_ready extends MY_Controller
 					$dt['created_by'] = $idUser;
 					$dt['status'] = "ENABLE";
 					$dt['created_at'] = date('Y-m-d H:i:s');
+					$dt['updated_at'] = date('Y-m-d H:i:s');
 					$this->db->insert('transaksi', $dt);
 
 					$this->alert->alertsuccess('Success Send Data');
@@ -393,6 +394,7 @@ class Transaksi_ready extends MY_Controller
 		} else {
 			$dt['status_order'] = 'Diproses';
 			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
+			$dt['updated_at'] = date('Y-m-d H:i:s');
 			$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 			$this->alert->alertsuccess('Success Send Data');
 		}
@@ -407,6 +409,7 @@ class Transaksi_ready extends MY_Controller
 		} else {
 			$dt['status_order'] = 'Selesai';
 			$dt['tgl_status_order'] = date('Y-m-d H:i:s');
+			$dt['updated_at'] = date('Y-m-d H:i:s');
 			$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 			$this->alert->alertsuccess('Success Send Data');
 		}
@@ -416,6 +419,7 @@ class Transaksi_ready extends MY_Controller
 	{
 		$dt['status_order'] = 'Cancel';
 		$dt['tgl_status_order'] = date('Y-m-d H:i:s');
+		$dt['updated_at'] = date('Y-m-d H:i:s');
 		$this->mymodel->updateData('transaksi', $dt, array('id' => $id));
 		$this->alert->alertsuccess('Success Send Data');
 		redirect(base_url('master/transaksi_ready/selesai'));

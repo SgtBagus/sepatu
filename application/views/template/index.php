@@ -60,8 +60,9 @@
                 <tr>
                   <th>No</th>
                   <th>Nama produk</th>
-                  <th>Qty</th>
+                  <th>Warna produk</th>
                   <th>Jumlah stok</th>
+                  <th>Terjual</th>
                 </tr>
               </thead>
               <tbody>
@@ -106,6 +107,7 @@
         "url": "<?php echo base_url('report/Produk_terlaris/ajaxall/') ?>",
         "type": "POST"
       },
+      "order": [[4, 'desc']],
       //Set column definition initialisation properties.
       "columnDefs": [{
         "targets": [0], //first column / numbering colum
@@ -114,25 +116,24 @@
     });
   });
 
-  
+
   $(document).ready(function() {
-    $('#idTableKota').DataTable({ 
-        "processing": true, //Feature control the processing indicator.
-        "serverSide": true, //Feature control DataTables' server-side processing mode.
-        "order": [], //Initial no order.
-        "scrollX": true,
-        // Load data for the table's content from an Ajax source
-        "ajax": {
-          "url": "<?php echo base_url('report/Kota_terlaris/ajaxall/')?>",
-          "type": "POST"
-        },
-        //Set column definition initialisation properties.
-        "columnDefs": [
-        { 
-            "targets": [ 0 ], //first column / numbering colum
-            "orderable": true, //set not orderable
-          },
-          ],
-        });
+    $('#idTableKota').DataTable({
+      "processing": true, //Feature control the processing indicator.
+      "serverSide": true, //Feature control DataTables' server-side processing mode.
+      "order": [], //Initial no order.
+      "scrollX": true,
+      // Load data for the table's content from an Ajax source
+      "ajax": {
+        "url": "<?php echo base_url('report/Kota_terlaris/ajaxall/') ?>",
+        "type": "POST"
+      },
+      "order": [[2, 'desc']],
+      //Set column definition initialisation properties.
+      "columnDefs": [{
+        "targets": [0], //first column / numbering colum
+        "orderable": true, //set not orderable
+      }, ],
+    });
   });
 </script>

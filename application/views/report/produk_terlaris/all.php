@@ -26,7 +26,7 @@
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Kode transaksi</th><th>Nama produk</th><th>Warna produk</th><th>Qty</th><th>Jumlah stok</th>
+                      <th>Nama produk</th><th>Warna produk</th><th>Jumlah stok</th><th>Terjual</th>
                       <th></th>
                     </tr>
                   </thead>

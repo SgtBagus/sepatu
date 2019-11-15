@@ -2,7 +2,7 @@
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Report_produk_terlaris extends CI_Model {
+class Report_laporan_onkir extends CI_Model {
 
     public function __construct()
     {
@@ -12,10 +12,10 @@ class Report_produk_terlaris extends CI_Model {
     }
 
 
-    var $column_order = array(null,'nama_produk','warna_produk','jumlah_stok','terjual'); //field yang ada di table user
-    var $column_search = array(null,'nama_produk','warna_produk','jumlah_stok','terjual'); //field yang ada di table user
-    var $order = array('nama_produk'=>'asc'); // default order 
-    var $table = "(SELECT b.nama_produk, a.warna_produk, a.jumlah_stok, SUM(c.qty) as terjual FROM produk_ready a LEFT JOIN master_produk b on a.id_produk = b.id INNER JOIN transaksi_produk_ready c ON c.id_produk_ready = a.id INNER JOIN transaksi d ON d.kode_transaksi = c.kode_transaksi WHERE d.status_order = 'Selesai' GROUP BY a.id ORDER BY c.qty ASC) as tabledata";
+    var $column_order = array(null,'nama_customer','value','biaya_kirim','biaya_kirim_real','status_pengiriman','tgl_status_pengiriman'); //field yang ada di table user
+    var $column_search = array(null,'nama_customer','value','biaya_kirim','biaya_kirim_real','status_pengiriman','tgl_status_pengiriman'); //field yang ada di table user
+    var $order = array('nama_customer'=>'asc'); // default order 
+    var $table = "(SELECT b.nama_customer, c.value, a.biaya_kirim, a.biaya_kirim_real, a.status_pengiriman, a.tgl_status_pengiriman FROM transaksi a INNER JOIN customer b ON a.id_kurir = b.id INNER JOIN master_kurir c ON a.id_kurir = c.id) as tabledata";
 
     private function _get_datatables_query()
     {
@@ -29,7 +29,7 @@ class Report_produk_terlaris extends CI_Model {
                 if($i===0) // looping awal
                 {
                     $this->db->group_start(); 
-                    $this->db->like($item, $_POST['search']['value']);
+                    // $this->db->like($item, $_POST['search']['value']);
                 }else
                 {
                     $this->db->or_like($item, $_POST['search']['value']);

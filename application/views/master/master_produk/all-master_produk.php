@@ -12,7 +12,7 @@
 
       <h1>
 
-        Produk Ready
+        Master Produk
 
         <small>master</small>
 
@@ -24,7 +24,7 @@
 
         <li><a href="#">master</a></li>
 
-        <li class="active">Produk Ready</li>
+        <li class="active">Master Produk</li>
 
       </ol>
 
@@ -64,18 +64,18 @@
 
                   <div class="pull-right">          <a href="javascript::void(0)" onclick="create()">
 
-        <button type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Produk Ready</button> 
+        <button type="button" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Tambah Master Produk</button> 
 
       </a>
 
 
-                  <a href="<?= base_url('fitur/ekspor/produk_ready') ?>" target="_blank">
+                  <a href="<?= base_url('fitur/ekspor/master_produk') ?>" target="_blank">
 
-                    <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Produk Ready</button> 
+                    <button type="button" class="btn btn-sm btn-warning"><i class="fa fa-file-excel-o"></i> Ekspor Master Produk</button> 
 
                   </a>
 
-                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Produk Ready</button>
+                  <button type="button" class="btn btn-sm btn-info" onclick="$('#modal-impor').modal()"><i class="fa fa-file-excel-o"></i> Import Master Produk</button>
 
                   </div>
 
@@ -123,7 +123,7 @@
 
   <!-- /.content-wrapper -->
   
-  <div class="modal fade bd-example-modal-sm" tabindex="-1" produk_ready="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-form">
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" master_produk="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-form">
 
       <div class="modal-dialog modal-md">
 
@@ -156,13 +156,13 @@
   </div> 
 
 
-  <div class="modal fade bd-example-modal-sm" tabindex="-1" produk_ready="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" master_produk="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
 
       <div class="modal-dialog modal-sm">
 
           <div class="modal-content">
 
-              <form id="upload-delete" action="<?= base_url('master/Produk_ready/delete') ?>">
+              <form id="upload-delete" action="<?= base_url('master/Master_produk/delete') ?>">
 
               <div class="modal-header">
 
@@ -212,11 +212,11 @@
 
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-          <h4 class="modal-title">Impor Produk Ready</h4>
+          <h4 class="modal-title">Impor Master Produk</h4>
 
         </div>
 
-        <form action="<?= base_url('fitur/impor/produk_ready') ?>" method="POST"  enctype="multipart/form-data">
+        <form action="<?= base_url('fitur/impor/master_produk') ?>" method="POST"  enctype="multipart/form-data">
 
 
 
@@ -264,7 +264,7 @@
 
                    '     <tr class="bg-success">'+
 
-                   '       <th style="width:20px">No</th>'+'<th>Id Produk</th>'+'<th>Jumlah Stok</th>'+'<th>Ukuran Produk</th>'+'<th>Warna Produk</th>'+'<th>Ket Produk</th>'+'<th>Harga Produksi</th>'+'<th>Harga Jual</th>'+'<th>Created By</th>'+'       <th style="width:150px">Status</th>'+
+                   '       <th style="width:20px">No</th>'+'<th>Nama Produk</th>'+'<th>Ket Produk</th>'+'<th>Harga Produksi</th>'+'<th>Harga Jual</th>'+'<th>Created By</th>'+'       <th style="width:150px">Status</th>'+
 
                    '       <th style="width:150px"></th>'+
 
@@ -316,11 +316,11 @@
 
                 serverSide: true,
 
-                ajax: {"url": "<?= base_url('master/Produk_ready/json?status=') ?>"+status, "type": "POST"},
+                ajax: {"url": "<?= base_url('master/Master_produk/json?status=') ?>"+status, "type": "POST"},
 
                 columns: [
 
-                    {"data": "id","orderable": false},{"data": "id_produk"},{"data": "jumlah_stok"},{"data": "ukuran_produk"},{"data": "warna_produk"},{"data": "ket_produk"},{"data": "harga_produksi"},{"data": "harga_jual"},{"data": "created_by"},
+                    {"data": "id","orderable": false},{"data": "nama_produk"},{"data": "ket_produk"},{"data": "harga_produksi"},{"data": "harga_jual"},{"data": "created_by"},
 
                    {"data": "status"},
 
@@ -336,13 +336,13 @@
 
                 columnDefs : [
 
-                    { targets : [9],
+                    { targets : [6],
 
                         render : function (data, type, row, meta) {
 
                               if(row['status']=='ENABLE'){
 
-                                var htmls = '<a href="<?= base_url('master/Produk_ready/status/') ?>'+row['id']+'/DISABLE">'+
+                                var htmls = '<a href="<?= base_url('master/Master_produk/status/') ?>'+row['id']+'/DISABLE">'+
 
                                             '    <button type="button" class="btn btn-sm btn-sm btn-success"><i class="fa fa-home"></i> ENABLE</button>'+
 
@@ -350,7 +350,7 @@
 
                               }else{
 
-                                var htmls = '<a href="<?= base_url('master/Produk_ready/status/') ?>'+row['id']+'/ENABLE">'+
+                                var htmls = '<a href="<?= base_url('master/Master_produk/status/') ?>'+row['id']+'/ENABLE">'+
 
                                             '    <button type="button" class="btn btn-sm btn-sm btn-danger"><i class="fa fa-home"></i> DISABLE</button>'+
 
@@ -398,22 +398,22 @@
 
       function edit(id) {
 
-            // location.href = "<?= base_url('master/Produk_ready/edit/') ?>"+id;
+            // location.href = "<?= base_url('master/Master_produk/edit/') ?>"+id;
             $("#load-form").html('loading...');
             
             $("#modal-form").modal();
-            $("#title-form").html('Edit Produk Ready');
-            $("#load-form").load("<?= base_url('master/Produk_ready/edit/') ?>"+id);
+            $("#title-form").html('Edit Master Produk');
+            $("#load-form").load("<?= base_url('master/Master_produk/edit/') ?>"+id);
             
          }
 
       function create() {
             $("#load-form").html('loading...');
 
-            // location.href = "<?= base_url('master/Produk_ready/edit/') ?>"+id;
+            // location.href = "<?= base_url('master/Master_produk/edit/') ?>"+id;
             $("#modal-form").modal();
-            $("#title-form").html('Create Produk Ready');
-            $("#load-form").load("<?= base_url('master/Produk_ready/create/') ?>");
+            $("#title-form").html('Create Master Produk');
+            $("#load-form").load("<?= base_url('master/Master_produk/create/') ?>");
             
          }
 

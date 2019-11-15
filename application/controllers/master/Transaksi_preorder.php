@@ -26,10 +26,9 @@ class Transaksi_preorder extends MY_Controller
 
 	public function create()
 	{
-		$data['produk'] = $this->mymodel->selectWithQuery("SELECT produk_preorder.*, master_kategori_produk.nama_kategori, file.dir FROM produk_preorder
-			LEFT JOIN master_kategori_produk on produk_preorder.id_kategori = master_kategori_produk.id
-			LEFT JOIN file on produk_preorder.id = file.table_id
-			WHERE produk_preorder.status = 'ENABLE' AND file.table = 'produk_preorder'");
+		$data['produk'] = $this->mymodel->selectWithQuery("SELECT master_produk.*, file.dir FROM master_produk
+			LEFT JOIN file on master_produk.id = file.table_id
+			WHERE master_produk.status = 'ENABLE' AND file.table = 'master_produk'");
 		$data['page_name'] = "Pesanan";
 		$this->template->load('template/template', 'master/transaksi_preorder/add-transaksi_preorder', $data);
 	}
@@ -104,6 +103,7 @@ class Transaksi_preorder extends MY_Controller
 					$dtd['created_at'] = date('Y-m-d H:i:s');
 					$dtd['updated_at'] = date('Y-m-d H:i:s');
 					$dtd['created_by'] = $idUser;
+					$dtd['id_suplier'] = $_POST['suplier'][$i];
 					$this->db->insert('transaksi_produk', $dtd);
 
 					$harga_subtotal += $harga_total + $_POST['biayalain'][$i];

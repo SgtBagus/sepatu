@@ -209,6 +209,17 @@
                       <div class="col-md-6">
                         <input name="diskon[]" style="margin-top: 10px" class="form-control" placeholder="Diskon" type="number">
                       </div>
+                      <div class="col-md-12">
+                        <select style="margin-top: 10px" class="form-control" name="suplier[]">
+                          <option value="">--Pilih Suplier--</option>
+                          <?php
+                          $suplier = $this->mymodel->selectData("suplier");
+                          foreach ($suplier as $key => $value) {
+                            ?>
+                            <option value="<?= $value['id'] ?>"><?= $value['nama_suplier'] ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
                     </div>
                     <div class="col-md-1">
                       <button type="button" class="btn btn-danger btn-xs" ng-click="removeItem(item)">
@@ -219,7 +230,7 @@
                   <hr>
                 </li>
               </ul>
-            </div>
+            </div> 
             <div class="box-footer" ng-show="order.length">
               <div class="row">
                 <div class="col col-md-6">
@@ -254,6 +265,10 @@
                   <div class="form-group">
                     <p>Biaya Kirim</p>
                     <input type="number" name="dt[biaya_kirim]" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <p>Biaya Kirim Real</p>
+                    <input type="number" name="dt[biaya_kirim_real]" class="form-control">
                   </div>
                 </div>
                 <div class="col col-md-6">
@@ -333,7 +348,6 @@
       <?php foreach ($produk as $d) { ?> {
           id: "<?= trim($d['id']) ?>",
           name: "<?= trim($d['nama_produk']) ?>",
-          kategori: "<?= trim($d['nama_kategori']) ?>",
           price: "<?= trim($d['harga_jual']) ?>",
           priceb: "<?= trim($d['harga_produksi']) ?>",
           image: "<?= trim($d['dir']) ?>",

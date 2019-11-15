@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Waktu pembuatan: 15 Nov 2019 pada 10.24
--- Versi server: 5.7.28-log
--- Versi PHP: 7.2.7
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 15 Nov 2019 pada 07.55
+-- Versi server: 10.1.39-MariaDB
+-- Versi PHP: 7.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `karyas_shoekashoes`
+-- Database: `shoekashoes`
 --
 
 -- --------------------------------------------------------
@@ -502,11 +502,11 @@ INSERT INTO `file` (`id`, `name`, `mime`, `dir`, `table`, `table_id`, `status`, 
 (38, '6950c16c9bcc6995f376b297f163175967018.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175967018.jpg', 'produk_ready', 1, 'ENABLE', '2019-10-28 16:30:38', '2019-10-30 10:15:39'),
 (39, '6950c16c9bcc6995f376b297f163175936094.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175936094.jpg', 'produk_ready', 2, 'ENABLE', '2019-10-28 16:31:01', '2019-10-30 10:15:45'),
 (40, '6950c16c9bcc6995f376b297f163175937450.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175937450.jpg', 'produk_ready', 3, 'ENABLE', '2019-10-28 16:31:08', '2019-10-30 10:15:52'),
-(41, '6950c16c9bcc6995f376b297f163175918039.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175918039.jpg', 'produk_preorder', 1, 'ENABLE', '2019-10-28 16:32:53', '2019-10-30 00:25:36'),
+(41, '6950c16c9bcc6995f376b297f163175918039.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175918039.jpg', 'master_produk', 1, 'ENABLE', '2019-10-28 16:32:53', '2019-10-30 00:25:36'),
 (42, '', '', '', 'customer', 1, 'ENABLE', '2019-10-28 17:45:46', NULL),
 (43, '', '', '', 'customer', 2, 'ENABLE', '2019-10-28 17:46:24', NULL),
 (44, '', '', '', 'customer', 3, 'ENABLE', '2019-10-28 17:47:01', NULL),
-(45, '6950c16c9bcc6995f376b297f163175976845.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175976845.jpg', 'produk_preorder', 2, 'ENABLE', '2019-10-30 01:36:07', NULL);
+(45, '6950c16c9bcc6995f376b297f163175976845.jpg', 'image/jpeg', 'webfile/6950c16c9bcc6995f376b297f163175976845.jpg', 'master_produk', 2, 'ENABLE', '2019-10-30 01:36:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -927,7 +927,7 @@ CREATE TABLE `master_kemasan` (
 --
 
 INSERT INTO `master_kemasan` (`id`, `value`, `keterangan`, `stok`, `hpp`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Sedang', 'Sedang', 496, '50000', 'ENABLE', '2019-11-07 13:32:31', NULL),
+(1, 'Sedang', 'Sedang', 493, '50000', 'ENABLE', '2019-11-07 13:32:31', NULL),
 (2, 'Besar', 'Besar', 300, '100000', 'ENABLE', '2019-11-07 13:36:48', NULL);
 
 -- --------------------------------------------------------
@@ -951,6 +951,32 @@ CREATE TABLE `master_kurir` (
 
 INSERT INTO `master_kurir` (`id`, `value`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
 (1, 'JNE', 'ENABLE', '2019-10-30 10:43:55', '0000-00-00 00:00:00', 21);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `master_produk`
+--
+
+CREATE TABLE `master_produk` (
+  `id` int(11) NOT NULL,
+  `nama_produk` varchar(255) NOT NULL,
+  `ket_produk` text NOT NULL,
+  `harga_produksi` varchar(255) NOT NULL,
+  `harga_jual` varchar(255) NOT NULL,
+  `status` enum('ENABLE','DISABLE') NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `created_by` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `master_produk`
+--
+
+INSERT INTO `master_produk` (`id`, `nama_produk`, `ket_produk`, `harga_produksi`, `harga_jual`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
+(1, 'Anjani heels', '-', '400000', '550000', 'ENABLE', '2019-10-28 16:32:53', '2019-10-30 00:25:36', 19),
+(2, 'Mallini Sneakers', '-', '400000', '475000', 'ENABLE', '2019-10-30 01:36:07', '0000-00-00 00:00:00', 19);
 
 -- --------------------------------------------------------
 
@@ -1034,9 +1060,9 @@ INSERT INTO `menu_master` (`id`, `name`, `icon`, `link`, `urutan`, `parent`, `no
 (17, 'Dashboard', 'fa fa-dashboard', '/', '1', '0', '', 'ENABLE', '2019-08-02 13:07:26', '2019-08-02 13:09:12'),
 (24, 'Report', 'fa fa-file', '#', '7', '0', '', 'DISABLE', '2019-08-06 14:31:50', NULL),
 (27, 'Manajemen Produk', 'fa fa-list', '#', '2', '0', '', 'ENABLE', '2019-08-16 10:55:53', '2019-10-30 10:29:18'),
-(41, 'Master Kategori', 'fa fa-circle', 'master/master_kategori_produk', '2', '27', '', 'ENABLE', '2019-10-11 08:23:14', '2019-10-11 08:24:16'),
-(39, 'Produk Ready', 'fa fa-circle', 'master/produk_ready', '0', '27', '', 'ENABLE', '2019-10-11 08:20:08', NULL),
-(40, 'Produk Preorder', 'fa fa-circle', 'master/produk_preorder', '1', '27', '', 'ENABLE', '2019-10-11 08:21:25', NULL),
+(41, 'Master Kategori', 'fa fa-circle', 'master/master_kategori_produk', '2', '27', '', 'DISABLE', '2019-10-11 08:23:14', '2019-10-11 08:24:16'),
+(39, 'Produk Ready', 'fa fa-circle', 'master/Produk_ready', '15', '27', '', 'ENABLE', '2019-10-11 08:20:08', '2019-11-15 13:13:31'),
+(40, 'Master Produk', 'fa fa-circle', 'master/Master_produk', '1', '27', '', 'ENABLE', '2019-10-11 08:21:25', '2019-11-15 13:08:47'),
 (64, 'Master', 'fa fa-database', '#', '9', '0', '', 'ENABLE', '2019-10-30 10:27:56', '2019-11-07 13:13:58'),
 (61, 'Pesanan', 'fa fa-circle', 'master/transaksi_ready', '5', '45', '', 'ENABLE', '2019-10-30 09:59:50', '2019-11-06 09:18:05'),
 (45, 'Ready Stok', 'fa fa-shopping-cart', '#', '3', '0', '', 'ENABLE', NULL, '2019-10-30 10:29:30'),
@@ -1066,46 +1092,12 @@ INSERT INTO `menu_master` (`id`, `name`, `icon`, `link`, `urutan`, `parent`, `no
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `produk_preorder`
---
-
-CREATE TABLE `produk_preorder` (
-  `id` int(11) NOT NULL,
-  `id_suplier` int(11) NOT NULL,
-  `id_kategori` int(11) NOT NULL,
-  `id_bahanbaku` int(11) NOT NULL,
-  `kode_barang` varchar(255) NOT NULL,
-  `nama_produk` varchar(255) NOT NULL,
-  `ket_produk` text NOT NULL,
-  `harga_produksi` varchar(255) NOT NULL,
-  `harga_jual` varchar(255) NOT NULL,
-  `status` enum('ENABLE','DISABLE') NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `created_by` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `produk_preorder`
---
-
-INSERT INTO `produk_preorder` (`id`, `id_suplier`, `id_kategori`, `id_bahanbaku`, `kode_barang`, `nama_produk`, `ket_produk`, `harga_produksi`, `harga_jual`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(1, 2, 4, 1, 'Anjani heels', 'Anjani heels', '-', '400000', '550000', 'ENABLE', '2019-10-28 16:32:53', '2019-10-30 00:25:36', 19),
-(2, 1, 3, 2, 'Mallini Sneakers', 'Mallini Sneakers', '-', '400000', '475000', 'ENABLE', '2019-10-30 01:36:07', '0000-00-00 00:00:00', 19);
-
--- --------------------------------------------------------
-
---
 -- Struktur dari tabel `produk_ready`
 --
 
 CREATE TABLE `produk_ready` (
   `id` int(11) NOT NULL,
-  `id_suplier` int(11) NOT NULL,
-  `id_kategori` int(11) NOT NULL,
-  `id_bahanbaku` int(11) NOT NULL,
-  `kode_barang` varchar(255) NOT NULL,
-  `nama_produk` varchar(255) NOT NULL,
+  `id_produk` int(11) NOT NULL,
   `jumlah_stok` varchar(255) NOT NULL,
   `ukuran_produk` varchar(255) NOT NULL,
   `warna_produk` varchar(255) NOT NULL,
@@ -1122,10 +1114,10 @@ CREATE TABLE `produk_ready` (
 -- Dumping data untuk tabel `produk_ready`
 --
 
-INSERT INTO `produk_ready` (`id`, `id_suplier`, `id_kategori`, `id_bahanbaku`, `kode_barang`, `nama_produk`, `jumlah_stok`, `ukuran_produk`, `warna_produk`, `ket_produk`, `harga_produksi`, `harga_jual`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(1, 1, 3, 2, 'malini sneakers', 'malini sneakers', '5', '5', 'Maroon', '-', '300000', '475000', 'ENABLE', '2019-10-28 16:30:38', '2019-10-30 10:15:39', 19),
-(2, 1, 3, 2, 'malini sneakers', 'malini sneakers', '0', '5', 'Merah', '-', '300000', '475000', 'ENABLE', '2019-10-28 16:31:01', '2019-10-30 10:15:45', 19),
-(3, 1, 3, 2, 'malini sneakers', 'malini sneakers', '4', '5', 'Biru', '-', '300000', '475000', 'ENABLE', '2019-10-28 16:31:08', '2019-10-30 10:15:52', 19);
+INSERT INTO `produk_ready` (`id`, `id_produk`, `jumlah_stok`, `ukuran_produk`, `warna_produk`, `ket_produk`, `harga_produksi`, `harga_jual`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
+(1, 1, '4', '5', 'Maroon', '-', '300000', '475000', 'ENABLE', '2019-10-28 16:30:38', '2019-10-30 10:15:39', 19),
+(2, 3, '0', '5', 'Merah', '-', '300000', '475000', 'ENABLE', '2019-10-28 16:31:01', '2019-10-30 10:15:45', 19),
+(3, 2, '4', '5', 'Biru', '-', '300000', '475000', 'ENABLE', '2019-10-28 16:31:08', '2019-10-30 10:15:52', 19);
 
 -- --------------------------------------------------------
 
@@ -1747,7 +1739,8 @@ INSERT INTO `report` (`id`, `name`, `query`, `header`, `status`, `created_at`, `
 (13, 'Laporan Terapis', 'SELECT *\r\nFROM\r\n(SELECT terapis.id_terapis, nama_terapis \r\nFROM terapis) a\r\n\r\nLEFT JOIN \r\n\r\n(SELECT rekam_kunjungan.id_terapis, count(rekam_kunjungan.id_kunjungan) as jumlah, created_at\r\nFROM rekam_kunjungan\r\n WHERE date(rekam_kunjungan.created_at) BETWEEN \'2019-10-02\' AND \'2019-10-02\' \r\n GROUP BY date(rekam_kunjungan.created_at)) b\r\n\r\nON a.id_terapis = b.id_terapis', NULL, 'DISABLE', '2019-10-02 10:22:41', NULL),
 (14, 'Laporan Terapis', 'SELECT nama_terapis, COALESCE(jumlah, created_at, 0) as jumlah\r\nFROM\r\n(SELECT id_terapis, nama_terapis \r\nFROM terapis) a\r\n\r\nLEFT JOIN \r\n\r\n(SELECT id_terapis, count(rekam_kunjungan.id_kunjungan) as jumlah, created_at\r\nFROM rekam_kunjungan\r\n WHERE date(rekam_kunjungan.created_at) BETWEEN \'2019-10-02\' AND \'2019-10-02\' \r\n GROUP BY date(rekam_kunjungan.created_at)) b\r\n\r\nON a.id_terapis = b.id_terapis', '[\"nama_terapis\",\"jumlah\"]', 'ENABLE', '2019-10-02 10:23:39', '2019-10-02 10:25:26'),
 (15, 'Laporan Supplier', 'Select * FROM supplier', NULL, 'DISABLE', '2019-10-28 13:52:37', NULL),
-(16, 'Laporan Supplier', 'SELECT * FROM suplier', NULL, 'ENABLE', '2019-10-28 13:53:13', NULL);
+(16, 'Laporan Supplier', 'SELECT * FROM suplier', NULL, 'ENABLE', '2019-10-28 13:53:13', NULL),
+(17, 'Produk Terlaris', 'SELECT c.kode_transaksi, d.nama_produk as nama_produk, a.warna_produk, SUM(b.qty) as qty, a.jumlah_stok as jumlah_stok FROM produk_ready a INNER JOIN master_produk d ON a.id_produk = d.id INNER JOIN transaksi_produk_ready b ON a.id = b.id_produk_ready INNER JOIN transaksi c ON b.kode_transaksi = c.kode_transaksi WHERE a.status = \'ENABLE\' AND c.status_order = \'Selesai\' AND c.tipe = \'Ready Stok\' GROUP BY b.id_produk_ready ORDER BY b.qty DESC', '[\"kode_transaksi\",\"nama_produk\",\"warna_produk\",\"qty\",\"jumlah_stok\"]', 'ENABLE', '2019-11-15 13:49:42', '2019-11-15 13:49:53');
 
 -- --------------------------------------------------------
 
@@ -89926,32 +89919,37 @@ CREATE TABLE `transaksi` (
   `status` enum('ENABLE','DISABLE') NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `created_by` int(11) NOT NULL
+  `created_by` int(11) NOT NULL,
+  `biaya_kirim_real` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `transaksi`
 --
 
-INSERT INTO `transaksi` (`id`, `kode_transaksi`, `id_customer`, `id_kurir`, `biaya_kirim`, `jumlah_bayar`, `sub_total`, `kembalian`, `id_bank`, `id_dropshipper`, `resi_pengiriman`, `tipe`, `status_order`, `tgl_status_order`, `status_pengiriman`, `tgl_status_pengiriman`, `status_pembayaran`, `tgl_status_pembayaran`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(11, 'INVL-SWH0A', 1, 1, '50000', '1037500', '1037500', '0', 1, 1, '123123', 'Preorder', 'Selesai', '2019-11-04 15:54:54', 'Sudah Dikirim', '2019-11-04 15:53:07', 'Lunas', '2019-11-04 15:39:46', 'ENABLE', '2019-10-31 10:09:59', '2019-11-04 15:53:07', 21),
-(12, 'INVL-34CX6', 2, 1, '150000', '800000', '1845000', '-1045000', 1, 1, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-10-31 12:49:08', '2019-11-04 15:11:02', 21),
-(13, 'INVL-2YCGJ', 2, 1, '5000', '1000000', '505000', '495000', 1, 2, '', 'Preorder', 'Cancel', '2019-11-11 07:12:38', 'Sudah Dikirim', NULL, 'Lunas', '2019-11-06 11:43:35', 'ENABLE', '2019-11-04 08:53:54', '2019-11-11 07:12:38', 21),
-(14, 'INVL-WBRX1', 1, 1, '50000', '30000', '1030000', '-1000000', 1, 1, '', 'Preorder', 'Cancel', '2019-11-04 16:13:48', 'Belum Dikirim', NULL, 'Belum Lunas', '2019-11-04 15:24:20', 'ENABLE', '2019-11-04 10:05:05', '2019-11-04 15:24:20', 21),
-(15, 'INVL-K03KU', 1, 1, '10000', '510000', '510000', '0', 2, 1, 'asdas123', 'Preorder', 'Selesai', '2019-11-06 09:05:56', 'Sudah Dikirim', '2019-11-06 09:05:53', 'Lunas', '2019-11-06 08:54:00', 'ENABLE', '2019-11-04 10:10:48', '2019-11-06 09:05:53', 21),
-(16, 'INVL-5BCC4', 3, 1, '5000', '10000', '1035000', '-1025000', 1, 2, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-04 10:11:53', '0000-00-00 00:00:00', 21),
-(17, 'INVL-RCHIL', 7, 1, '50000', '50000', '525000', '-475000', 1, 2, '50000', 'Preorder', 'Selesai', '2019-11-11 07:12:14', 'Sudah Dikirim', '2019-11-11 07:12:10', 'Lunas', '2019-11-11 07:10:13', 'ENABLE', '2019-11-06 09:08:43', '2019-11-11 07:12:14', 21),
-(18, 'INVL-WWQ35', 3, 1, '5000', '2000000', '818500', '1181500', 2, 3, '3412312423', 'Ready Stok', 'Selesai', '2019-11-06 10:59:24', 'Sudah Dikirim', '2019-11-06 10:59:21', 'Lunas', '2019-11-06 10:54:50', 'ENABLE', '2019-11-06 10:42:26', '2019-11-06 10:59:21', 21),
-(19, 'INVL-HLQNQ', 7, 0, '120', '12323', '475120', '-462797', 0, 0, '', 'Ready Stok', 'Cancel', '2019-11-06 11:32:34', 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-06 11:32:18', '0000-00-00 00:00:00', 21),
-(20, 'INVL-A8DNE', 3, 1, '1231', '123123213', '476231', '122646982', 0, 3, '2131233421', 'Ready Stok', 'Diproses', '2019-11-06 11:43:49', 'Sudah Dikirim', '2019-11-07 11:39:21', 'Lunas', '2019-11-06 11:43:46', 'ENABLE', '2019-11-06 11:43:15', '2019-11-07 11:39:21', 21),
-(21, 'INVL-FQJXL', 2, 1, '50000', '2000000', '575000', '1425000', 1, 1, '', 'Preorder', 'Diproses', '2019-11-14 14:41:28', 'Belum Dikirim', NULL, 'Lunas', '2019-11-13 09:13:40', 'ENABLE', '2019-11-07 14:50:52', '2019-11-14 14:41:28', 21),
-(22, 'INVL-5UFPF', 7, 1, '50000', '450000', '575000', '-125000', 1, 1, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Lunas', '2019-11-13 09:14:17', 'ENABLE', '2019-11-07 14:52:26', '2019-11-13 09:14:17', 21),
-(23, 'INVL-DLVF0', 7, 1, '10000', '610000', '610000', '0', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Lunas', '2019-11-14 14:40:04', 'ENABLE', '2019-11-14 11:08:24', '2019-11-14 14:40:04', 21),
-(24, 'INVL-DD84C', 7, 1, '10000', '0', '610000', '-610000', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-14 11:08:51', '2019-11-14 11:08:51', 21),
-(25, 'INVL-9HY4B', 7, 1, '10000', '0', '1135000', '-1135000', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50', 21),
-(26, 'INVL-T8CJR', 8, 1, '20000', '250000', '570000', '-320000', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'DISABLE', '2019-11-14 14:34:20', '2019-11-14 14:34:20', 21),
-(27, 'INVL-OAC9X', 8, 1, '20000', '250000', '570000', '-320000', 1, 0, '00154769', 'Preorder', 'Selesai', '2019-11-14 14:51:18', 'Sudah Dikirim', '2019-11-14 14:51:12', 'Lunas', '2019-11-14 14:38:59', 'ENABLE', '2019-11-14 14:34:30', '2019-11-14 14:51:18', 21),
-(28, 'INVL-KUN0E', 9, 1, '20000', '1425000', '970000', '455000', 1, 0, '00154769', 'Ready Stok', 'Selesai', '2019-11-14 15:22:33', 'Sudah Dikirim', '2019-11-14 15:22:30', 'Lunas', '2019-11-14 15:22:06', 'ENABLE', '2019-11-14 15:20:31', '2019-11-14 15:22:33', 21);
+INSERT INTO `transaksi` (`id`, `kode_transaksi`, `id_customer`, `id_kurir`, `biaya_kirim`, `jumlah_bayar`, `sub_total`, `kembalian`, `id_bank`, `id_dropshipper`, `resi_pengiriman`, `tipe`, `status_order`, `tgl_status_order`, `status_pengiriman`, `tgl_status_pengiriman`, `status_pembayaran`, `tgl_status_pembayaran`, `status`, `created_at`, `updated_at`, `created_by`, `biaya_kirim_real`) VALUES
+(11, 'INVL-SWH0A', 1, 1, '50000', '1037500', '1037500', '0', 1, 1, '123123', 'Preorder', 'Selesai', '2019-11-04 15:54:54', 'Sudah Dikirim', '2019-11-04 15:53:07', 'Lunas', '2019-11-04 15:39:46', 'ENABLE', '2019-10-31 10:09:59', '2019-11-04 15:53:07', 21, NULL),
+(12, 'INVL-34CX6', 2, 1, '150000', '800000', '1845000', '-1045000', 1, 1, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-10-31 12:49:08', '2019-11-04 15:11:02', 21, NULL),
+(13, 'INVL-2YCGJ', 2, 1, '5000', '1000000', '505000', '495000', 1, 2, '', 'Preorder', 'Cancel', '2019-11-11 07:12:38', 'Sudah Dikirim', NULL, 'Lunas', '2019-11-06 11:43:35', 'ENABLE', '2019-11-04 08:53:54', '2019-11-11 07:12:38', 21, NULL),
+(14, 'INVL-WBRX1', 1, 1, '50000', '30000', '1030000', '-1000000', 1, 1, '', 'Preorder', 'Cancel', '2019-11-04 16:13:48', 'Belum Dikirim', NULL, 'Belum Lunas', '2019-11-04 15:24:20', 'ENABLE', '2019-11-04 10:05:05', '2019-11-04 15:24:20', 21, NULL),
+(15, 'INVL-K03KU', 1, 1, '10000', '510000', '510000', '0', 2, 1, 'asdas123', 'Preorder', 'Selesai', '2019-11-06 09:05:56', 'Sudah Dikirim', '2019-11-06 09:05:53', 'Lunas', '2019-11-06 08:54:00', 'ENABLE', '2019-11-04 10:10:48', '2019-11-06 09:05:53', 21, NULL),
+(16, 'INVL-5BCC4', 3, 1, '5000', '10000', '1035000', '-1025000', 1, 2, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-04 10:11:53', '0000-00-00 00:00:00', 21, NULL),
+(17, 'INVL-RCHIL', 7, 1, '50000', '50000', '525000', '-475000', 1, 2, '50000', 'Preorder', 'Selesai', '2019-11-11 07:12:14', 'Sudah Dikirim', '2019-11-11 07:12:10', 'Lunas', '2019-11-11 07:10:13', 'ENABLE', '2019-11-06 09:08:43', '2019-11-11 07:12:14', 21, NULL),
+(18, 'INVL-WWQ35', 3, 1, '5000', '2000000', '818500', '1181500', 2, 3, '3412312423', 'Ready Stok', 'Selesai', '2019-11-06 10:59:24', 'Sudah Dikirim', '2019-11-06 10:59:21', 'Lunas', '2019-11-06 10:54:50', 'ENABLE', '2019-11-06 10:42:26', '2019-11-06 10:59:21', 21, NULL),
+(19, 'INVL-HLQNQ', 7, 0, '120', '12323', '475120', '-462797', 0, 0, '', 'Ready Stok', 'Cancel', '2019-11-06 11:32:34', 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-06 11:32:18', '0000-00-00 00:00:00', 21, NULL),
+(20, 'INVL-A8DNE', 3, 1, '1231', '123123213', '476231', '122646982', 0, 3, '2131233421', 'Ready Stok', 'Diproses', '2019-11-06 11:43:49', 'Sudah Dikirim', '2019-11-07 11:39:21', 'Lunas', '2019-11-06 11:43:46', 'ENABLE', '2019-11-06 11:43:15', '2019-11-07 11:39:21', 21, NULL),
+(21, 'INVL-FQJXL', 2, 1, '50000', '2000000', '575000', '1425000', 1, 1, '', 'Preorder', 'Diproses', '2019-11-14 14:41:28', 'Belum Dikirim', NULL, 'Lunas', '2019-11-13 09:13:40', 'ENABLE', '2019-11-07 14:50:52', '2019-11-14 14:41:28', 21, NULL),
+(22, 'INVL-5UFPF', 7, 1, '50000', '450000', '575000', '-125000', 1, 1, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Lunas', '2019-11-13 09:14:17', 'ENABLE', '2019-11-07 14:52:26', '2019-11-13 09:14:17', 21, NULL),
+(23, 'INVL-DLVF0', 7, 1, '10000', '610000', '610000', '0', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Lunas', '2019-11-14 14:40:04', 'ENABLE', '2019-11-14 11:08:24', '2019-11-14 14:40:04', 21, NULL),
+(24, 'INVL-DD84C', 7, 1, '10000', '0', '610000', '-610000', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-14 11:08:51', '2019-11-14 11:08:51', 21, NULL),
+(25, 'INVL-9HY4B', 7, 1, '10000', '0', '1135000', '-1135000', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50', 21, NULL),
+(26, 'INVL-T8CJR', 8, 1, '20000', '250000', '570000', '-320000', 1, 0, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'DISABLE', '2019-11-14 14:34:20', '2019-11-14 14:34:20', 21, NULL),
+(27, 'INVL-OAC9X', 8, 1, '20000', '250000', '570000', '-320000', 1, 0, '00154769', 'Preorder', 'Selesai', '2019-11-14 14:51:18', 'Sudah Dikirim', '2019-11-14 14:51:12', 'Lunas', '2019-11-14 14:38:59', 'ENABLE', '2019-11-14 14:34:30', '2019-11-14 14:51:18', 21, NULL),
+(28, 'INVL-KUN0E', 9, 1, '20000', '1425000', '970000', '455000', 1, 0, '00154769', 'Ready Stok', 'Selesai', '2019-11-14 15:22:33', 'Sudah Dikirim', '2019-11-14 15:22:30', 'Lunas', '2019-11-14 15:22:06', 'ENABLE', '2019-11-14 15:20:31', '2019-11-14 15:22:33', 21, NULL),
+(29, 'INVL-VX7DF', 2, 1, '50000', '10000000', '485000', '9515000', 1, 3, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-15 13:37:08', '2019-11-15 13:37:08', 21, 50000),
+(30, 'INVL-W1R6G', 2, 1, '50000', '10000000', '485000', '9515000', 1, 3, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-15 13:37:23', '2019-11-15 13:37:23', 21, 50000),
+(31, 'INVL-0WTM6', 2, 1, '50000', '10000000', '485000', '9515000', 1, 3, '', 'Preorder', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-15 13:37:33', '2019-11-15 13:37:33', 21, 50000),
+(32, 'INVL-ZDJMF', 3, 1, '5000', '1000000', '440000', '560000', 1, 7, '', 'Ready Stok', 'Pesanan Baru', NULL, 'Belum Dikirim', NULL, 'Belum Dibayar', NULL, 'ENABLE', '2019-11-15 13:41:58', '2019-11-15 13:41:58', 21, 10000);
 
 -- --------------------------------------------------------
 
@@ -89979,7 +89977,11 @@ INSERT INTO `transaksi_kemasan` (`id`, `kode_transaksi`, `id_kemasan`, `qty`, `h
 (2, 'INVL-5UFPF', 1, 1, 50000, 'ENABLE', '2019-11-07 14:52:26', '2019-11-07 14:52:26'),
 (3, 'INVL-DLVF0', 1, 1, 50000, 'ENABLE', '2019-11-14 11:08:24', '2019-11-14 11:08:24'),
 (4, 'INVL-DD84C', 1, 1, 50000, 'ENABLE', '2019-11-14 11:08:51', '2019-11-14 11:08:51'),
-(5, 'INVL-9HY4B', 1, 2, 100000, 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50');
+(5, 'INVL-9HY4B', 1, 2, 100000, 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50'),
+(6, 'INVL-VX7DF', 1, 1, 50000, 'ENABLE', '2019-11-15 13:37:08', '2019-11-15 13:37:08'),
+(7, 'INVL-W1R6G', 1, 1, 50000, 'ENABLE', '2019-11-15 13:37:23', '2019-11-15 13:37:23'),
+(8, 'INVL-0WTM6', 1, 1, 50000, 'ENABLE', '2019-11-15 13:37:33', '2019-11-15 13:37:33'),
+(9, 'INVL-ZDJMF', 1, 1, 50000, 'ENABLE', '2019-11-15 13:41:58', '2019-11-15 13:41:58');
 
 -- --------------------------------------------------------
 
@@ -90002,35 +90004,39 @@ CREATE TABLE `transaksi_produk` (
   `status` enum('ENABLE','DISABLE') NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `created_by` int(11) NOT NULL
+  `created_by` int(11) NOT NULL,
+  `id_suplier` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `transaksi_produk`
 --
 
-INSERT INTO `transaksi_produk` (`id`, `kode_transaksi`, `id_produk_preorder`, `qty`, `ukuran`, `warna`, `keterangan`, `harga_satuan`, `biaya_lain`, `diskon`, `harga_total`, `status`, `created_at`, `updated_at`, `created_by`) VALUES
-(43, 'INVL-SWH0A', 2, '1', '', 'merah', 'ini sepatu ku', '475000', '5000', '10', '432500', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21),
-(44, 'INVL-SWH0A', 1, '2', '', 'biru', 'ini sepatu ku', '550000', '5000', '50', '555000', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21),
-(45, 'INVL-34CX6', 2, '2', '', 'Merah', 'a', '475000', '5000', '10', '860000', 'ENABLE', '2019-10-31 12:49:08', '2019-10-31 12:49:08', 21),
-(46, 'INVL-34CX6', 1, '3', '', 'Biru', 'B', '550000', '10000', '50', '835000', 'ENABLE', '2019-10-31 12:49:08', '2019-10-31 12:49:08', 21),
-(47, 'INVL-2YCGJ', 1, '1', '', 'Kuning', 'ini sepatu ', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 08:53:54', '2019-11-04 08:53:54', 21),
-(48, 'INVL-WBRX1', 1, '1', '3', 'merah', '', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 10:05:05', '2019-11-04 10:05:05', 21),
-(49, 'INVL-WBRX1', 2, '2', '3', 'biru', '', '475000', '5000', '50', '480000', 'ENABLE', '2019-11-04 10:05:05', '2019-11-04 10:05:05', 21),
-(50, 'INVL-K03KU', 1, '1', '3', '', '', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 10:10:48', '2019-11-04 10:10:48', 21),
-(51, 'INVL-5BCC4', 1, '1', '', '', '', '550000', '', '', '550000', 'ENABLE', '2019-11-04 10:11:53', '2019-11-04 10:11:53', 21),
-(52, 'INVL-5BCC4', 2, '2', '2', '', '', '475000', '5000', '50', '480000', 'ENABLE', '2019-11-04 10:11:53', '2019-11-04 10:11:53', 21),
-(53, 'INVL-RCHIL', 2, '1', '2', 'Navy', 'Ini Selpatu ku dengan keterangan banyak', '475000', '', '', '475000', 'ENABLE', '2019-11-06 09:08:43', '2019-11-06 09:08:43', 21),
-(54, 'INVL-NHWDS', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:49:50', '2019-11-07 14:49:50', 21),
-(55, 'INVL-326FA', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:49:57', '2019-11-07 14:49:57', 21),
-(56, 'INVL-FQJXL', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:50:52', '2019-11-07 14:50:52', 21),
-(57, 'INVL-5UFPF', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:52:26', '2019-11-07 14:52:26', 21),
-(58, 'INVL-DLVF0', 1, '1', '1', 'Merah', '-', '550000', '', '', '550000', 'ENABLE', '2019-11-14 11:08:24', '2019-11-14 11:08:24', 21),
-(59, 'INVL-DD84C', 1, '1', '1', 'Merah', '-', '550000', '', '', '550000', 'ENABLE', '2019-11-14 11:08:51', '2019-11-14 11:08:51', 21),
-(60, 'INVL-9HY4B', 1, '1', '2', '', '', '550000', '', '', '550000', 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50', 21),
-(61, 'INVL-9HY4B', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50', 21),
-(62, 'INVL-T8CJR', 1, '1', '1', 'coklat', 'hak iratan 5cm', '550000', '', '', '550000', 'ENABLE', '2019-11-14 14:34:20', '2019-11-14 14:34:20', 21),
-(63, 'INVL-OAC9X', 1, '1', '1', 'coklat', 'hak iratan 5cm', '550000', '', '', '550000', 'ENABLE', '2019-11-14 14:34:30', '2019-11-14 14:34:30', 21);
+INSERT INTO `transaksi_produk` (`id`, `kode_transaksi`, `id_produk_preorder`, `qty`, `ukuran`, `warna`, `keterangan`, `harga_satuan`, `biaya_lain`, `diskon`, `harga_total`, `status`, `created_at`, `updated_at`, `created_by`, `id_suplier`) VALUES
+(43, 'INVL-SWH0A', 2, '1', '', 'merah', 'ini sepatu ku', '475000', '5000', '10', '432500', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21, NULL),
+(44, 'INVL-SWH0A', 1, '2', '', 'biru', 'ini sepatu ku', '550000', '5000', '50', '555000', 'ENABLE', '2019-10-31 10:09:58', '2019-10-31 10:09:58', 21, NULL),
+(45, 'INVL-34CX6', 2, '2', '', 'Merah', 'a', '475000', '5000', '10', '860000', 'ENABLE', '2019-10-31 12:49:08', '2019-10-31 12:49:08', 21, NULL),
+(46, 'INVL-34CX6', 1, '3', '', 'Biru', 'B', '550000', '10000', '50', '835000', 'ENABLE', '2019-10-31 12:49:08', '2019-10-31 12:49:08', 21, NULL),
+(47, 'INVL-2YCGJ', 1, '1', '', 'Kuning', 'ini sepatu ', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 08:53:54', '2019-11-04 08:53:54', 21, NULL),
+(48, 'INVL-WBRX1', 1, '1', '3', 'merah', '', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 10:05:05', '2019-11-04 10:05:05', 21, NULL),
+(49, 'INVL-WBRX1', 2, '2', '3', 'biru', '', '475000', '5000', '50', '480000', 'ENABLE', '2019-11-04 10:05:05', '2019-11-04 10:05:05', 21, NULL),
+(50, 'INVL-K03KU', 1, '1', '3', '', '', '550000', '5000', '10', '500000', 'ENABLE', '2019-11-04 10:10:48', '2019-11-04 10:10:48', 21, NULL),
+(51, 'INVL-5BCC4', 1, '1', '', '', '', '550000', '', '', '550000', 'ENABLE', '2019-11-04 10:11:53', '2019-11-04 10:11:53', 21, NULL),
+(52, 'INVL-5BCC4', 2, '2', '2', '', '', '475000', '5000', '50', '480000', 'ENABLE', '2019-11-04 10:11:53', '2019-11-04 10:11:53', 21, NULL),
+(53, 'INVL-RCHIL', 2, '1', '2', 'Navy', 'Ini Selpatu ku dengan keterangan banyak', '475000', '', '', '475000', 'ENABLE', '2019-11-06 09:08:43', '2019-11-06 09:08:43', 21, NULL),
+(54, 'INVL-NHWDS', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:49:50', '2019-11-07 14:49:50', 21, NULL),
+(55, 'INVL-326FA', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:49:57', '2019-11-07 14:49:57', 21, NULL),
+(56, 'INVL-FQJXL', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:50:52', '2019-11-07 14:50:52', 21, NULL),
+(57, 'INVL-5UFPF', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-07 14:52:26', '2019-11-07 14:52:26', 21, NULL),
+(58, 'INVL-DLVF0', 1, '1', '1', 'Merah', '-', '550000', '', '', '550000', 'ENABLE', '2019-11-14 11:08:24', '2019-11-14 11:08:24', 21, NULL),
+(59, 'INVL-DD84C', 1, '1', '1', 'Merah', '-', '550000', '', '', '550000', 'ENABLE', '2019-11-14 11:08:51', '2019-11-14 11:08:51', 21, NULL),
+(60, 'INVL-9HY4B', 1, '1', '2', '', '', '550000', '', '', '550000', 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50', 21, NULL),
+(61, 'INVL-9HY4B', 2, '1', '', '', '', '475000', '', '', '475000', 'ENABLE', '2019-11-14 11:27:50', '2019-11-14 11:27:50', 21, NULL),
+(62, 'INVL-T8CJR', 1, '1', '1', 'coklat', 'hak iratan 5cm', '550000', '', '', '550000', 'ENABLE', '2019-11-14 14:34:20', '2019-11-14 14:34:20', 21, NULL),
+(63, 'INVL-OAC9X', 1, '1', '1', 'coklat', 'hak iratan 5cm', '550000', '', '', '550000', 'ENABLE', '2019-11-14 14:34:30', '2019-11-14 14:34:30', 21, NULL),
+(64, 'INVL-VX7DF', 2, '1', '4', 'Biru', '-', '475000', '5000', '20', '385000', 'ENABLE', '2019-11-15 13:37:08', '2019-11-15 13:37:08', 21, 2),
+(65, 'INVL-W1R6G', 2, '1', '4', 'Biru', '-', '475000', '5000', '20', '385000', 'ENABLE', '2019-11-15 13:37:23', '2019-11-15 13:37:23', 21, 2),
+(66, 'INVL-0WTM6', 2, '1', '4', 'Biru', '-', '475000', '5000', '20', '385000', 'ENABLE', '2019-11-15 13:37:33', '2019-11-15 13:37:33', 21, 2);
 
 -- --------------------------------------------------------
 
@@ -90065,7 +90071,8 @@ INSERT INTO `transaksi_produk_ready` (`id`, `kode_transaksi`, `id_produk_ready`,
 (2, 'INVL-WWQ35', 2, '1', '5', 'Merah', '-', '475000', '1000', '10', '428500', 'ENABLE', '2019-11-06 10:42:26', '2019-11-06 10:42:26', 21),
 (3, 'INVL-HLQNQ', 2, '1', '5', 'Merah', '-', '475000', '', '', '475000', 'ENABLE', '2019-11-06 11:32:18', '2019-11-06 11:32:18', 21),
 (4, 'INVL-A8DNE', 2, '1', '5', 'Merah', '-', '475000', '', '', '475000', 'ENABLE', '2019-11-06 11:43:15', '2019-11-06 11:43:15', 21),
-(5, 'INVL-KUN0E', 2, '2', '5', 'Merah', '-', '475000', '', '', '950000', 'ENABLE', '2019-11-14 15:20:31', '2019-11-14 15:20:31', 21);
+(5, 'INVL-KUN0E', 2, '2', '5', 'Merah', '-', '475000', '', '', '950000', 'ENABLE', '2019-11-14 15:20:31', '2019-11-14 15:20:31', 21),
+(6, 'INVL-ZDJMF', 1, '1', '5', 'Maroon', '-', '475000', '5000', '20', '385000', 'ENABLE', '2019-11-15 13:41:58', '2019-11-15 13:41:58', 21);
 
 -- --------------------------------------------------------
 
@@ -90190,6 +90197,12 @@ ALTER TABLE `master_kurir`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `master_produk`
+--
+ALTER TABLE `master_produk`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `master_sumtrafik`
 --
 ALTER TABLE `master_sumtrafik`
@@ -90205,12 +90218,6 @@ ALTER TABLE `master_ukuran`
 -- Indeks untuk tabel `menu_master`
 --
 ALTER TABLE `menu_master`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeks untuk tabel `produk_preorder`
---
-ALTER TABLE `produk_preorder`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -90408,6 +90415,12 @@ ALTER TABLE `master_kurir`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT untuk tabel `master_produk`
+--
+ALTER TABLE `master_produk`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT untuk tabel `master_sumtrafik`
 --
 ALTER TABLE `master_sumtrafik`
@@ -90426,12 +90439,6 @@ ALTER TABLE `menu_master`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
--- AUTO_INCREMENT untuk tabel `produk_preorder`
---
-ALTER TABLE `produk_preorder`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT untuk tabel `produk_ready`
 --
 ALTER TABLE `produk_ready`
@@ -90441,7 +90448,7 @@ ALTER TABLE `produk_ready`
 -- AUTO_INCREMENT untuk tabel `report`
 --
 ALTER TABLE `report`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `role`
@@ -90489,25 +90496,25 @@ ALTER TABLE `tbl_provinsi`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi_kemasan`
 --
 ALTER TABLE `transaksi_kemasan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi_produk`
 --
 ALTER TABLE `transaksi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi_produk_ready`
 --
 ALTER TABLE `transaksi_produk_ready`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`

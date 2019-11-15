@@ -4,7 +4,7 @@
 
 
 
-	class Produk_ready extends MY_Controller {
+	class Master_produk extends MY_Controller {
 
 
 
@@ -22,9 +22,9 @@
 
 		{
 
-			$data['page_name'] = "produk_ready";
+			$data['page_name'] = "master_produk";
 
-			$this->template->load('template/template','master/produk_ready/all-produk_ready',$data);
+			$this->template->load('template/template','master/master_produk/all-master_produk',$data);
 
 		}
 
@@ -32,7 +32,7 @@
 
 		{
 
-			$this->load->view('master/produk_ready/add-produk_ready');
+			$this->load->view('master/master_produk/add-master_produk');
 
 		}
 
@@ -42,10 +42,7 @@
 
 			$this->form_validation->set_error_delimiters('<li>', '</li>');
 
-	$this->form_validation->set_rules('dt[id_produk]', '<strong>Id Produk</strong>', 'required');
-$this->form_validation->set_rules('dt[jumlah_stok]', '<strong>Jumlah Stok</strong>', 'required');
-$this->form_validation->set_rules('dt[ukuran_produk]', '<strong>Ukuran Produk</strong>', 'required');
-$this->form_validation->set_rules('dt[warna_produk]', '<strong>Warna Produk</strong>', 'required');
+	$this->form_validation->set_rules('dt[nama_produk]', '<strong>Nama Produk</strong>', 'required');
 $this->form_validation->set_rules('dt[ket_produk]', '<strong>Ket Produk</strong>', 'required');
 $this->form_validation->set_rules('dt[harga_produksi]', '<strong>Harga Produksi</strong>', 'required');
 $this->form_validation->set_rules('dt[harga_jual]', '<strong>Harga Jual</strong>', 'required');
@@ -68,12 +65,12 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 	        	$dt = $_POST['dt'];
 
-				$dt['created_at'] = date('Y-m-d H:i:s');
+				$dt['created_at'] = date('Y-m-d H:i:s'); 
 				$dt['created_by'] = $this->session->userdata('id');
 
 				$dt['status'] = "ENABLE";
 
-				$str = $this->db->insert('produk_ready', $dt);
+				$str = $this->db->insert('master_produk', $dt);
 
 				$last_id = $this->db->insert_id();	    if (!empty($_FILES['file']['name'])){
 
@@ -109,7 +106,7 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 					   				'dir'=> $dir.$file['file_name'],
 
-					   				'table'=> 'produk_ready',
+					   				'table'=> 'master_produk',
 
 					   				'table_id'=> $last_id,
 
@@ -137,7 +134,7 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 				   				'dir'=> '',
 
-				   				'table'=> 'produk_ready',
+				   				'table'=> 'master_produk',
 
 				   				'table_id'=> $last_id,
 
@@ -181,12 +178,11 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 			header('Content-Type: application/json');
 
-	        $this->datatables->select('a.id,b.nama_produk as id_produk,a.jumlah_stok,a.ukuran_produk,a.warna_produk,a.ket_produk,a.harga_produksi,a.harga_jual,a.created_by,a.status');
+	        $this->datatables->select('id,nama_produk,ket_produk,harga_produksi,harga_jual,created_by,status');
 
-	        $this->datatables->where('a.status',$status);
+	        $this->datatables->where('status',$status);
 
-			$this->datatables->join('master_produk b', "b.id = a.id_produk", 'left');
-	        $this->datatables->from('produk_ready a');
+	        $this->datatables->from('master_produk');
 
 	        if($status=="ENABLE"){
 
@@ -210,9 +206,9 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 		{
 
-			$data['produk_ready'] = $this->mymodel->selectDataone('produk_ready',array('id'=>$id));$data['file'] = $this->mymodel->selectDataone('file',array('table_id'=>$id,'table'=>'produk_ready'));$data['page_name'] = "produk_ready";
+			$data['master_produk'] = $this->mymodel->selectDataone('master_produk',array('id'=>$id));$data['file'] = $this->mymodel->selectDataone('file',array('table_id'=>$id,'table'=>'master_produk'));$data['page_name'] = "master_produk";
 
-			$this->load->view('master/produk_ready/edit-produk_ready',$data);
+			$this->load->view('master/master_produk/edit-master_produk',$data);
 
 		}
 
@@ -274,7 +270,7 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 					   				'dir'=> $dir.$file['file_name'],
 
-					   				'table'=> 'produk_ready',
+					   				'table'=> 'master_produk',
 
 					   				'table_id'=> $id,
 
@@ -282,7 +278,7 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 					   	 		);
 
-						$file = $this->mymodel->selectDataone('file',array('table_id'=>$id,'table'=>'produk_ready'));
+						$file = $this->mymodel->selectDataone('file',array('table_id'=>$id,'table'=>'master_produk'));
 
 						@unlink($file['dir']);
 
@@ -304,7 +300,7 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 						$dt['updated_at'] = date("Y-m-d H:i:s");
 
-						$this->mymodel->updateData('produk_ready', $dt , array('id'=>$id));
+						$this->mymodel->updateData('master_produk', $dt , array('id'=>$id));
 
 
 
@@ -318,7 +314,7 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 					$dt['updated_at'] = date("Y-m-d H:i:s");
 
-					$this->mymodel->updateData('produk_ready', $dt , array('id'=>$id));
+					$this->mymodel->updateData('master_produk', $dt , array('id'=>$id));
 
 					$this->alert->alertsuccess('Success Update Data');  
 
@@ -332,15 +328,15 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 		{
 
-				$id = $this->input->post('id', TRUE);$file = $this->mymodel->selectDataone('file',array('table_id'=>$id,'table'=>'produk_ready'));
+				$id = $this->input->post('id', TRUE);$file = $this->mymodel->selectDataone('file',array('table_id'=>$id,'table'=>'master_produk'));
 
 				@unlink($file['dir']);
 
-				$this->mymodel->deleteData('file',  array('table_id'=>$id,'table'=>'produk_ready'));
+				$this->mymodel->deleteData('file',  array('table_id'=>$id,'table'=>'master_produk'));
 
 
 
-				$this->mymodel->deleteData('produk_ready',  array('id'=>$id));$this->alert->alertdanger('Success Delete Data');     
+				$this->mymodel->deleteData('master_produk',  array('id'=>$id));$this->alert->alertdanger('Success Delete Data');     
 
 		}
 
@@ -350,9 +346,9 @@ $this->form_validation->set_rules('dt[created_by]', '<strong>Created By</strong>
 
 		{
 
-			$this->mymodel->updateData('produk_ready',array('status'=>$status),array('id'=>$id));
+			$this->mymodel->updateData('master_produk',array('status'=>$status),array('id'=>$id));
 
-			redirect('master/Produk_ready');
+			redirect('master/Master_produk');
 
 		}
 

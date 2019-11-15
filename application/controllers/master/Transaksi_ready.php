@@ -26,10 +26,10 @@ class Transaksi_ready extends MY_Controller
 
 	public function create()
 	{
-		$data['produk'] = $this->mymodel->selectWithQuery("SELECT produk_ready.*, master_kategori_produk.nama_kategori, file.dir, master_ukuran.id as ukuran_id, master_ukuran.value as ukuran FROM produk_ready
-			LEFT JOIN master_kategori_produk on produk_ready.id_kategori = master_kategori_produk.id
+		$data['produk'] = $this->mymodel->selectWithQuery("SELECT produk_ready.*, master_produk.nama_produk, file.dir, master_ukuran.id as ukuran_id, master_ukuran.value as ukuran FROM produk_ready
 			LEFT JOIN file on produk_ready.id = file.table_id
 			LEFT JOIN master_ukuran on produk_ready.ukuran_produk = master_ukuran.id
+			LEFT JOIN master_produk on produk_ready.id_produk = master_produk.id
 			WHERE produk_ready.status = 'ENABLE' AND file.table = 'produk_ready'");
 		$data['page_name'] = "Pesanan";
 		$this->template->load('template/template', 'master/transaksi_ready/add-transaksi_ready', $data);
@@ -146,7 +146,7 @@ class Transaksi_ready extends MY_Controller
 						$kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $_POST['kemasanId'][$j]));
 						$kurangkemasan['stok'] = $kemasan['stok'] - $_POST['kemasanQty'][$j];
 						$this->mymodel->updateData('master_kemasan', $kurangkemasan, array('id' => $_POST['idd'][$i]));
-						
+
 						$harga_subtotal += $_POST['kemasanHargaTotal'][$j];
 					}
 

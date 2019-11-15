@@ -124,7 +124,7 @@
                     </tr>
                   </thead>
                   <tbody id="valueKemasan">
-                    <tr>
+                    <tr id="hideKemasan">
                       <td colspan="5" align="center">
                         Belum Ada Data
                       </td>
@@ -250,6 +250,10 @@
                     <p>Biaya Kirim</p>
                     <input type="number" name="dt[biaya_kirim]" class="form-control">
                   </div>
+                  <div class="form-group">
+                    <p>Biaya Kirim Real</p>
+                    <input type="number" name="dt[biaya_kirim_real]" class="form-control">
+                  </div>
                 </div>
                 <div class="col col-md-6">
                   <div class="form-group">
@@ -327,7 +331,6 @@
           ukuran_id: "<?= trim($d['ukuran_id']) ?>",
           warna: "<?= trim($d['warna_produk']) ?>",
           ket: "<?= trim($d['ket_produk']) ?>",
-          kategori: "<?= trim($d['nama_kategori']) ?>",
           price: "<?= trim($d['harga_jual']) ?>",
           priceb: "<?= trim($d['harga_produksi']) ?>",
           image: "<?= trim($d['dir']) ?>",
@@ -486,7 +489,7 @@
       type: "GET",
       dataType: "json",
       success: function(data) {
-        $("#valueKemasan").remove();
+        $("#hideKemasan").remove();
         $.each(data, function(key, value) {
           $("#valueKemasan").append('<tr>' +
             '<td>' + value.value + '<input type="hidden" name="kemasanId[]" value="' + value.id + '"></td>' +

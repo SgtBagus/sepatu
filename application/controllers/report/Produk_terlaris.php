@@ -27,10 +27,12 @@ class Produk_terlaris extends MY_Controller {
       $row = array();
 
       $row[] = $i;
-  $row[] = $u->nama_produk;
+  $row[] = $u->kode_transaksi;
+$row[] = $u->nama_produk;
+$row[] = $u->warna_produk;
 $row[] = $u->qty;
 $row[] = $u->jumlah_stok;
-// $row[] = "<button type='button' class='btn btn-info btn-flat' onclick='detail()'><i class='fa fa-edit'></i>Detail</button>";
+$row[] = "<button type='button' class='btn btn-info btn-flat' onclick='detail()'><i class='fa fa-edit'></i>Detail</button>";
       $data[] = $row;
     $i++;
     }
@@ -56,14 +58,14 @@ $row[] = $u->jumlah_stok;
 
 
   
-    $data[] = array($i,$u->nama_produk,$u->qty,$u->jumlah_stok);
+    $data[] = array($i,$u->kode_transaksi,$u->nama_produk,$u->warna_produk,$u->qty,$u->jumlah_stok);
   
     $i++;
     }
 
     $judul = "Report Produk_terlaris";
 
-    $head = array('No','nama_produk','qty','jumlah_stok');
+    $head = array('No','kode_transaksi','nama_produk','warna_produk','qty','jumlah_stok');
 
     $json = [
       'judul'=>$judul,

@@ -1,387 +1,209 @@
+<!-- Content Wrapper. Contains page content -->
 
 
-  <!-- Content Wrapper. Contains page content -->
 
-  <div class="content-wrapper">
-
-    <!-- Content Header (Page header) -->
-
-    <section class="content-header">
-
-      <h1>
-
-        Produk Ready
-
-        <small>Master</small>
-
-      </h1>
-
-      <ol class="breadcrumb">
-
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-
-        <li><a href="#">master</a></li>
-
-        <li class="active">Produk Ready</li>
-
-      </ol>
-
-    </section>
-
-    <!-- Main content -->
-
-    <section class="content">
-
-    <form method="POST" action="<?= base_url('master/Produk_ready/update') ?>" id="upload-create" enctype="multipart/form-data">
+<form method="POST" action="<?= base_url('master/Produk_ready/update') ?>" id="upload-create" enctype="multipart/form-data">
 
     <input type="hidden" name="id" value="<?= $produk_ready['id'] ?>">
 
 
 
+    <div class="show_error"></div>
+    <div class="form-group">
 
+        <label for="form-id_produk">Produk</label>
+        <select class="form-control select2" name="id_produk">
+            <option value="">--Pilih Master Produk--</option>
+            <?php
+            $master_produk = $this->mymodel->selectData("master_produk");
+            foreach ($master_produk as $key => $value) {
+                ?>
+                <option value="<?= $value['id'] ?>" <?php if($produk_ready['id_produk']){echo "selected"; }?> ><?= $value['nama_produk'] ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="form-group">
 
-      <div class="row">
+        <label for="form-jumlah_stok">Jumlah Stok</label>
 
-        <div class="col-xs-8">
+        <input type="text" class="form-control" id="form-jumlah_stok" placeholder="Masukan Jumlah Stok" name="dt[jumlah_stok]" value="<?= $produk_ready['jumlah_stok'] ?>">
 
-          <div class="box">
+    </div>
+    <div class="form-group">
 
-            <!-- /.box-header -->
+        <label for="form-ukuran_produk">Ukuran Produk</label>
 
-            <div class="box-header">
+        <input type="text" class="form-control" id="form-ukuran_produk" placeholder="Masukan Ukuran Produk" name="dt[ukuran_produk]" value="<?= $produk_ready['ukuran_produk'] ?>">
 
-              <h5 class="box-title">
+    </div>
+    <div class="form-group">
 
-                  Edit Produk Ready
+        <label for="form-warna_produk">Warna Produk</label>
 
-              </h5>
+        <input type="text" class="form-control" id="form-warna_produk" placeholder="Masukan Warna Produk" name="dt[warna_produk]" value="<?= $produk_ready['warna_produk'] ?>">
 
-            </div>
+    </div>
+    <div class="form-group">
 
-            <div class="box-body">
+        <label for="form-ket_produk">Ket Produk</label>
 
-                <div class="show_error"></div><div class="form-group">
+        <input type="text" class="form-control" id="form-ket_produk" placeholder="Masukan Ket Produk" name="dt[ket_produk]" value="<?= $produk_ready['ket_produk'] ?>">
 
-                      <label for="form-id_suplier">Id Suplier</label>
+    </div>
+    <div class="form-group">
 
-                      <select name="dt[id_suplier]" class="form-control select2" style="width: 100%">
+        <label for="form-harga_produksi">Harga Produksi</label>
 
-                        <?php 
+        <input type="text" class="form-control" id="form-harga_produksi" placeholder="Masukan Harga Produksi" name="dt[harga_produksi]" value="<?= $produk_ready['harga_produksi'] ?>">
 
-                        $suplier = $this->mymodel->selectWhere('suplier',null);
+    </div>
+    <div class="form-group">
 
-                        foreach ($suplier as $suplier_record) {
+        <label for="form-harga_jual">Harga Jual</label>
 
-                          $text="";
+        <input type="text" class="form-control" id="form-harga_jual" placeholder="Masukan Harga Jual" name="dt[harga_jual]" value="<?= $produk_ready['harga_jual'] ?>">
 
-                          if($suplier_record['id']==$produk_ready['id_suplier']){
+    </div>
+    <div class="form-group">
 
-                            $text = "selected";
+        <label for="form-created_by">Created By</label>
 
-                          }
+        <input type="text" class="form-control" id="form-created_by" placeholder="Masukan Created By" name="dt[created_by]" value="<?= $produk_ready['created_by'] ?>">
 
+    </div><?php
 
+            if ($file['dir'] != "") {
 
-                          echo "<option value=".$suplier_record['id']." ".$text." >".$suplier_record['nama_suplier']."</option>";
+                $types = explode("/", $file['mime']);
 
-                        }
+                if ($types[0] == "image") {
 
-                        ?>
+                    ?>
 
-                      </select>
+            <img src="<?= base_url($file['dir']) ?>" style="width: 200px" class="img img-thumbnail">
 
-                  </div><div class="form-group">
+            <br>
 
-                      <label for="form-id_kategori">Id Kategori</label>
+        <?php } else { ?>
 
-                      <select name="dt[id_kategori]" class="form-control select2" style="width: 100%">
 
-                        <?php 
 
-                        $master_kategori_produk = $this->mymodel->selectWhere('master_kategori_produk',null);
+            <i class="fa fa-file fa-5x text-danger"></i>
 
-                        foreach ($master_kategori_produk as $master_kategori_produk_record) {
+            <br>
 
-                          $text="";
+            <a href="<?= base_url($file['dir']) ?>" target="_blank"><i class="fa fa-download"></i> <?= $file['name'] ?></a>
 
-                          if($master_kategori_produk_record['id']==$produk_ready['id_kategori']){
+            <br>
 
-                            $text = "selected";
+            <br>
 
-                          }
+        <?php } ?>
 
+    <?php } ?><div class="form-group">
 
+        <label for="form-file">File</label>
 
-                          echo "<option value=".$master_kategori_produk_record['id']." ".$text." >".$master_kategori_produk_record['nama_kategori']."</option>";
+        <input type="file" class="form-control" id="form-file" placeholder="Masukan File" name="file">
 
-                        }
+    </div>
+    <hr>
 
-                        ?>
+    <button type="submit" class="btn btn-primary btn-send"><i class="fa fa-save"></i> Save</button>
 
-                      </select>
+    <button type="reset" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
 
-                  </div><div class="form-group">
 
-                      <label for="form-id_bahanbaku">Id Bahanbaku</label>
 
-                      <select name="dt[id_bahanbaku]" class="form-control select2" style="width: 100%">
 
-                        <?php 
+</form>
 
-                        $master_bahanbaku = $this->mymodel->selectWhere('master_bahanbaku',null);
 
-                        foreach ($master_bahanbaku as $master_bahanbaku_record) {
+<!-- /.content-wrapper -->
 
-                          $text="";
+<script type="text/javascript">
+    $("#upload-create").submit(function() {
 
-                          if($master_bahanbaku_record['id']==$produk_ready['id_bahanbaku']){
+        var form = $(this);
 
-                            $text = "selected";
+        var mydata = new FormData(this);
 
-                          }
+        $.ajax({
 
+            type: "POST",
 
+            url: form.attr("action"),
 
-                          echo "<option value=".$master_bahanbaku_record['id']." ".$text." >".$master_bahanbaku_record['nama_bahanbaku']."</option>";
+            data: mydata,
 
-                        }
+            cache: false,
 
-                        ?>
+            contentType: false,
 
-                      </select>
+            processData: false,
 
-                  </div><div class="form-group">
+            beforeSend: function() {
 
-                      <label for="form-kode_barang">Kode Barang</label>
+                $(".btn-send").addClass("disabled").html("<i class='la la-spinner la-spin'></i>  Processing...").attr('disabled', true);
 
-                      <input type="text" class="form-control" id="form-kode_barang" placeholder="Masukan Kode Barang" name="dt[kode_barang]" value="<?= $produk_ready['kode_barang'] ?>">
+                form.find(".show_error").slideUp().html("");
 
-                  </div><div class="form-group">
+            },
 
-                      <label for="form-nama_produk">Nama Produk</label>
+            success: function(response, textStatus, xhr) {
 
-                      <input type="text" class="form-control" id="form-nama_produk" placeholder="Masukan Nama Produk" name="dt[nama_produk]" value="<?= $produk_ready['nama_produk'] ?>">
+                // alert(mydata);
 
-                  </div><div class="form-group">
+                var str = response;
 
-                      <label for="form-jumlah_stok">Jumlah Stok</label>
+                if (str.indexOf("success") != -1) {
 
-                      <input type="text" class="form-control" id="form-jumlah_stok" placeholder="Masukan Jumlah Stok" name="dt[jumlah_stok]" value="<?= $produk_ready['jumlah_stok'] ?>">
+                    form.find(".show_error").hide().html(response).slideDown("fast");
 
-                  </div><div class="form-group">
+                    setTimeout(function() {
 
-                      <label for="form-ukuran_produk">Ukuran Produk</label>
+                        // window.location.href = "<?= base_url('master/Produk_ready') ?>";
+                        $("#load-table").html('');
+                        loadtable($("#select-status").val());
+                        $("#modal-form").modal('hide');
 
-                      <select name="dt[ukuran_produk]" class="form-control select2" style="width: 100%">
+                    }, 1000);
 
-                        <?php 
+                    $(".btn-send").removeClass("disabled").html('<i class="fa fa-save"></i> Save').attr('disabled', false);
 
-                        $master_ukuran = $this->mymodel->selectWhere('master_ukuran',null);
 
-                        foreach ($master_ukuran as $master_ukuran_record) {
 
-                          $text="";
 
-                          if($master_ukuran_record['id']==$produk_ready['ukuran_produk']){
 
-                            $text = "selected";
+                } else {
 
-                          }
+                    form.find(".show_error").hide().html(response).slideDown("fast");
 
-
-
-                          echo "<option value=".$master_ukuran_record['id']." ".$text." >".$master_ukuran_record['value']."</option>";
-
-                        }
-
-                        ?>
-
-                      </select>
-
-                  </div><div class="form-group">
-
-                      <label for="form-warna_produk">Warna Produk</label>
-
-                      <input type="text" class="form-control" id="form-warna_produk" placeholder="Masukan Warna Produk" name="dt[warna_produk]" value="<?= $produk_ready['warna_produk'] ?>">
-
-                  </div><div class="form-group">
-
-                      <label for="form-ket_produk">Ket Produk</label>
-
-                      <textarea name="dt[ket_produk]" class="form-control"><?= $produk_ready['ket_produk'] ?></textarea>
-
-                  </div><div class="form-group">
-
-                      <label for="form-harga_produksi">Harga Produksi</label>
-
-                      <input type="text" class="form-control" id="form-harga_produksi" placeholder="Masukan Harga Produksi" name="dt[harga_produksi]" value="<?= $produk_ready['harga_produksi'] ?>">
-
-                  </div><div class="form-group">
-
-                      <label for="form-harga_jual">Harga Jual</label>
-
-                      <input type="text" class="form-control" id="form-harga_jual" placeholder="Masukan Harga Jual" name="dt[harga_jual]" value="<?= $produk_ready['harga_jual'] ?>">
-
-                  </div><?php
-
-                  if($file['dir']!=""){
-
-                  $types = explode("/", $file['mime']);
-
-                  if($types[0]=="image"){
-
-                  ?>
-
-                    <img src="<?= base_url($file['dir']) ?>" style="width: 200px" class="img img-thumbnail">
-
-                    <br>
-
-                  <?php }else{ ?>
-
-                    
-
-                    <i class="fa fa-file fa-5x text-danger"></i>
-
-                    <br>
-
-                    <a href="<?= base_url($file['dir']) ?>" target="_blank"><i class="fa fa-download"></i> <?= $file['name'] ?></a>
-
-                    <br>
-
-                  <br>
-
-                <?php } ?>
-
-                <?php } ?><div class="form-group">
-
-                      <label for="form-file">File</label>
-
-                      <input type="file" class="form-control" id="form-file" placeholder="Masukan File" name="file">
-
-                  </div></div>
-
-            <div class="box-footer">
-
-                <button type="submit" class="btn btn-primary btn-send" ><i class="fa fa-save"></i> Save</button>
-
-                <button type="reset" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
-
-             
-
-            </div>
-
-            <!-- /.box-body -->
-
-          </div>
-
-          <!-- /.box -->
-
-
-
-          <!-- /.box -->
-
-        </div>
-
-        <!-- /.col -->
-
-      </div>
-
-      <!-- /.row -->
-
-      </form>
-
-
-
-    </section>
-
-    <!-- /.content -->
-
-  </div>
-
-  <!-- /.content-wrapper -->
-
-  <script type="text/javascript">
-
-      $("#upload-create").submit(function(){
-
-            var form = $(this);
-
-            var mydata = new FormData(this);
-
-            $.ajax({
-
-                type: "POST",
-
-                url: form.attr("action"),
-
-                data: mydata,
-
-                cache: false,
-
-                contentType: false,
-
-                processData: false,
-
-                beforeSend : function(){
-
-                    $(".btn-send").addClass("disabled").html("<i class='la la-spinner la-spin'></i>  Processing...").attr('disabled',true);
-
-                    form.find(".show_error").slideUp().html("");
-
-                },
-
-                success: function(response, textStatus, xhr) {
-
-                    // alert(mydata);
-
-                   var str = response;
-
-                    if (str.indexOf("success") != -1){
-
-                        form.find(".show_error").hide().html(response).slideDown("fast");
-
-                        setTimeout(function(){ 
-
-                           window.location.href = "<?= base_url('master/Produk_ready') ?>";
-
-                        }, 1000);
-
-                        $(".btn-send").removeClass("disabled").html('<i class="fa fa-save"></i> Save').attr('disabled',false);
-
-
-
-
-
-                    }else{
-
-                        form.find(".show_error").hide().html(response).slideDown("fast");
-
-                        $(".btn-send").removeClass("disabled").html('<i class="fa fa-save"></i> Save').attr('disabled',false);
-
-                        
-
-                    }
-
-                },
-
-                error: function(xhr, textStatus, errorThrown) {
-
-                  console.log(xhr);
-
-                    $(".btn-send").removeClass("disabled").html('<i class="fa fa-save"></i> Save').attr('disabled',false);
-
-                    form.find(".show_error").hide().html(xhr).slideDown("fast");
+                    $(".btn-send").removeClass("disabled").html('<i class="fa fa-save"></i> Save').attr('disabled', false);
 
 
 
                 }
 
-            });
+            },
 
-            return false;
+            error: function(xhr, textStatus, errorThrown) {
 
-    
+                console.log(xhr);
+
+                $(".btn-send").removeClass("disabled").html('<i class="fa fa-save"></i> Save').attr('disabled', false);
+
+                form.find(".show_error").hide().html(xhr).slideDown("fast");
+
+
+
+            }
 
         });
 
-  </script>
+        return false;
+
+
+
+    });
+</script>

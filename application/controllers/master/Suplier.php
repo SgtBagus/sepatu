@@ -163,11 +163,13 @@ class Suplier extends MY_Controller
 
 		header('Content-Type: application/json');
 
-		$this->datatables->select('id,nama_suplier,alamat_suplier,hp_suplier,id_kategori,created_by,status');
+		$this->datatables->select('suplier.id,nama_suplier,alamat_suplier,hp_suplier,master_kategori_suplier.nama_kategori as id_kategori,user.name as created_by,suplier.status');
 
-		$this->datatables->where('status', $status);
+		$this->datatables->where('suplier.status', $status);
 
 		$this->datatables->from('suplier');
+		$this->datatables->join('master_kategori_suplier', 'suplier.id_kategori = master_kategori_suplier.id', 'left');
+		$this->datatables->join('user', 'suplier.created_by = user.id', 'left');
 
 		if ($status == "ENABLE") {
 

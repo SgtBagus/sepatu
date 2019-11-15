@@ -123,7 +123,7 @@
                     </tr>
                   </thead>
                   <tbody id="valueKemasan">
-                    <tr>
+                    <tr id="hideKemasan">
                       <td colspan="5" align="center">
                         Belum Ada Data
                       </td>
@@ -198,7 +198,7 @@
                         </select>
                       </div>
                       <div class="col-md-12">
-                        <input name="warna[]" style="margin-top: 10px" class="form-control" placeholder="Warna Sepatu" type="text">
+                        <textarea name="warna[]" style="margin-top: 10px" class="form-control" placeholder="Warna Sepatu"></textarea>
                       </div>
                       <div class="col-md-12">
                         <textarea name="keterangan[]" style="margin-top: 10px" class="form-control" placeholder="Keterangan Sepatu"></textarea>
@@ -492,7 +492,7 @@
       type: "GET",
       dataType: "json",
       success: function(data) {
-        $("#valueKemasan").remove();
+        $("#hideKemasan").remove();
         $.each(data, function(key, value) {
           $("#valueKemasan").append('<tr>' +
             '<td>' + value.value + '<input type="hidden" name="kemasanId[]" value="' + value.id + '"></td>' +

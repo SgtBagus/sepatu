@@ -187,11 +187,15 @@ $this->form_validation->set_rules('dt[harga_jual]', '<strong>Harga Jual</strong>
 
 			header('Content-Type: application/json');
 
-	        $this->datatables->select('id,id_suplier,id_kategori,id_bahanbaku,kode_barang,nama_produk,jumlah_stok,ukuran_produk,warna_produk,ket_produk,harga_produksi,harga_jual,created_by,status');
+	        $this->datatables->select('produk_ready.id,suplier.nama_suplier as id_suplier,master_kategori_produk.nama_kategori as id_kategori,master_bahanbaku.nama_bahanbaku as id_bahanbaku,produk_ready.kode_barang,produk_ready.nama_produk,produk_ready.jumlah_stok,produk_ready.ukuran_produk,produk_ready.warna_produk,produk_ready.ket_produk,produk_ready.harga_produksi,produk_ready.harga_jual,user.name as created_by,produk_ready.status');
 
-	        $this->datatables->where('status',$status);
+	        $this->datatables->where('produk_ready.status',$status);
 
 	        $this->datatables->from('produk_ready');
+			$this->datatables->join('user', 'produk_ready.created_by = user.id', 'left');
+			$this->datatables->join('suplier', 'produk_ready.id_suplier = suplier.id', 'left');
+			$this->datatables->join('master_kategori_produk', 'produk_ready.id_kategori = master_kategori_produk.id', 'left');
+			$this->datatables->join('master_bahanbaku', 'produk_ready.id_bahanbaku = master_bahanbaku.id', 'left');
 
 	        if($status=="ENABLE"){
 

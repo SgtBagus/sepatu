@@ -46,16 +46,16 @@ class Transaksi_preorder extends MY_Controller
 		$error = '';
 		for ($i = 0; $i < count($_POST['kemasanId']); $i++) {
 			$kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $_POST['kemasanId'][$i]));
-			if($kemasan['stok'] < $_POST['kemasanQty'][$i]){
-				$error .= '<li> Kemasan <b>'.$kemasan['value'].'</b> Tidak Memiliki Cukup Stok </li>';
+			if ($kemasan['stok'] < $_POST['kemasanQty'][$i]) {
+				$error .= '<li> Kemasan <b>' . $kemasan['value'] . '</b> Tidak Memiliki Cukup Stok </li>';
 			}
 		}
 
-		if($error == ''){
+		if ($error == '') {
 			return true;
-		}else{
+		} else {
 			$this->alert->alertdanger($error);
-			return false;	
+			return false;
 		}
 	}
 
@@ -118,13 +118,11 @@ class Transaksi_preorder extends MY_Controller
 					$dtkemasan['created_at'] = date('Y-m-d H:i:s');
 					$dtkemasan['updated_at'] = date('Y-m-d H:i:s');
 					$this->db->insert('transaksi_kemasan', $dtkemasan);
-					
+
 					$kemasan = $this->mymodel->selectDataone('master_kemasan', array('id' => $_POST['kemasanId'][$j]));
 					$kurangkemasan['stok'] = $kemasan['stok'] - $_POST['kemasanQty'][$j];
-					$this->mymodel->updateData('master_kemasan', $kurangkemasan, array('id' => $_POST['idd'][$i]));
-
+					$this->mymodel->updateData('master_kemasan', $kurangkemasan, array('id' => $_POST['kemasanId'][$j]));
 					$harga_subtotal += $_POST['kemasanHargaTotal'][$j];
-					
 				}
 
 				$dt = $_POST['dt'];
@@ -142,6 +140,16 @@ class Transaksi_preorder extends MY_Controller
 				$dt['updated_at'] = date('Y-m-d H:i:s');
 				$this->db->insert('transaksi', $dt);
 
+				$anggota = $this->mymodel->selectDataone('customer', array('id' => $_POST['dt']['id_customer']));
+				$name = $anggota['nama_customer'];
+				$toemail = $anggota['email_customer'];
+
+				$subjectemail = 'Invoice Order';
+				$content = 'Terima Kasih sudah memesan produk kami, mohon segera selesaikan pembayaran anda.';
+				$content2 = 'https://dev.karyastudio.com/shoekashoes/master/Transaksi_preorder/cetak/'.$dt['kode_transaksi'] = $res;
+				$button = '';
+
+				$this->sendemail->kirimemail($name, $toemail, $subjectemail, $content, $content2, $button);
 				$this->alert->alertsuccess('Success Send Data');
 			}
 		}
@@ -247,7 +255,7 @@ class Transaksi_preorder extends MY_Controller
 	public function cetak($id)
 	{
 		$data['page_name'] = "Pesanan";
-		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('id' => $id));
+		$data['transaksi'] = $this->mymodel->selectDataone('transaksi',  array('kode_transaksi' => $id));
 		$data['customer'] = $this->mymodel->selectDataone('customer',  array('id' => $data['transaksi']['id_customer']));
 		$data['kelurahan'] = $this->mymodel->selectDataone('tbl_kelurahan',  array('id' => $data['customer']['id_kelurahan']));
 		$data['kecamatan'] = $this->mymodel->selectDataone('tbl_kecamatan',  array('id' => $data['customer']['id_kecamatan']));
